@@ -1,8 +1,8 @@
 
-/**********************************************
- * 3D Cone Animation With Virtual Trackball   *
- * Design by ZulNs @Yogyakarta, December 2015 *
- **********************************************/
+/*************************888888888888888*******************
+ * 3D Cone To Tetrahedron Animation With Virtual Trackball *
+ * Design by ZulNs @Yogyakarta, December 2015              *
+ ***********************************************************/
 
 var _diameter = 100;
 var _height = 140;

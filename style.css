@@ -1,0 +1,29 @@
+.collapsible-list {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 1em;
+}
+.collapsible-list li {
+	list-style: none;
+	margin: 10px 0;
+}
+.collapsible-list li input ~ label{
+	background: url(images/toggle-expand.png) 0 3px no-repeat;
+	padding-left: 20px;
+}
+.collapsible-list li input:checked ~ label {
+	background: url(images/toggle-collaps.png) 0 3px no-repeat;
+	padding-left: 20px;
+}
+.collapsible-list label {
+	cursor: pointer;
+	color: #00f;
+}
+.collapsible-list li > input ~ label + * {
+	display: none;
+}
+.collapsible-list li > input:checked ~ label + * {
+	display: block;
+}
+.collapsible-list li > input {
+	display: none;
+}

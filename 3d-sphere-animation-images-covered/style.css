@@ -1,8 +1,8 @@
 
-/*************************888888888888888*******************
- * 3D Cone To Tetrahedron Animation With Virtual Trackball *
- * Design by ZulNs @Yogyakarta, December 2015              *
- ***********************************************************/
+/**********************************************
+ * 3D Sphere Animation With Virtual Trackball *
+ * Design by ZulNs @Yogyakarta, December 2015 *
+ **********************************************/
 
 html, body {
 	height: 100%;
@@ -17,7 +17,7 @@ html, body {
 .home-icon {
 	vertical-align: middle;
 }
-.cone-wrapper {
+.sphere-wrapper {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -26,15 +26,21 @@ html, body {
 	-o-perspective: 1000px;
 	perspective: 1000px;
 }
-.cone {
+.sphere {
 	position: absolute;
 	-webkit-transform-style: preserve-3d;
 	-moz-transform-style: preserve-3d;
 	-o-transform-style: preserve-3d;
 	transform-style: preserve-3d;
 }
-.cone svg {
+.sphere div {
 	position: absolute;
+	text-align: center;
+	vertical-align: middle;
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-o-backface-visibility: hidden;
+	backface-visibility: hidden;
 	-webkit-transition: transform 0.5s ease-in;
 	-moz-transition: transform 0.5s ease-in;
 	-o-transition: transform 0.5s ease-in;
@@ -76,21 +82,48 @@ html, body {
 	030.00% {transform: rotateX( 720deg) rotateY( 720deg) rotateZ(   0deg);}
 	100.00% {transform: rotateX(2880deg) rotateY(3240deg) rotateZ(2520deg);}
 }
-input[type="checkbox"], input[type="checkbox"]~ label, button, .manual-transform {
+.show-geometry div {
+	color: #fff;
+	background: rgba(80, 80, 80, 0.5) !important;
+	border: 1px solid #fff;
+}
+.expand-sides div,
+.unpack-1 div,
+.unpack-2 div,
+.unpack-3 div,
+.unpack-4 div,
+.unpack-5 div,
+.unpack-6 div,
+.unpack-7 div,
+.unpack-8 div,
+.reset-position div {
+	opacity: 0.9;
+	filter: alpha(opacity=0.9);
+}
+.intermediate-state div {
+	opacity: 0.9 !important;
+	filter: alpha(opacity=0.9) !important;
+}
+.show-geometry div,
+.expand-sides div,
+.unpack-1 div,
+.unpack-2 div,
+.unpack-3 div,
+.unpack-4 div,
+.unpack-5 div,
+.unpack-6 div,
+.unpack-7 div,
+.unpack-8 div,
+.reset-position div,
+.intermediate-state div {
+	-webkit-backface-visibility: visible;
+	-moz-backface-visibility: visible;
+	-o-backface-visibility: visible;
+	backface-visibility: visible;
+}
+input, input~ label, button, .manual-transform {
 	cursor: pointer;
 }
 input:checked~ label {
-	color: #ff0;
-}
-input[type="text"] {
-	width: 40px;
-}
-fieldset {
-	width: 220px;
-}
-.transform button {
-	width: 180px;
-}
-.settings button {
-	width: 74px;
+	color: #f77;
 }
