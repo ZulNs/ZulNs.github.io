@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>Private Encoder</title>
+	<!--meta name="viewport" content="width=device-width, initial-scale=1.0"-->
+	<meta name="Keywords" content="">
+	<meta name="Description" content="">
+	<link rel="icon" href="../favicon.ico" type="image/x-icon">
+	<!--link rel="icon" href="favicon.png" type="image/png"-->
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<p id="title"></p>
+	<p class="author">Design by ZulNs @Yogyakarta, January 2016</p>
+	<fieldset class="input">
+		<legend>Input</legend>
+		<table>
+			<tr>
+				<td class="label">Word to encode:</td>
+				<td>
+					<input id="word-input" type="text" />
+				</td>
+			</tr>
+			<tr>
+				<td>Characters amount:</td>
+				<td>
+					<input id="chars-amount-input" type="text" />
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<button id="encode-button" onclick="encode()">Encode</button>
+				</td>
+			</tr>
+		</table>
+	</fieldset>
+	<br>
+	<fieldset class="result">
+		<legend>Result</legend>
+		<table>
+			<tr>
+				<td class="label">Word to encode:</td>
+				<td>
+					<input id="word-result" type="text" />
+				</td>
+			</tr>
+			<tr>
+				<td>Two characters:</td>
+				<td>
+					<input id="two-chars" type="text" />
+				</td>
+			</tr>
+			<tr>
+				<td>Completed characters:</td>
+				<td>
+					<input id="completed-chars" type="text" />
+				</td>
+			</tr>
+			<tr>
+				<td>Current time:</td>
+				<td>
+					<input id="current-time" type="text" />
+				</td>
+			</tr>
+			<tr>
+				<td>Adjusted time:</td>
+				<td>
+					<input id="adjusted-time" type="text" />
+				</td>
+			</tr>
+			<tr>
+				<td>Encoded time:</td>
+				<td>
+					<input id="encoded-time" type="text" />
+				</td>
+			</tr>
+			<tr>
+				<td>Decoded time:</td>
+				<td>
+					<input id="decoded-time" type="text" />
+				</td>
+			</tr>
+		</table>
+	</fieldset>
+	<script type="text/javascript" src="script.js"></script>
+</body>
+</html>

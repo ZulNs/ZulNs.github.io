@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
+<!--doctype html-->
+<html lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>3D Sphere To Cube Animation With Virtual Trackball</title>
+	<!--meta name="viewport" content="width=device-width, initial-scale=1.0"-->
+	<meta name="Keywords" content="">
+	<meta name="Description" content="">
+	<link rel="icon" href="../favicon.ico" type="image/x-icon">
+	<!--link rel="icon" href="favicon.png" type="image/png"-->
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<p>
+		<a href="../index.html"><img class="home-icon" src="../images/home.png"></a>
+		<span id="title"><span>
+	</p>
+	<p>Design by ZulNs @Yogyakarta, January 2016</p>
+	<fieldset class="transform">
+		<legend>Animation</legend>
+		<table>
+			<tr>
+				<td>
+					<input id="unpack-1" type="checkbox" onchange="unpack(1);">
+					<label for="unpack-1">Unpack</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input id="unpack-2" type="checkbox" onchange="unpack(2);">
+					<label for="unpack-2">Expand sides</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<button id="toggle-animation" onclick="toggleAnimation()">Pause Animation</button>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<button id="toggle-transition" onclick="toggleTransition()">Play All Transitions</button>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<button id="toggle-transform" onclick="toggleTransform()">Stop Transform</button>
+				</td>
+			</tr>
+		</table>
+	</fieldset>
+	<br>
+	<fieldset class="settings">
+		<legend>Settings</legend>
+		<table>
+			<tr>
+				<td>Diameter:</td>
+				<td>
+					<input id="diameter-length" type="text" />
+					<span>px</span>
+				</td>
+			</tr>
+			<tr>
+				<td>Cells per circum:</td>
+				<td>
+					<input id="cells-per-circum" type="text" />
+					<span>px</span>
+				</td>
+			</tr>
+			<tr>
+				<td>Opacity:</td>
+				<td>
+					<input id="opacity-value" type="text" />
+					<span>%</span>
+				</td>
+			</tr>
+			<tr>
+				<td>Transition interval:</td>
+				<td>
+					<input id="transition-interval" type="text" />
+					<span>ms</span>
+				</td>
+			</tr>
+			<tr>
+				<td>Transform interval:</td>
+				<td>
+					<input id="transform-interval" type="text" />
+					<span>ms</span>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<button onclick="applyEntries()">Apply</button>
+				</td>
+			</tr>
+		</table>
+	</fieldset>
+	<script type="text/javascript" src="script.js"></script>
+</body>
+</html>

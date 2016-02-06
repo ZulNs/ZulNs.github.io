@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>Gregorian-Hijr Calendar Converter</title>
+	<!--meta name="viewport" content="width=device-width, initial-scale=1.0"-->
+	<meta name="Author" content="ZulNs">
+	<meta name="Keywords" content="">
+	<meta name="Description" content="">
+	<link rel="icon" href="../favicon.ico" type="image/x-icon">
+	<!--link rel="icon" href="favicon.png" type="image/png"-->
+	<link rel="stylesheet" href="../libs/calendar.css">
+	<style type="text/css">
+		.home-icon {
+			vertical-align: middle;
+		}
+		#greg-cal {
+			position: absolute;
+			left: 20px;
+			top: 94px;
+		}
+		#hijri-cal {
+			position: absolute;
+			left: 20px;
+			top: 378px;
+		}
+		.icon-button {
+			width: 30px;
+		}
+		input {
+			width: 215px;
+			margin-bottom: 8px;
+		}
+	</style>
+</head>
+<body>
+	<p>
+		<a href="../index.html"><img class="home-icon" src="../images/home.png"></a>
+		<span id="title"><span>
+	</p>
+	<p>Design by ZulNs @Yogyakarta, January 2016</p>
+	<div id="greg-cal">
+		<input id="greg-date" type="text" />
+		<button class="icon-button" onclick="showGregCal();">&#x25a6;</button>
+		<button class="icon-button" onclick="hideGregCal();">&#x2715;</button>
+		<button onclick="changeGregFirstDayOfWeek();">Change first day of week</button>
+	</div>
+	<div id="hijri-cal">
+		<input id="hijri-date" type="text" />
+		<button class="icon-button" onclick="showHijriCal();">&#x25a6;</button>
+		<button class="icon-button" onclick="hideHijriCal();">&#x2715;</button>
+		<button onclick="changeHijriFirstDayOfWeek();">Change first day of week</button>
+	</div>
+	<script type="text/javascript" src="../libs/hijri-date.js"></script>
+	<script type="text/javascript" src="../libs/calendar.js"></script>
+	<script type="text/javascript">
+		document.getElementById('title').innerHTML = document.title;
+		var gc = new Calendar(false, 1);
+		document.getElementById('greg-cal').appendChild(gc.calendarElement());
+		var gde = document.getElementById('greg-date');
+		var gd = gc.getDate();
+		gde.value = gd.getDateString();
+
+		var hc = new Calendar(true, 0);
+		document.getElementById('hijri-cal').appendChild(hc.calendarElement());
+		var hde = document.getElementById('hijri-date');
+		var hd = hc.getDate();
+		hde.value = hd.getDateString();
+
+		gc.callback = function() {
+			hc.setTime(gc.getTime());
+			gde.value = gd.getDateString();
+			hde.value = hd.getDateString();
+		};
+
+		hc.callback = function() {
+			gc.setTime(hc.getTime());
+			gde.value = gd.getDateString();
+			hde.value = hd.getDateString();
+		};
+
+		function showGregCal() {
+			gc.show();
+		}
+
+		function hideGregCal() {
+			gc.hide();
+		}
+
+		function changeGregFirstDayOfWeek() {
+			gc.setFirstDayOfWeek(gc.getFirstDayOfWeek() ^ 1);
+		}
+		
+		function showHijriCal() {
+			hc.show();
+		}
+
+		function hideHijriCal() {
+			hc.hide();
+		}
+		
+		function changeHijriFirstDayOfWeek() {
+			hc.setFirstDayOfWeek(hc.getFirstDayOfWeek() ^ 1);
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>JS on the fly</title>
+	<!--meta name="viewport" content="width=device-width, initial-scale=1.0"-->
+	<meta name="Author" content="ZulNs">
+	<meta name="Keywords" content="">
+	<meta name="Description" content="">
+	<link rel="icon" href="../favicon.ico" type="image/x-icon">
+	<!--link rel="icon" href="favicon.png" type="image/png"-->
+	<link rel="stylesheet" href="../libs/calendar.css">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<p>
+		<a href="../index.html"><img class="home-icon" src="../images/home.png"></a>
+		<span id="title"><span>
+	</p>
+	<p>Design by ZulNs @Yogyakarta, February 2016</p>
+	<textarea id="script-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+	<p>
+		<button id="eval-button" onclick="evalScript();">Eval</button>
+		<button id="clear-input-button" onclick="clearTextInput();">Clear Input</button>
+		<button id="clear-result-button" onclick="clearTextResult();">Clear Result</button>
+	</p>
+	<textarea id="result" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+	<script type="text/javascript" src="../libs/hijri-date.js"></script>
+	<script type="text/javascript" src="../libs/calendar.js"></script>
+	<script type="text/javascript" src="../libs/MathParser.js"></script>
+	<script type="text/javascript" src="../libs/ExtMath.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+</body>
+</html>

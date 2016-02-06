@@ -1,0 +1,89 @@
+
+/*********************************************
+ * Hijri - Gregorian Date Picker             *
+ *                                           *
+ * Design by ZulNs @Yogyakarta, January 2016 *
+ *********************************************/
+
+.hidden {
+	display: none;
+}
+.calendar {
+	position: relative;
+	font-family: "Times New Roman", Times, serif;
+	font-size: 14px;
+	width: 252px;
+	cursor: default;
+	background: #fcfcfc;
+	border: 1px solid #000;
+}
+.header-row div, .header-year, .weekday-row div, .date-grid div {
+	display: inline-block;
+}
+.header-row div, .weekday-row div, .date-grid div {
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+}
+.weekday-row div, .date-grid div {
+	vertical-align: middle;
+}
+.header-button, .header-month, .header-year, .normal-date {
+	cursor: pointer;
+}
+.header-row, .header-month, .header-year {
+	color: #fff;
+	background: #259;
+}
+.header-button {
+	width: 22px;
+}
+.header-month, .header-year {
+	border: 0;
+	outline: 0;
+	padding: 0;
+	font-family: "Times New Roman", Times, serif;
+	font-size: 14px;
+	text-align: center;
+	text-align-last: center;
+}
+.header-month {
+	width: 110px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	-o-appearance: none;
+	appearance: none;
+	overflow: hidden;
+}
+.header-month::-ms-expand {
+	display: none;
+}
+.header-year {
+	width: 54px;
+}
+.weekday-row div, .date-grid .excluded-date {
+	width: 36px;
+}
+.date-grid .normal-date {
+	width: 26px;
+	height: 24px;
+	line-height: 24px;
+	margin: 3px 5px;
+}
+.normal-date {
+	color: #555;
+}
+.friday-date {
+	color: #292;
+}
+.sunday-date {
+	color: #c22;
+}
+.selected-date {
+	color: #fff;
+	background: #e72;
+}
+.excluded-date {
+	font-size: .9em;
+	color: #aaa;
+}

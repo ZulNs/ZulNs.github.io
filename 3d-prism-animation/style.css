@@ -1,8 +1,8 @@
 
-/****************************************************************
- * 3D Sphere To Cube Animation With Virtual Trackball Transform *
- * Design by ZulNs @Yogyakarta, January 2015                    *
- ****************************************************************/
+/***********************************************************
+ * Pure CSS3 Dynamic Prism Animation With Background Image *
+ * Design by ZulNs @Yogyakarta, December 2015              *
+ ***********************************************************/
 
 html, body {
 	height: 100%;
@@ -14,7 +14,10 @@ html, body {
 	background: linear-gradient(#222, #222, #444);
 	color: #fff;
 }
-.sphere-wrapper {
+.home-icon {
+	vertical-align: middle;
+}
+.prism-wrapper {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -23,19 +26,51 @@ html, body {
 	-o-perspective: 1000px;
 	perspective: 1000px;
 }
-.sphere {
+.prism {
 	position: absolute;
 	-webkit-transform-style: preserve-3d;
 	-moz-transform-style: preserve-3d;
 	-o-transform-style: preserve-3d;
 	transform-style: preserve-3d;
 }
-.sphere svg {
+.prism .face {
 	position: absolute;
+	-webkit-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	-o-transform-style: preserve-3d;
+	transform-style: preserve-3d;
 	-webkit-transition: transform 0.5s ease-in;
 	-moz-transition: transform 0.5s ease-in;
 	-o-transition: transform 0.5s ease-in;
 	transition: transform 0.5s ease-in;
+}
+.prism .face div {
+	position: absolute;
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-o-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+.prism .front,
+.prism .back,
+.prism .left,
+.prism .right {
+	-webkit-transform-origin: bottom;
+	-moz-transform-origin: bottom;
+	-o-transform-origin: bottom;
+	transform-origin: bottom;
+}
+.prism .frontface {
+	color: transparent;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 20px;
+}
+.prism .backface {
+	-webkit-transform: rotateY(180deg);
+	-moz-transform: rotateY(180deg);
+	-o-transform: rotateY(180deg);
+	transform: rotateY(180deg);
 }
 .paused {
 	-webkit-animation-play-state: paused !important;
@@ -73,21 +108,18 @@ html, body {
 	030.00% {transform: rotateX( 720deg) rotateY( 720deg) rotateZ(   0deg);}
 	100.00% {transform: rotateX(2880deg) rotateY(3240deg) rotateZ(2520deg);}
 }
-input[type="checkbox"], input[type="checkbox"]~ label, button:enabled, .manual-transform {
+.show-geometry .face div {
+	border: 1px solid #fff;
+	color: #fff !important;
+	background: rgba(80, 80, 80, 0.5) !important;
+	-webkit-backface-visibility: visible !important;
+	-moz-backface-visibility: visible !important;
+	-o-backface-visibility: visible !important;
+	backface-visibility: visible !important;
+}
+input, input~ label, button, .manual-transform {
 	cursor: pointer;
 }
 input:checked~ label {
-	color: #ff0;
-}
-input[type="text"] {
-	width: 40px;
-}
-fieldset {
-	width: 220px;
-}
-.transform button {
-	width: 180px;
-}
-.settings button {
-	width: 74px;
+	color: #f77;
 }
