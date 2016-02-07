@@ -1,10 +1,16 @@
 
-var listNumber = 4;
-var elementId = 'list-node-';
+var lastElmId;
+
+/*for (var i = 1; i <= 4; i++) {
+	var elm = document.getElementById('list-node-' + i);
+	if (elm.checked) elm.checked = false;
+}*/
 
 function parentClick(elm) {
-	if (elm.checked)
-		for (var i = 1; i < listNumber + 1; i++)
-			if (elm.id !== elementId + i)
-				document.getElementById(elementId + i).checked = false;
+	if (elm.checked) {
+		if (lastElmId) document.getElementById(lastElmId).checked = false;
+		lastElmId = elm.id;
+	}
+	else
+		lastElmId = null;
 }
