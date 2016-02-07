@@ -3,13 +3,16 @@
 	font-size: 1em;
 }
 .collapsible-list, .collapsible-list ul {
-	list-style: none;
+	list-style: none outside none;
 	margin: 0;
-	padding: 4px;
+	padding: 4px 0;
 }
 .collapsible-list li {
-	margin: 10px 0;
-	padding-left: 36px;
+	margin: 10px;
+}
+.collapsible-list li.parent {
+	padding-left: 48px;
+	text-indent: -22px;
 }
 .collapsible-list li.parent:before {
 	content: url(images/toggle-expand.png);
@@ -29,6 +32,10 @@
 }
 .collapsible-list input {
 	display: none;
+}
+.collapsible-list ul.child li {
+	padding-left: 24px;
+	text-indent: -20px;
 }
 .collapsible-list ul.child li:before {
 	content: "•";
