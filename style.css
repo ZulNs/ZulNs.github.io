@@ -9,9 +9,9 @@
 }
 .collapsible-list li {
 	margin: 10px;
+	padding-left: 24px;
 }
 .collapsible-list li.parent {
-	padding-left: 48px;
 	text-indent: -22px;
 }
 .collapsible-list li.parent:before {
@@ -34,7 +34,6 @@
 	display: none;
 }
 .collapsible-list ul.child li {
-	padding-left: 24px;
 	text-indent: -20px;
 }
 .collapsible-list ul.child li:before {
