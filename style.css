@@ -2,28 +2,48 @@
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 1em;
 }
-.collapsible-list li {
+.collapsible-list, .collapsible-list ul {
 	list-style: none;
+	margin: 0;
+	padding: 4px;
+}
+.collapsible-list li {
 	margin: 10px 0;
+	padding-left: 36px;
 }
-.collapsible-list li input ~ label{
-	background: url(images/toggle-expand.png) 0 3px no-repeat;
-	padding-left: 20px;
+.collapsible-list li.parent:before {
+	content: url(images/toggle-expand.png);
 }
-.collapsible-list li input:checked ~ label {
-	background: url(images/toggle-collaps.png) 0 3px no-repeat;
-	padding-left: 20px;
+.collapsible-list li.parent.expand:before {
+	content: url(images/toggle-collaps.png);
+}
+.collapsible-list li.parent ul {
+	display: none;
+}
+.collapsible-list li.parent.expand ul {
+	display: block;
 }
 .collapsible-list label {
 	cursor: pointer;
 	color: #00f;
 }
-.collapsible-list li > input ~ label + * {
+.collapsible-list input {
 	display: none;
 }
-.collapsible-list li > input:checked ~ label + * {
-	display: block;
+.collapsible-list ul.child li:before {
+	content: "•";
+	padding-right: 12px;
+	color: #00f;
 }
-.collapsible-list li > input {
-	display: none;
+.collapsible-list ul.child li.github:before {
+	content: url(images/github.png);
+}
+.collapsible-list ul.child li.codepen:before {
+	content: url(images/codepen.png);
+}
+.collapsible-list ul.child li.stackoverflow:before {
+	content: url(images/stackoverflow.png);
+}
+.collapsible-list ul.child li.twitter:before {
+	content: url(images/twitter.png);
 }

@@ -1,16 +1,18 @@
 
 var lastElmId;
 
-/*for (var i = 1; i <= 4; i++) {
-	var elm = document.getElementById('list-node-' + i);
-	if (elm.checked) elm.checked = false;
-}*/
-
 function parentClick(elm) {
 	if (elm.checked) {
-		if (lastElmId) document.getElementById(lastElmId).checked = false;
+		if (lastElmId) {
+			var lastElm = document.getElementById(lastElmId);
+			lastElm.checked = false;
+			lastElm.parentNode.classList.remove('expand');
+		}
+		elm.parentNode.classList.add('expand');
 		lastElmId = elm.id;
 	}
-	else
+	else {
+		elm.parentNode.classList.remove('expand');
 		lastElmId = null;
+	}
 }
