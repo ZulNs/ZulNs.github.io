@@ -10,7 +10,9 @@ var	TAB_INDENT = 4;
 	textInput = document.getElementById('script-input'),
 	textResult = document.getElementById('result');
 
-document.getElementById('title').innerHTML = document.title;
+document.querySelector('#title span').innerHTML = document.title;
+if (document.location.search.toLowerCase() === '?3d')
+	document.querySelector('#title a').href = '../cuboid3d.html';
 textResult.readOnly = true;
 textInput.focus();
 

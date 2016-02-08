@@ -36,9 +36,9 @@
 	</style>
 </head>
 <body>
-	<p>
+	<p id="title">
 		<a href="../index.html"><img class="home-icon" src="../images/home.png"></a>
-		<span id="title"><span>
+		<span><span>
 	</p>
 	<p>Design by ZulNs @Yogyakarta, January 2016</p>
 	<div id="greg-cal">
@@ -56,7 +56,9 @@
 	<script type="text/javascript" src="../libs/hijri-date.js"></script>
 	<script type="text/javascript" src="../libs/calendar.js"></script>
 	<script type="text/javascript">
-		document.getElementById('title').innerHTML = document.title;
+		document.querySelector('#title span').innerHTML = document.title;
+		if (document.location.search.toLowerCase() === '?3d')
+			document.querySelector('#title a').href = '../cuboid3d.html';
 		var gc = new Calendar(false, 1);
 		document.getElementById('greg-cal').appendChild(gc.calendarElement());
 		var gde = document.getElementById('greg-date');

@@ -10,7 +10,10 @@ var _currentTime = document.getElementById('current-time');
 var _adjustedTime = document.getElementById('adjusted-time');
 var _encodedTime = document.getElementById('encoded-time');
 var _decodedTime = document.getElementById('decoded-time');
-document.getElementById('title').innerHTML = document.title;
+
+document.querySelector('#title span').innerHTML = document.title;
+if (document.location.search.toLowerCase() === '?3d')
+	document.querySelector('#title a').href = '../cuboid3d.html';
 
 function encode() {
 	var word = _wordInput.value;

@@ -39,7 +39,9 @@ var _transitionIntervalInput = document.getElementById('transition-interval');
 init();
 
 function init() {
-	document.getElementById('title').innerHTML = document.title;
+	document.querySelector('#title span').innerHTML = document.title;
+	if (document.location.search.toLowerCase() === '?3d')
+		document.querySelector('#title a').href = '../cuboid3d.html';
 	_diameterInput.value = _diameter;
 	_heightInput.value = _height;
 	_bladesNumberInput.value = _bladesNumber;

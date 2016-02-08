@@ -244,7 +244,9 @@ function toArray(str) {
 }
 
 function init() {
-	document.getElementById('title').innerHTML = document.title;
+	document.querySelector('#title span').innerHTML = document.title;
+	if (document.location.search.toLowerCase() === '?3d')
+		document.querySelector('#title a').href = '../cuboid3d.html';
 	document.body.appendChild(createModel());
 	_model = document.querySelector('.' + NAME);
 	document.getElementById('show-geometry').checked = false;

@@ -1,0 +1,137 @@
+
+.cuboid-wrapper {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-perspective: 1000px;
+	-moz-perspective: 1000px;
+	-o-perspective: 1000px;
+	perspective: 1000px;
+}
+.cuboid {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: .8em;
+	position: absolute;
+	-webkit-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	-webkit-transform: rotateY(-45deg);
+	-moz-transform: rotateY(-45deg);
+	-o-transform: rotateY(-45deg);
+	transform: rotateY(-45deg);
+}
+.cuboid .face {
+	position: absolute;
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-o-backface-visibility: hidden;
+	backface-visibility: hidden;
+	color: #fff;
+	background: #6c767c;
+	border: 1px solid #c6ccbc;
+	cursor: pointer;
+}
+.cuboid .face.side {
+	width: 240px;
+	height: 320px;
+	margin-left: -120px;
+	margin-top: -160px;
+}
+.cuboid .face.cover {
+	width: 240px;
+	height: 240px;
+	margin-left: -120px;
+	margin-top: -120px;
+}
+.cuboid .face.front {
+	-webkit-transform: translateZ(120px);
+	-moz-transform: translateZ(120px);
+	-o-transform: translateZ(120px);
+	transform: translateZ(120px);
+}
+.cuboid .face.right {
+	-webkit-transform: rotateY(90deg) translateZ(120px);
+	-moz-transform: rotateY(90deg) translateZ(120px);
+	-o-transform: rotateY(90deg) translateZ(120px);
+	transform: rotateY(90deg) translateZ(120px);
+}
+.cuboid .face.back {
+	-webkit-transform: rotateY(180deg) translateZ(120px);
+	-moz-transform: rotateY(180deg) translateZ(120px);
+	-o-transform: rotateY(180deg) translateZ(120px);
+	transform: rotateY(180deg) translateZ(120px);
+}
+.cuboid .face.left {
+	-webkit-transform: rotateY(-90deg) translateZ(120px);
+	-moz-transform: rotateY(-90deg) translateZ(120px);
+	-o-transform: rotateY(-90deg) translateZ(120px);
+	transform: rotateY(-90deg) translateZ(120px);
+}
+.cuboid .face.top {
+	-webkit-transform: rotateX(90deg) translateZ(160px);
+	-moz-transform: rotateX(90deg) translateZ(160px);
+	-o-transform: rotateX(90deg) translateZ(160px);
+	transform: rotateX(90deg) translateZ(160px);
+}
+.cuboid .face.bottom {
+	-webkit-transform: rotateX(-90deg) translateZ(160px);
+	-moz-transform: rotateX(-90deg) translateZ(160px);
+	-o-transform: rotateX(-90deg) translateZ(160px);
+	transform: rotateX(-90deg) translateZ(160px);
+}
+.cuboid .content {
+	position: absolute;
+	overflow: auto;
+	color: #6c767c;
+	background: #c6ccbc;
+	border: 1px solid #6c767c;
+	cursor: default;
+}
+.cuboid .side .content {
+	width: 240px;
+	height: 260px;
+	margin-top: 30px;
+}
+.cuboid .cover .content {
+	width: 240px;
+	height: 180px;
+	margin-top: 30px;
+	text-align: center;
+	line-height: 180px;
+	vertical-align: middle;
+	font-size: 1.5em;
+}
+.cuboid .content-title {
+	position: absolute;
+	width: 240px;
+	margin-top: 8px;
+	text-align: center;
+}
+.cuboid ul {
+	list-style: none outside none;
+	margin: 0;
+	padding: 4px 0;
+}
+.cuboid li {
+	margin: 10px;
+	padding-left: 24px;
+	text-indent: -20px;
+}
+.cuboid li:before {
+	content: "•";
+	padding-right: 12px;
+	color: #00f;
+}
+.cuboid li.github:before {
+	content: url(images/github.png);
+}
+.cuboid li.codepen:before {
+	content: url(images/codepen.png);
+}
+.cuboid li.stackoverflow:before {
+	content: url(images/stackoverflow.png);
+}
+.cuboid li.twitter:before {
+	content: url(images/twitter.png);
+}

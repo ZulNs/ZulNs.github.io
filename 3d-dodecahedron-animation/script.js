@@ -27,7 +27,9 @@ var _intervalInput = document.getElementById('transition-interval');
 init();
 
 function init() {
-	document.getElementById('title').innerHTML = document.title;
+	document.querySelector('#title span').innerHTML = document.title;
+	if (document.location.search.toLowerCase() === '?3d')
+		document.querySelector('#title a').href = '../cuboid3d.html';
 	_edgeInput.value = _edgeLen;
 	_opacityInput.value = _opacity * 100;
 	_intervalInput.value = _transitionInterval;

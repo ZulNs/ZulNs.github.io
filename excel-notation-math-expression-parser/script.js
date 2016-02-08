@@ -21,7 +21,9 @@ function clearVars() {
 }
 
 function init() {
-	document.getElementById('title').innerHTML = document.title;
+	document.querySelector('#title span').innerHTML = document.title;
+	if (document.location.search.toLowerCase() === '?3d')
+		document.querySelector('#title a').href = '../cuboid3d.html';
 	mp = new Parser;
 	txtExpr      = document.getElementById("txtExpr");
 	txtResult    = document.getElementById("txtResult");
