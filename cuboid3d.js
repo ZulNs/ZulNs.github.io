@@ -12,6 +12,7 @@ init();
 
 function init() {
 	var contents = document.querySelectorAll('.cuboid .content');
+	alert('Touch Event Support: ' + ('touchstart' in window));
 	for (var i = 0; i < contents.length; i++) {
 		addEvent(contents[i], 'mousedown', blockEvent);
 		addEvent(contents[i], 'touchstart', blockEvent);
@@ -38,6 +39,7 @@ function toArray(str) {
 }
 
 function addEvent(elm, evt, callback) {
+	if (evt.substring(0, 5) === 'touch' && !('touchstart' in window)) return;
 	if (!!window.addEventListener)
 		elm.addEventListener(evt, callback);
 	else
