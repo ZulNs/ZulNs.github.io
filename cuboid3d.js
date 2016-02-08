@@ -12,10 +12,16 @@ init();
 
 function init() {
 	var contents = document.querySelectorAll('.cuboid .content');
-	for (var i = 0; i < contents.length; i++) addEvent(contents[i], 'mousedown', blockEvent);
+	for (var i = 0; i < contents.length; i++) {
+		addEvent(contents[i], 'mousedown', blockEvent);
+		addEvent(contents[i], 'touchstart', blockEvent);
+	}
 	addEvent(cuboid, 'mousedown', onMouseDown);
+	addEvent(cuboid, 'touchstart', onMouseDown);
 	addEvent(cuboid, 'mousemove', onMouseMove);
+	addEvent(cuboid, 'touchmove', onMouseMove);
 	addEvent(document, 'mouseup', onMouseUp);
+	addEvent(document, 'touchend', onMouseUp);
 }
 
 function addVendorPrefix(property) {
