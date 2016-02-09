@@ -89,23 +89,24 @@
 	cursor: default;
 }
 .cuboid .side .content {
-	width: 240px;
-	height: 260px;
-	margin-top: 30px;
+	width: 238px;
+	height: 240px;
+	margin-top: 40px;
 }
 .cuboid .cover .content {
-	width: 240px;
-	height: 180px;
-	margin-top: 30px;
+	width: 238px;
+	height: 160px;
+	margin-top: 40px;
 	text-align: center;
-	line-height: 180px;
+	line-height: 160px;
 	vertical-align: middle;
 	font-size: 1.5em;
 }
 .cuboid .content-title {
 	position: absolute;
+	font-size: 1.1em;
 	width: 240px;
-	margin-top: 8px;
+	margin-top: 12px;
 	text-align: center;
 }
 .cuboid ul {
