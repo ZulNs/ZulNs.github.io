@@ -4,34 +4,36 @@
  * Design by ZulNs @Yogyakarta, January 2015                    *
  ****************************************************************/
 
-var _diameter = 160;
-var _cellsPerCircum = 22;
-var _opacity = 0.75;
-var _transitionInterval = 3000;
-var _transformInterval = 2000;
-var _modelName = 'sphere';
-var _model;
-var _cssRules = '';
-var _isPaused = false;
-var _isManual = false;
-var _dragging = false;
-var _lastTransform, _matrix, _spx, _spy;
-var _productToRadians;
-var _isTransitionStopped = true;
-var _transitionTimer;
-var _isTransformStopped = false;
-var _transformTimer;
-var _currentCellsPerCircum = _cellsPerCircum;
-var _cellsAdder = -2;
-var _currentTransition = 0;
-var _animate = document.getElementById('toggle-animation');
-var _transist = document.getElementById('toggle-transition');
-var _transform = document.getElementById('toggle-transform');
-var _diameterInput = document.getElementById('diameter-length');
-var _cellsPerCircumInput = document.getElementById('cells-per-circum');
-var _opacityInput = document.getElementById('opacity-value');
-var _transitionIntervalInput = document.getElementById('transition-interval');
-var _transformIntervalInput = document.getElementById('transform-interval');
+var _diameter = 160,
+	_cellsPerCircum = 22,
+	_opacity = 0.75,
+	_transitionInterval = 3000,
+	_transformInterval = 2000,
+	_modelName = 'sphere',
+	_model,
+	_cssRules = '',
+	_isPaused = false,
+	_isManual = false,
+	_dragging = false,
+	_isFiredByMouse = false,
+	_touchId,
+	_lastTransform, _matrix, _spx, _spy,
+	_productToRadians,
+	_isTransitionStopped = true,
+	_transitionTimer,
+	_isTransformStopped = false,
+	_transformTimer,
+	_currentCellsPerCircum = _cellsPerCircum,
+	_cellsAdder = -2,
+	_currentTransition = 0,
+	_animate = document.getElementById('toggle-animation'),
+	_transist = document.getElementById('toggle-transition'),
+	_transform = document.getElementById('toggle-transform'),
+	_diameterInput = document.getElementById('diameter-length'),
+	_cellsPerCircumInput = document.getElementById('cells-per-circum'),
+	_opacityInput = document.getElementById('opacity-value'),
+	_transitionIntervalInput = document.getElementById('transition-interval'),
+	_transformIntervalInput = document.getElementById('transform-interval');
 
 init();
 
@@ -54,8 +56,6 @@ function init() {
 		toggleTransform();
 		_transform.disabled = true;
 	}
-	var r = 30;
-	for (var i = 0; i < r; i++) console.log('Color-' + i + ': ' + getRainbowColor(i, r));
 }
 
 function appendModel() {
@@ -67,46 +67,127 @@ function appendModel() {
 	wrap.appendChild(_model);
 	document.body.appendChild(wrap);
 	_model.setAttribute('draggable', 'false');
-	_model.addEventListener('mousedown', function(e) {
+	addEvent(_model, 'mousedown', handleMouseDown);
+	addEvent(_model, 'mousemove', handleMouseMove);
+	addEvent(document, 'mouseup', handleMouseUp);
+	if ('touchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0) {
+		addEvent(_model, 'touchstart', handleTouchStart);
+		addEvent(_model, 'touchmove', handleTouchMove);
+		addEvent(document, 'touchend', handleTouchEnd);
+	}
+}
+
+function addEvent(elm, evt, callback) {
+	if (!!window.addEventListener)
+		elm.addEventListener(evt, callback);
+	else
+		elm.attachEvent('on' + evt, callback);
+}
+
+function handleMouseDown(evt) {
+	if (!_dragging) {
+		var e = evt || window.event;
 		e.preventDefault();
 		e.stopPropagation();
-		if (_isPaused) {
-			_spx = e.pageX;
-			_spy = e.pageY;
-			_dragging = true;
-			if (! _isManual) {
-				_lastTransform = window.getComputedStyle(_model).getPropertyValue('transform');
-				_matrix = toArray(_lastTransform);
-				_model.classList.remove('animate');
-				_model.classList.remove('paused');
-				_model.style.cssText = addVendorPrefix('transform: ' + _lastTransform + ';');
-				_isManual = true;
-				_animate.innerHTML = 'Animate';
+		_isFiredByMouse = true;
+		startDragging(e.pageX, e.pageY);
+	}
+}
+
+function handleMouseMove(evt) {
+	if (_dragging && _isFiredByMouse) {
+		var e = evt || window.event;
+		e.preventDefault();
+		whileDragging(e.pageX, e.pageY);
+	}
+}
+
+function handleMouseUp(evt) {
+	if (_dragging && _isFiredByMouse) {
+		var e = evt || window.event;
+		e.preventDefault();
+		endDragging();
+	}
+}
+
+function handleTouchStart(evt) {
+	if (!_dragging) {
+		var e = evt || window.event;
+		var touch = e.changedTouches[0];
+		e.preventDefault();
+		//e.stopPropagation();
+		_isFiredByMouse = false;
+		_touchId = touch.identifier;
+		startDragging(touch.pageX, touch.pageY);
+	}
+}
+
+function handleTouchMove(evt) {
+	if (_dragging && !_isFiredByMouse) {
+		var e = evt || window.event;
+		var touches = e.changedTouches;
+		var touch;
+		for (var i = 0; i < touches.length; i++) {
+			touch = touches[i];
+			if (touch.identifier === _touchId) {
+				e.preventDefault();
+				whileDragging(touch.pageX, touch.pageY);
+				break;
 			}
 		}
-	});
-	_model.addEventListener('mousemove', function(e) {
-		if (_dragging) {
-			var cpx = e.pageX, cpy = e.pageY, sx, sy, x = 0, y = 0, z = 0, cr = 0.5, rad, css;
-			if (_spx != cpx || _spy != cpy) {
-				sx = (_spy - cpy);
-				sy = (cpx - _spx);
-				rad = Math.sqrt(sx * sx + sy * sy) * _productToRadians;
-				x = sx * _matrix[0] + sy * _matrix[1];
-				y = sx * _matrix[4] + sy * _matrix[5];
-				z = sx * _matrix[8] + sy * _matrix[9];
-				css = 'transform: ' + _lastTransform + ' rotate3d(' + x + ', ' + y + ', ' + z + ', ' + rad + 'rad);';
-				_model.style.cssText = addVendorPrefix(css);
+	}
+}
+
+function handleTouchEnd(evt) {
+	if (_dragging && !_isFiredByMouse) {
+		var e = evt || window.event;
+		var touches = e.changedTouches;
+		var touch;
+		for (var i = 0; i < touches.length; i++) {
+			touch = touches[i];
+			if (touch.identifier === _touchId) {
+				e.preventDefault();
+				endDragging();
+				break;
 			}
 		}
-	});
-	document.addEventListener('mouseup', function(e) {
-		if (_dragging) {
-			_dragging = false;
-			_lastTransform = window.getComputedStyle(_model).getPropertyValue('transform');
-			_matrix = toArray(_lastTransform);
-		}
-	});
+	}
+}
+
+function startDragging(spx, spy) {
+	_spx = spx;
+	_spy = spy;
+	_dragging = true;
+	if (!_isPaused) toggleAnimation();
+	if (! _isManual) {
+		_lastTransform = window.getComputedStyle(_model).getPropertyValue('transform');
+		_matrix = toArray(_lastTransform);
+		_model.classList.remove('animate');
+		_model.classList.remove('paused');
+		_model.style.cssText = addVendorPrefix('transform: ' + _lastTransform + ';');
+		_isManual = true;
+		_animate.innerHTML = 'Animate';
+	}
+}
+
+function whileDragging(cpx, cpy) {
+	var sx, sy, x = 0, y = 0, z = 0, cr = 0.5, rad, css;
+	if (_spx != cpx || _spy != cpy) {
+		sx = (_spy - cpy);
+		sy = (cpx - _spx);
+		rad = Math.sqrt(sx * sx + sy * sy) * _productToRadians;
+		x = sx * _matrix[0] + sy * _matrix[1];
+		y = sx * _matrix[4] + sy * _matrix[5];
+		z = sx * _matrix[8] + sy * _matrix[9];
+		css = 'transform: ' + _lastTransform + ' rotate3d(' + x + ', ' + y + ', ' + z + ', ' + rad + 'rad);';
+		_model.style.cssText = addVendorPrefix(css);
+	}
+}
+
+function endDragging() {
+	_dragging = false;
+	_lastTransform = window.getComputedStyle(_model).getPropertyValue('transform');
+	_matrix = toArray(_lastTransform);
 }
 
 function applyEntries() {
