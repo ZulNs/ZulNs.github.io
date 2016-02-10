@@ -73,6 +73,7 @@ function appendModel() {
 	if ('touchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0) {
 		addEvent(_model, 'touchstart', handleTouchStart);
 		addEvent(_model, 'touchmove', handleTouchMove);
+		addEvent(document, 'touchcancel', handleTouchEnd);
 		addEvent(document, 'touchend', handleTouchEnd);
 	}
 }
@@ -111,8 +112,9 @@ function handleMouseUp(evt) {
 }
 
 function handleTouchStart(evt) {
+	var e = evt || window.event;
+	if (_dragging && !_isFiredByMouse && e.touches.length == 1) endDragging();
 	if (!_dragging) {
-		var e = evt || window.event;
 		var touch = e.changedTouches[0];
 		e.preventDefault();
 		//e.stopPropagation();
@@ -124,9 +126,9 @@ function handleTouchStart(evt) {
 
 function handleTouchMove(evt) {
 	if (_dragging && !_isFiredByMouse) {
-		var e = evt || window.event;
-		var touches = e.changedTouches;
-		var touch;
+		var e = evt || window.event,
+			touches = e.changedTouches,
+			touch;
 		for (var i = 0; i < touches.length; i++) {
 			touch = touches[i];
 			if (touch.identifier === _touchId) {
@@ -140,15 +142,15 @@ function handleTouchMove(evt) {
 
 function handleTouchEnd(evt) {
 	if (_dragging && !_isFiredByMouse) {
-		var e = evt || window.event;
-		var touches = e.changedTouches;
-		var touch;
+		var e = evt || window.event,
+			touches = e.changedTouches,
+			touch;
 		for (var i = 0; i < touches.length; i++) {
 			touch = touches[i];
 			if (touch.identifier === _touchId) {
 				e.preventDefault();
 				endDragging();
-				break;
+				return;
 			}
 		}
 	}
@@ -159,7 +161,7 @@ function startDragging(spx, spy) {
 	_spy = spy;
 	_dragging = true;
 	if (!_isPaused) toggleAnimation();
-	if (! _isManual) {
+	if (!_isManual) {
 		_lastTransform = window.getComputedStyle(_model).getPropertyValue('transform');
 		_matrix = toArray(_lastTransform);
 		_model.classList.remove('animate');
@@ -191,11 +193,11 @@ function endDragging() {
 }
 
 function applyEntries() {
-	var dl = getIntValue(_diameterInput.value);
-	var cpc = getIntValue(_cellsPerCircumInput.value);
-	var ov = getIntValue(_opacityInput.value);
-	var tsi = getIntValue(_transitionIntervalInput.value);
-	var tfi = getIntValue(_transformIntervalInput.value);
+	var dl = getIntValue(_diameterInput.value),
+		cpc = getIntValue(_cellsPerCircumInput.value),
+		ov = getIntValue(_opacityInput.value),
+		tsi = getIntValue(_transitionIntervalInput.value),
+		tfi = getIntValue(_transformIntervalInput.value);
 	if (dl < 1) dl = 1;
 	if (cpc % 2 != 0) cpc++;
 	if (cpc < 4) cpc = 4;
@@ -247,7 +249,6 @@ function getIntValue(value) {
 
 function toggleAnimation() {
 	if (_isManual) {
-		_model.classList.remove('manual-transform');
 		_model.style.cssText = '';
 		_model.classList.add('animate');
 		_isManual = false;
@@ -256,13 +257,11 @@ function toggleAnimation() {
 	}
 	else {
 		if (_isPaused) {
-		_model.classList.remove('manual-transform');
 			_model.classList.remove('paused');
 			_animate.innerHTML = 'Pause Animation';
 		}
 		else {
 			_model.classList.add('paused');
-			_model.classList.add('manual-transform');
 			_animate.innerHTML = 'Continue Animation';
 		}
 	}
@@ -354,10 +353,10 @@ function addVendorPrefix(property) {
 }
 
 function getRainbowColor(step, numOfSteps) {
-	var h = (step % numOfSteps) / numOfSteps;
-	var i = ~~(h * 6);
-	var a = h * 6 - i;
-	var d = 1 - a;
+	var h = (step % numOfSteps) / numOfSteps,
+		i = ~~(h * 6),
+		a = h * 6 - i,
+		d = 1 - a;
 	switch (i) {
 		case 0: r = 1; g = a; b = 0; break;
 		case 1: r = d; g = 1; b = 0; break;
@@ -378,12 +377,13 @@ function recreateModel(model, diameter, cellsPerCircum, opacity) {
 }
 
 function createModel(model, diameter, cellsPerCircum, opacity) {
-	var baseAngle = Math.PI / cellsPerCircum;
-	var cellAngle = 2 * baseAngle;
-	var cellW = diameter * Math.tan(baseAngle);
+	var baseAngle = Math.PI / cellsPerCircum,
+		cellAngle = 2 * baseAngle,
+		cellW = diameter * Math.tan(baseAngle),
+		xc = ~~(cellsPerCircum / 4),
+		yc, rx, ry, dlen = 0, cw, cw2, color, name1, name2,
+		style = document.createElement('style');
 	_productToRadians = 2 * Math.PI / cellW / cellsPerCircum;
-	var xc = ~~(cellsPerCircum / 4);
-	var yc, rx, ry, dlen = 0, cw, cw2, color, name1, name2;
 	for (var x = 0; x <= xc; x++) {
 		rx = x * cellAngle;
 		cw = (diameter - dlen - dlen) * Math.tan(baseAngle);
@@ -406,7 +406,6 @@ function createModel(model, diameter, cellsPerCircum, opacity) {
 			model.appendChild(createFace(cw, cellW, cw2, rx, ry, diameter / 2, diameter, cellsPerCircum, cellW, cellAngle, color, opacity, name2));
 		}
 	}
-	var style = document.createElement('style');
 	style.type = 'text/css';
 	style.id = _modelName + '-style';
 	if (style.styleSheet)
@@ -418,17 +417,17 @@ function createModel(model, diameter, cellsPerCircum, opacity) {
 }
 
 function createFace(w, h, w2, rx, ry, tz, dia, cpc, cw, ca, color, opacity, cname) {
-	var face = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-	var shape, points = '', css, tx, ty;
-	var cssText =
-		'margin-left: ' + (-w / 2).toFixed(0) + 'px;' +
-		'margin-top: ' + (-h / 2).toFixed(0) + 'px;';
+	var face = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
+		shape, points = '', css, tx, ty,
+		cssText =
+			'margin-left: ' + (-w / 2).toFixed(0) + 'px;' +
+			'margin-top: ' + (-h / 2).toFixed(0) + 'px;';
 	face.setAttribute('width', w.toFixed(0));
 	face.setAttribute('height', h.toFixed(0));
 	if (Math.abs(rx) == Math.PI / 2) {
-		var px = (w - w2) / 2;
-		var py = (rx < 0) ? 0 : h;
-		var cxy = ' ' + (w / 2).toFixed(0) + ',' + (h / 2).toFixed(0);
+		var px = (w - w2) / 2,
+			py = (rx < 0) ? 0 : h,
+			cxy = ' ' + (w / 2).toFixed(0) + ',' + (h / 2).toFixed(0);
 		for (var i = 0; i < cpc;  i++) {
 			points = px.toFixed(0) + ',' + py.toFixed(0);
 			px += Math.cos(i * ca) * w2;

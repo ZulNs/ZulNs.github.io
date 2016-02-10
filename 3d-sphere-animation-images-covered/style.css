@@ -121,7 +121,7 @@ html, body {
 	-o-backface-visibility: visible;
 	backface-visibility: visible;
 }
-input, input~ label, button, .manual-transform {
+input, input~ label, button, .sphere {
 	cursor: pointer;
 }
 input:checked~ label {

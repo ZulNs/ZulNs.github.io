@@ -76,7 +76,7 @@ html, body {
 	030.00% {transform: rotateX( 720deg) rotateY( 720deg) rotateZ(   0deg);}
 	100.00% {transform: rotateX(2880deg) rotateY(3240deg) rotateZ(2520deg);}
 }
-input[type="checkbox"], input[type="checkbox"]~ label, button, .manual-transform {
+input[type="checkbox"], input[type="checkbox"]~ label, button, .sphere {
 	cursor: pointer;
 }
 input:checked~ label {

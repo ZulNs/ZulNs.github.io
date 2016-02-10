@@ -24,6 +24,7 @@ function init() {
 			addEvent(contents[i], 'touchstart', handleBlockEvent);
 		addEvent(cuboid, 'touchstart', handleTouchStart);
 		addEvent(cuboid, 'touchmove', handleTouchMove);
+		//addEvent(cuboid, 'touchcancel', handleTouchEnd);
 		addEvent(document, 'touchend', handleTouchEnd);
 	}
 }
@@ -77,8 +78,8 @@ function handleMouseUp(evt) {
 
 function handleTouchStart(evt) {
 	if (!isBlocked && !isDragging) {
-		var e = evt || window.event;
-		var touch = e.changedTouches[0];
+		var e = evt || window.event,
+			touch = e.changedTouches[0];
 		e.preventDefault();
 		//e.stopPropagation();
 		isFiredByMouse = false;

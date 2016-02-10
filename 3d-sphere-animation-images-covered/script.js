@@ -4,28 +4,195 @@
  * Design by ZulNs @Yogyakarta, December 2015 *
  **********************************************/
 
-var DIAMETER = 200;
-var CELLS_PER_CIRCLE = 26;
-var EXPAND = 150;
-var IMG_CELL = '../images/sphere/merlin.png';
-var NAME = 'sphere';
-var WRAP = NAME + '-wrapper';
-var _cssRules = '';
-var _cellW;
-var _cellAmount = 0;
-var _imgW;
-var _imgH;
+var DIAMETER = 200,
+	CELLS_PER_CIRCLE = 26,
+	EXPAND = 150,
+	IMG_CELL = '../images/sphere/merlin.png',
+	NAME = 'sphere',
+	WRAP = NAME + '-wrapper',
+	_cssRules = '',
+	_cellW,
+	_cellAmount = 0,
+	_imgW,
+	_imgH,
+	_expandOption = document.getElementById('expand-sides'),
+	_unpack1Option = document.getElementById('unpack-1'),
+	_unpack2Option = document.getElementById('unpack-2'),
+	_unpack3Option = document.getElementById('unpack-3'),
+	_unpack4Option = document.getElementById('unpack-4'),
+	_unpack5Option = document.getElementById('unpack-5'),
+	_unpack6Option = document.getElementById('unpack-6'),
+	_unpack7Option = document.getElementById('unpack-7'),
+	_unpack8Option = document.getElementById('unpack-8'),
+	_resetOption = document.getElementById('reset-position'),
+	_animate = document.getElementById('toggle-animation'),
+	_model,
+	_isPaused = false,
+	_isManual = false,
+	_dragging = false,
+	_isFiredByMouse = false,
+	_touchId,
+	_lastTransform, _matrix, _spx, _spy,
+	_productToRadians;
+
+init();
+
+function init() {
+	document.querySelector('#title span').innerHTML = document.title;
+	if (document.location.search.toLowerCase() === '?3d')
+		document.querySelector('#title a').href = '../cuboid3d.html';
+	document.body.appendChild(createModel());
+	_model = document.querySelector('.' + NAME);
+	document.getElementById('show-geometry').checked = false;
+	_expandOption.checked = false;
+	_unpack1Option.checked = false;
+	_unpack2Option.checked = false;
+	_unpack3Option.checked = false;
+	_unpack4Option.checked = false;
+	_unpack5Option.checked = false;
+	_unpack6Option.checked = false;
+	_unpack7Option.checked = false;
+	_unpack8Option.checked = false;
+	_resetOption.checked = false;
+	_model.setAttribute('draggable', 'false');
+	_model.addEventListener(whichTransitionEvent(), transitionEndHandler);
+	_model.classList.add('animate');
+	_productToRadians = 2 * Math.PI / _imgW;
+	addEvent(_model, 'mousedown', handleMouseDown);
+	addEvent(_model, 'mousemove', handleMouseMove);
+	addEvent(document, 'mouseup', handleMouseUp);
+	if ('touchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0) {
+		addEvent(_model, 'touchstart', handleTouchStart);
+		addEvent(_model, 'touchmove', handleTouchMove);
+		addEvent(document, 'touchcancel', handleTouchEnd);
+		addEvent(document, 'touchend', handleTouchEnd);
+	}
+}
+
+function addEvent(elm, evt, callback) {
+	if (!!window.addEventListener)
+		elm.addEventListener(evt, callback);
+	else
+		elm.attachEvent('on' + evt, callback);
+}
+
+function handleMouseDown(evt) {
+	if (!_dragging) {
+		var e = evt || window.event;
+		e.preventDefault();
+		e.stopPropagation();
+		_isFiredByMouse = true;
+		startDragging(e.pageX, e.pageY);
+	}
+}
+
+function handleMouseMove(evt) {
+	if (_dragging && _isFiredByMouse) {
+		var e = evt || window.event;
+		e.preventDefault();
+		whileDragging(e.pageX, e.pageY);
+	}
+}
+
+function handleMouseUp(evt) {
+	if (_dragging && _isFiredByMouse) {
+		var e = evt || window.event;
+		e.preventDefault();
+		endDragging();
+	}
+}
+
+function handleTouchStart(evt) {
+	var e = evt || window.event;
+	if (_dragging && !_isFiredByMouse && e.touches.length == 1) endDragging();
+	if (!_dragging) {
+		var touch = e.changedTouches[0];
+		e.preventDefault();
+		//e.stopPropagation();
+		_isFiredByMouse = false;
+		_touchId = touch.identifier;
+		startDragging(touch.pageX, touch.pageY);
+	}
+}
+
+function handleTouchMove(evt) {
+	if (_dragging && !_isFiredByMouse) {
+		var e = evt || window.event,
+			touches = e.changedTouches,
+			touch;
+		for (var i = 0; i < touches.length; i++) {
+			touch = touches[i];
+			if (touch.identifier === _touchId) {
+				e.preventDefault();
+				whileDragging(touch.pageX, touch.pageY);
+				break;
+			}
+		}
+	}
+}
+
+function handleTouchEnd(evt) {
+	if (_dragging && !_isFiredByMouse) {
+		var e = evt || window.event,
+			touches = e.changedTouches,
+			touch;
+		for (var i = 0; i < touches.length; i++) {
+			touch = touches[i];
+			if (touch.identifier === _touchId) {
+				e.preventDefault();
+				endDragging();
+				return;
+			}
+		}
+	}
+}
+
+function startDragging(spx, spy) {
+	_spx = spx;
+	_spy = spy;
+	_dragging = true;
+	if (!_isPaused) toggleAnimation();
+	if (!_isManual) {
+		_lastTransform = window.getComputedStyle(_model).getPropertyValue('transform');
+		_matrix = toArray(_lastTransform);
+		_model.classList.remove('animate');
+		_model.classList.remove('paused');
+		_model.style.cssText = addVendorPrefix('transform: ' + _lastTransform + ';');
+		_isManual = true;
+		_animate.innerHTML = 'Animate';
+	}
+}
+
+function whileDragging(cpx, cpy) {
+	var sx, sy, x = 0, y = 0, z = 0, cr = 0.5, rad, css;
+	if (_spx != cpx || _spy != cpy) {
+		sx = (_spy - cpy);
+		sy = (cpx - _spx);
+		rad = Math.sqrt(sx * sx + sy * sy) * _productToRadians;
+		x = sx * _matrix[0] + sy * _matrix[1];
+		y = sx * _matrix[4] + sy * _matrix[5];
+		z = sx * _matrix[8] + sy * _matrix[9];
+		css = 'transform: ' + _lastTransform + ' rotate3d(' + x + ', ' + y + ', ' + z + ', ' + rad + 'rad);';
+		_model.style.cssText = addVendorPrefix(css);
+	}
+}
+
+function endDragging() {
+	_dragging = false;
+	_lastTransform = window.getComputedStyle(_model).getPropertyValue('transform');
+	_matrix = toArray(_lastTransform);
+}
 
 function createFace(w, h, rx, ry, tz, ts, tsx, tsy, cname) {
-	var face = document.createElement("div");
-	var css, tl, tx, ty, tz2, css1, css2, rx2;
-	var cssText =
-		'width: ' + w.toFixed(2) + 'px;' +
-		'height: ' + h.toFixed(2) + 'px;' +
-		'line-height: ' + h.toFixed(2) + 'px;' +
-		'margin-left: ' + (-w / 2).toFixed(2) + 'px;' +
-		'margin-top: ' + (-h / 2).toFixed(2) + 'px;' +
-		'background: url("' + ts + '") ' + tsx.toFixed(2) + 'px ' + tsy.toFixed(2) + 'px;';
+	var face = document.createElement("div"),
+		css, tl, tx, ty, tz2, css1, css2, rx2,
+		cssText =
+			'width: ' + w.toFixed(2) + 'px;' +
+			'height: ' + h.toFixed(2) + 'px;' +
+			'line-height: ' + h.toFixed(2) + 'px;' +
+			'margin-left: ' + (-w / 2).toFixed(2) + 'px;' +
+			'margin-top: ' + (-h / 2).toFixed(2) + 'px;' +
+			'background: url("' + ts + '") ' + tsx.toFixed(2) + 'px ' + tsy.toFixed(2) + 'px;';
 	css = 'transform: rotateY(' + ry.toFixed(2) + 'rad) rotateX(' + rx.toFixed(2) + 'rad) translateZ(';
 	cssText += addVendorPrefix(css + tz.toFixed(2) + 'px);');
 	css += (tz + EXPAND).toFixed(2) + 'px) !important;';
@@ -72,21 +239,23 @@ function createFace(w, h, rx, ry, tz, ts, tsx, tsy, cname) {
 }
 
 function createModel() {
-	var wrap = document.createElement("div");
-	var model = document.createElement("div");
+	var wrap = document.createElement("div"),
+		model = document.createElement("div"),
+		baseAngle = Math.PI / CELLS_PER_CIRCLE,
+		cellAngle = 2 * baseAngle,
+		xc = Math.ceil(CELLS_PER_CIRCLE / -4),
+		yc, rx, ry, tx, tw, cang, cdia, cw,
+		style = document.createElement('style');
 	wrap.className = WRAP;
 	model.className = NAME;
 	if (CELLS_PER_CIRCLE % 2 != 0) CELLS_PER_CIRCLE++;
 	if (CELLS_PER_CIRCLE < 4) CELLS_PER_CIRCLE = 4;
-	var baseAngle = Math.PI / CELLS_PER_CIRCLE;
-	var cellAngle = 2 * baseAngle;
 	_cellW = DIAMETER * Math.tan(baseAngle);
 	_imgW = _cellW * CELLS_PER_CIRCLE;
 	_imgH = CELLS_PER_CIRCLE / 2;
 	if (CELLS_PER_CIRCLE % 4 == 0) _imgH++;
 	_imgH *= _cellW;
-	var xc = Math.ceil(CELLS_PER_CIRCLE / -4);
-	var yc, rx, ry, tx, ty = -_imgH, tw, cang, cdia, cw;
+	var ty = -_imgH;
 	for (var x = xc; x <= -xc; x++) {
 		rx = x * cellAngle;
 		cw = _cellW;
@@ -109,7 +278,6 @@ function createModel() {
 		}
 	}
 	wrap.appendChild(model);
-	var style = document.createElement('style');
 	style.type = 'text/css';
 	if (style.styleSheet)
 		style.styleSheet.cssText = _cssRules;
@@ -132,9 +300,9 @@ function addCssRule(/* string */ selector, /* string */ rule) {
 			var head = document.getElementsByTagName('head')[0];
 			head.appendChild(document.createElement('style'));
 		}
-		var i = document.styleSheets.length - 1;
-		var ss = document.styleSheets[i];
-		var l = 0;
+		var i = document.styleSheets.length - 1,
+			ss = document.styleSheets[i],
+			l = 0;
 		if (ss.cssRules)
 			l = ss.cssRules.length;
 		else if (ss.rules) // IE
@@ -147,14 +315,14 @@ function addCssRule(/* string */ selector, /* string */ rule) {
 }
 
 function whichTransitionEvent() {
-	var a;
-	var el = document.createElement('div');
-	var transitions = {
-		'transition': 'transitionend',
-		'MozTransition': 'transitionend',
-		'WebkitTransition': 'webkitTransitionEnd',
-		'OTransition': 'oTransitionEnd'
-	}
+	var a,
+		el = document.createElement('div'),
+		transitions = {
+			'transition': 'transitionend',
+			'MozTransition': 'transitionend',
+			'WebkitTransition': 'webkitTransitionEnd',
+			'OTransition': 'oTransitionEnd'
+		};
 	for (a in transitions) {
 		if (el.style[a] !== undefined) return transitions[a];
 	}
@@ -162,14 +330,14 @@ function whichTransitionEvent() {
 }
 
 function whichAnimationEvent() {
-	var a;
-	var el = document.createElement('div');
-	var animations = {
-		'animation': 'animationend',
-		'MozAnimation': 'animationend',
-		'WebkitAnimation': 'webkitAnimationEnd',
-		'OAnimation': 'oAnimationEnd'
-	}
+	var a,
+		el = document.createElement('div'),
+		animations = {
+			'animation': 'animationend',
+			'MozAnimation': 'animationend',
+			'WebkitAnimation': 'webkitAnimationEnd',
+			'OAnimation': 'oAnimationEnd'
+		};
 	for (a in animations) {
 		if (el.style[a] !== undefined) return animations[a];
 	}
@@ -351,7 +519,6 @@ function showImageInfo() {
 
 function toggleAnimation() {
 	if (_isManual) {
-		_model.classList.remove('manual-transform');
 		_model.style.cssText = '';
 		_model.classList.add('animate');
 		_isManual = false;
@@ -360,13 +527,11 @@ function toggleAnimation() {
 	}
 	else {
 		if (_isPaused) {
-		_model.classList.remove('manual-transform');
 			_model.classList.remove('paused');
 			_animate.innerHTML = 'Pause Animation';
 		}
 		else {
 			_model.classList.add('paused');
-			_model.classList.add('manual-transform');
 			_animate.innerHTML = 'Continue Animation';
 		}
 	}
@@ -378,89 +543,3 @@ function toArray(str) {
 	for (var i in arr) res.push(parseFloat(arr[i]));
 	return res;
 }
-
-function init() {
-	document.querySelector('#title span').innerHTML = document.title;
-	if (document.location.search.toLowerCase() === '?3d')
-		document.querySelector('#title a').href = '../cuboid3d.html';
-	document.body.appendChild(createModel());
-	_model = document.querySelector('.' + NAME);
-	document.getElementById('show-geometry').checked = false;
-	_expandOption.checked = false;
-	_unpack1Option.checked = false;
-	_unpack2Option.checked = false;
-	_unpack3Option.checked = false;
-	_unpack4Option.checked = false;
-	_unpack5Option.checked = false;
-	_unpack6Option.checked = false;
-	_unpack7Option.checked = false;
-	_unpack8Option.checked = false;
-	_resetOption.checked = false;
-	_model.setAttribute('draggable', 'false');
-	_model.addEventListener(whichTransitionEvent(), transitionEndHandler);
-	_model.classList.add('animate');
-	_productToRadians = 2 * Math.PI / _imgW;
-}
-
-var _expandOption = document.getElementById('expand-sides');
-var _unpack1Option = document.getElementById('unpack-1');
-var _unpack2Option = document.getElementById('unpack-2');
-var _unpack3Option = document.getElementById('unpack-3');
-var _unpack4Option = document.getElementById('unpack-4');
-var _unpack5Option = document.getElementById('unpack-5');
-var _unpack6Option = document.getElementById('unpack-6');
-var _unpack7Option = document.getElementById('unpack-7');
-var _unpack8Option = document.getElementById('unpack-8');
-var _resetOption = document.getElementById('reset-position');
-var _animate = document.getElementById('toggle-animation');
-var _model;
-var _isPaused = false;
-var _isManual = false;
-var _dragging = false;
-var _lastTransform, _matrix, _spx, _spy;
-var _productToRadians;
-
-init();
-
-_model.addEventListener('mousedown', function(e) {
-	e.preventDefault();
-	e.stopPropagation();
-	if (_isPaused) {
-		_spx = e.pageX;
-		_spy = e.pageY;
-		_dragging = true;
-		if (! _isManual) {
-			_lastTransform = window.getComputedStyle(_model).getPropertyValue('transform');
-			_matrix = toArray(_lastTransform);
-			_model.classList.remove('animate');
-			_model.classList.remove('paused');
-			_model.style.cssText = addVendorPrefix('transform: ' + _lastTransform + ';');
-			_isManual = true;
-			_animate.innerHTML = 'Animate';
-		}
-	}
-});
-
-_model.addEventListener('mousemove', function(e) {
-	if (_dragging) {
-		var cpx = e.pageX, cpy = e.pageY, sx, sy, x = 0, y = 0, z = 0, cr = 0.5, angle, css;
-		if (_spx != cpx || _spy != cpy) {
-			sx = (_spy - cpy);
-			sy = (cpx - _spx);
-			angle = Math.sqrt(sx * sx + sy * sy) * _productToRadians;
-			x = sx * _matrix[0] + sy * _matrix[1];
-			y = sx * _matrix[4] + sy * _matrix[5];
-			z = sx * _matrix[8] + sy * _matrix[9];
-			css = 'transform: ' + _lastTransform + ' rotate3d(' + x.toFixed(2) + ', ' + y.toFixed(2) + ', ' + z.toFixed(2) + ', ' + angle.toFixed(2) + 'rad);';
-			_model.style.cssText = addVendorPrefix(css);
-		}
-	}
-});
-
-document.addEventListener('mouseup', function(e) {
-	if (_dragging) {
-		_dragging = false;
-		_lastTransform = window.getComputedStyle(_model).getPropertyValue('transform');
-		_matrix = toArray(_lastTransform);
-	}
-});

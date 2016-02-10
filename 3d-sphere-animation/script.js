@@ -4,28 +4,30 @@
  * Design by ZulNs @Yogyakarta, December 2015 *
  **********************************************/
 
-var _diameter = 160;
-var _cellsPerCircum = 22;
-var _opacity = 0.75;
-var _transitionInterval = 3000;
-var _modelName = 'sphere';
-var _cellAngle;
-var _model;
-var _cssRules = '';
-var _isPaused = false;
-var _isManual = false;
-var _dragging = false;
-var _lastTransform, _matrix, _spx, _spy;
-var _productToRadians;
-var _isTransitionStopped = false;
-var _transitionTimer;
-var _currentTransition = 0;
-var _animate = document.getElementById('toggle-animation');
-var _transist = document.getElementById('toggle-transition');
-var _diameterInput = document.getElementById('diameter-length');
-var _cellsPerCircumInput = document.getElementById('cells-per-circum');
-var _opacityInput = document.getElementById('opacity-value');
-var _intervalInput = document.getElementById('transition-interval');
+var _diameter = 160,
+	_cellsPerCircum = 22,
+	_opacity = 0.75,
+	_transitionInterval = 3000,
+	_modelName = 'sphere',
+	_cellAngle,
+	_model,
+	_cssRules = '',
+	_isPaused = false,
+	_isManual = false,
+	_dragging = false,
+	_isFiredByMouse = false,
+	_touchId,
+	_lastTransform, _matrix, _spx, _spy,
+	_productToRadians,
+	_isTransitionStopped = false,
+	_transitionTimer,
+	_currentTransition = 0,
+	_animate = document.getElementById('toggle-animation'),
+	_transist = document.getElementById('toggle-transition'),
+	_diameterInput = document.getElementById('diameter-length'),
+	_cellsPerCircumInput = document.getElementById('cells-per-circum'),
+	_opacityInput = document.getElementById('opacity-value'),
+	_intervalInput = document.getElementById('transition-interval');
 
 init();
 
@@ -53,53 +55,136 @@ function appendModel() {
 	wrap.appendChild(_model);
 	document.body.appendChild(wrap);
 	_model.setAttribute('draggable', 'false');
-	_model.addEventListener('mousedown', function(e) {
+	addEvent(_model, 'mousedown', handleMouseDown);
+	addEvent(_model, 'mousemove', handleMouseMove);
+	addEvent(document, 'mouseup', handleMouseUp);
+	if ('touchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0) {
+		addEvent(_model, 'touchstart', handleTouchStart);
+		addEvent(_model, 'touchmove', handleTouchMove);
+		addEvent(document, 'touchcancel', handleTouchEnd);
+		addEvent(document, 'touchend', handleTouchEnd);
+	}
+}
+
+function addEvent(elm, evt, callback) {
+	if (!!window.addEventListener)
+		elm.addEventListener(evt, callback);
+	else
+		elm.attachEvent('on' + evt, callback);
+}
+
+function handleMouseDown(evt) {
+	if (!_dragging) {
+		var e = evt || window.event;
 		e.preventDefault();
 		e.stopPropagation();
-		if (_isPaused) {
-			_spx = e.pageX;
-			_spy = e.pageY;
-			_dragging = true;
-			if (! _isManual) {
-				_lastTransform = window.getComputedStyle(_model).getPropertyValue('transform');
-				_matrix = toArray(_lastTransform);
-				_model.classList.remove('animate');
-				_model.classList.remove('paused');
-				_model.style.cssText = addVendorPrefix('transform: ' + _lastTransform + ';');
-				_isManual = true;
-				_animate.innerHTML = 'Animate';
+		_isFiredByMouse = true;
+		startDragging(e.pageX, e.pageY);
+	}
+}
+
+function handleMouseMove(evt) {
+	if (_dragging && _isFiredByMouse) {
+		var e = evt || window.event;
+		e.preventDefault();
+		whileDragging(e.pageX, e.pageY);
+	}
+}
+
+function handleMouseUp(evt) {
+	if (_dragging && _isFiredByMouse) {
+		var e = evt || window.event;
+		e.preventDefault();
+		endDragging();
+	}
+}
+
+function handleTouchStart(evt) {
+	var e = evt || window.event;
+	if (_dragging && !_isFiredByMouse && e.touches.length == 1) endDragging();
+	if (!_dragging) {
+		var touch = e.changedTouches[0];
+		e.preventDefault();
+		//e.stopPropagation();
+		_isFiredByMouse = false;
+		_touchId = touch.identifier;
+		startDragging(touch.pageX, touch.pageY);
+	}
+}
+
+function handleTouchMove(evt) {
+	if (_dragging && !_isFiredByMouse) {
+		var e = evt || window.event,
+			touches = e.changedTouches,
+			touch;
+		for (var i = 0; i < touches.length; i++) {
+			touch = touches[i];
+			if (touch.identifier === _touchId) {
+				e.preventDefault();
+				whileDragging(touch.pageX, touch.pageY);
+				break;
 			}
 		}
-	});
-	_model.addEventListener('mousemove', function(e) {
-		if (_dragging) {
-			var cpx = e.pageX, cpy = e.pageY, sx, sy, x = 0, y = 0, z = 0, cr = 0.5, rad, css;
-			if (_spx != cpx || _spy != cpy) {
-				sx = (_spy - cpy);
-				sy = (cpx - _spx);
-				rad = Math.sqrt(sx * sx + sy * sy) * _productToRadians;
-				x = sx * _matrix[0] + sy * _matrix[1];
-				y = sx * _matrix[4] + sy * _matrix[5];
-				z = sx * _matrix[8] + sy * _matrix[9];
-				css = 'transform: ' + _lastTransform + ' rotate3d(' + x + ', ' + y + ', ' + z + ', ' + rad + 'rad);';
-				_model.style.cssText = addVendorPrefix(css);
+	}
+}
+
+function handleTouchEnd(evt) {
+	if (_dragging && !_isFiredByMouse) {
+		var e = evt || window.event,
+			touches = e.changedTouches,
+			touch;
+		for (var i = 0; i < touches.length; i++) {
+			touch = touches[i];
+			if (touch.identifier === _touchId) {
+				e.preventDefault();
+				endDragging();
+				return;
 			}
 		}
-	});
-	document.addEventListener('mouseup', function(e) {
-		if (_dragging) {
-			_dragging = false;
-			_lastTransform = window.getComputedStyle(_model).getPropertyValue('transform');
-			_matrix = toArray(_lastTransform);
-		}
-	});
+	}
+}
+
+function startDragging(spx, spy) {
+	_spx = spx;
+	_spy = spy;
+	_dragging = true;
+	if (!_isPaused) toggleAnimation();
+	if (!_isManual) {
+		_lastTransform = window.getComputedStyle(_model).getPropertyValue('transform');
+		_matrix = toArray(_lastTransform);
+		_model.classList.remove('animate');
+		_model.classList.remove('paused');
+		_model.style.cssText = addVendorPrefix('transform: ' + _lastTransform + ';');
+		_isManual = true;
+		_animate.innerHTML = 'Animate';
+	}
+}
+
+function whileDragging(cpx, cpy) {
+	var sx, sy, x = 0, y = 0, z = 0, cr = 0.5, rad, css;
+	if (_spx != cpx || _spy != cpy) {
+		sx = (_spy - cpy);
+		sy = (cpx - _spx);
+		rad = Math.sqrt(sx * sx + sy * sy) * _productToRadians;
+		x = sx * _matrix[0] + sy * _matrix[1];
+		y = sx * _matrix[4] + sy * _matrix[5];
+		z = sx * _matrix[8] + sy * _matrix[9];
+		css = 'transform: ' + _lastTransform + ' rotate3d(' + x + ', ' + y + ', ' + z + ', ' + rad + 'rad);';
+		_model.style.cssText = addVendorPrefix(css);
+	}
+}
+
+function endDragging() {
+	_dragging = false;
+	_lastTransform = window.getComputedStyle(_model).getPropertyValue('transform');
+	_matrix = toArray(_lastTransform);
 }
 
 function applyEntries() {
-	var dl = getIntValue(_diameterInput.value);
-	var cpc = getIntValue(_cellsPerCircumInput.value);
-	var ov = getIntValue(_opacityInput.value);
-	var ti = getIntValue(_intervalInput.value);
+	var dl = getIntValue(_diameterInput.value),
+		cpc = getIntValue(_cellsPerCircumInput.value),
+		ov = getIntValue(_opacityInput.value),
+		ti = getIntValue(_intervalInput.value);
 	if (dl < 1) dl = 1;
 	if (cpc % 2 != 0) cpc++;
 	if (cpc < 4) cpc = 4;
@@ -137,7 +222,6 @@ function getIntValue(value) {
 
 function toggleAnimation() {
 	if (_isManual) {
-		_model.classList.remove('manual-transform');
 		_model.style.cssText = '';
 		_model.classList.add('animate');
 		_isManual = false;
@@ -146,13 +230,11 @@ function toggleAnimation() {
 	}
 	else {
 		if (_isPaused) {
-		_model.classList.remove('manual-transform');
 			_model.classList.remove('paused');
 			_animate.innerHTML = 'Pause Animation';
 		}
 		else {
 			_model.classList.add('paused');
-			_model.classList.add('manual-transform');
 			_animate.innerHTML = 'Continue Animation';
 		}
 	}
@@ -219,10 +301,10 @@ function addVendorPrefix(property) {
 }
 
 function getRainbowColor(step, numOfSteps) {
-	var h = (step % numOfSteps) / numOfSteps;
-	var i = ~~(h * 6);
-	var a = h * 6 - i;
-	var d = 1 - a;
+	var h = (step % numOfSteps) / numOfSteps,
+		i = ~~(h * 6),
+		a = h * 6 - i,
+		d = 1 - a;
 	switch (i) {
 		case 0: r = 1; g = a; b = 0; break;
 		case 1: r = d; g = 1; b = 0; break;
@@ -236,12 +318,13 @@ function getRainbowColor(step, numOfSteps) {
 }
 
 function createModel(model, diameter, cellsPerCircum, opacity) {
-	var baseAngle = Math.PI / cellsPerCircum;
-	var cellAngle = 2 * baseAngle;
-	var cellW = diameter * Math.tan(baseAngle);
+	var baseAngle = Math.PI / cellsPerCircum,
+		cellAngle = 2 * baseAngle,
+		cellW = diameter * Math.tan(baseAngle),
+		xc = ~~(cellsPerCircum / 4),
+		yc, rx, ry, dlen = 0, cw, cw2, color, name1, name2,
+		style = document.createElement('style');
 	_productToRadians = 2 * Math.PI / cellW / cellsPerCircum;
-	var xc = ~~(cellsPerCircum / 4);
-	var yc, rx, ry, dlen = 0, cw, cw2, color, name1, name2;
 	for (var x = 0; x <= xc; x++) {
 		rx = x * cellAngle;
 		cw = (diameter - dlen - dlen) * Math.tan(baseAngle);
@@ -264,7 +347,6 @@ function createModel(model, diameter, cellsPerCircum, opacity) {
 			model.appendChild(createFace(cw, cellW, cw2, rx, ry, diameter / 2, diameter, cellsPerCircum, cellW, cellAngle, color, opacity, name2));
 		}
 	}
-	var style = document.createElement('style');
 	style.type = 'text/css';
 	style.id = _modelName + '-style';
 	if (style.styleSheet)
@@ -276,17 +358,17 @@ function createModel(model, diameter, cellsPerCircum, opacity) {
 }
 
 function createFace(w, h, w2, rx, ry, tz, dia, cpc, cw, ca, color, opacity, cname) {
-	var face = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-	var shape, points = '', css, tx, ty, tz2, css1, css2, rx2;
-	var cssText =
-		'margin-left: ' + (-w / 2).toFixed(0) + 'px;' +
-		'margin-top: ' + (-h / 2).toFixed(0) + 'px;';
+	var face = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
+		shape, points = '', css, tx, ty, tz2, css1, css2, rx2,
+		cssText =
+			'margin-left: ' + (-w / 2).toFixed(0) + 'px;' +
+			'margin-top: ' + (-h / 2).toFixed(0) + 'px;';
 	face.setAttribute('width', w.toFixed(0));
 	face.setAttribute('height', h.toFixed(0));
 	if (Math.abs(rx) == Math.PI / 2) {
-		var px = (w - w2) / 2;
-		var py = (rx < 0) ? 0 : h;
-		var cxy = ' ' + (w / 2).toFixed(0) + ',' + (h / 2).toFixed(0);
+		var px = (w - w2) / 2,
+			py = (rx < 0) ? 0 : h,
+			cxy = ' ' + (w / 2).toFixed(0) + ',' + (h / 2).toFixed(0);
 		for (var i = 0; i < cpc;  i++) {
 			points = px.toFixed(0) + ',' + py.toFixed(0);
 			px += Math.cos(i * ca) * w2;

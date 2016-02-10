@@ -120,7 +120,7 @@ html, body {
 	-o-backface-visibility: visible !important;
 	backface-visibility: visible !important;
 }
-input, input~ label, button, .manual-transform {
+input, input~ label, button, .cylinder {
 	cursor: pointer;
 }
 input:checked~ label {
