@@ -125,14 +125,14 @@
 	color: #00f;
 }
 .cuboid li.github:before {
-	content: url(images/github.png);
+	content: url(images/icons/github.png);
 }
 .cuboid li.codepen:before {
-	content: url(images/codepen.png);
+	content: url(images/icons/codepen.png);
 }
 .cuboid li.stackoverflow:before {
-	content: url(images/stackoverflow.png);
+	content: url(images/icons/stackoverflow.png);
 }
 .cuboid li.twitter:before {
-	content: url(images/twitter.png);
+	content: url(images/icons/twitter.png);
 }

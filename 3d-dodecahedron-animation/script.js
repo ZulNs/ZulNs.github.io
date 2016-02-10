@@ -31,7 +31,7 @@ init();
 function init() {
 	document.querySelector('#title span').innerHTML = document.title;
 	if (document.location.search.toLowerCase() === '?3d')
-		document.querySelector('#title a').href = '../cuboid3d.html';
+		document.querySelector('#title a').href = '../cuboid3d.html?3';
 	_edgeInput.value = _edgeLen;
 	_opacityInput.value = _opacity * 100;
 	_intervalInput.value = _transitionInterval;

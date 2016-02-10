@@ -37,7 +37,7 @@
 </head>
 <body>
 	<p id="title">
-		<a href="../index.html"><img class="home-icon" src="../images/home.png"></a>
+		<a href="../index.html?2"><img class="home-icon" src="../images/icons/home.png"></a>
 		<span><span>
 	</p>
 	<p>Design by ZulNs @Yogyakarta, January 2016</p>
@@ -58,7 +58,7 @@
 	<script type="text/javascript">
 		document.querySelector('#title span').innerHTML = document.title;
 		if (document.location.search.toLowerCase() === '?3d')
-			document.querySelector('#title a').href = '../cuboid3d.html';
+			document.querySelector('#title a').href = '../cuboid3d.html?2';
 		var gc = new Calendar(false, 1);
 		document.getElementById('greg-cal').appendChild(gc.calendarElement());
 		var gde = document.getElementById('greg-date');

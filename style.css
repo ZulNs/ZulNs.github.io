@@ -15,10 +15,10 @@
 	text-indent: -22px;
 }
 .collapsible-list li.parent:before {
-	content: url(images/toggle-expand.png);
+	content: url(images/icons/toggle-expand.png);
 }
 .collapsible-list li.parent.expand:before {
-	content: url(images/toggle-collaps.png);
+	content: url(images/icons/toggle-collaps.png);
 }
 .collapsible-list li.parent ul {
 	display: none;
@@ -42,14 +42,14 @@
 	color: #00f;
 }
 .collapsible-list ul.child li.github:before {
-	content: url(images/github.png);
+	content: url(images/icons/github.png);
 }
 .collapsible-list ul.child li.codepen:before {
-	content: url(images/codepen.png);
+	content: url(images/icons/codepen.png);
 }
 .collapsible-list ul.child li.stackoverflow:before {
-	content: url(images/stackoverflow.png);
+	content: url(images/icons/stackoverflow.png);
 }
 .collapsible-list ul.child li.twitter:before {
-	content: url(images/twitter.png);
+	content: url(images/icons/twitter.png);
 }

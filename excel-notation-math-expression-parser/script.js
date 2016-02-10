@@ -23,7 +23,7 @@ function clearVars() {
 function init() {
 	document.querySelector('#title span').innerHTML = document.title;
 	if (document.location.search.toLowerCase() === '?3d')
-		document.querySelector('#title a').href = '../cuboid3d.html';
+		document.querySelector('#title a').href = '../cuboid3d.html?2';
 	mp = new Parser;
 	txtExpr      = document.getElementById("txtExpr");
 	txtResult    = document.getElementById("txtResult");

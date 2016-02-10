@@ -1,5 +1,14 @@
 
 var lastElmId;
+var option = document.location.search;
+
+option = (!!option) ? option.substring(1) : 0;
+
+if (1 <= option && option <= 4) {
+	var elm = document.getElementById('list-node-' + option);
+	elm.checked = true;
+	parentClick(elm);
+}
 
 function parentClick(elm) {
 	if (elm.checked) {

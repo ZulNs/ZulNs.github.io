@@ -35,7 +35,7 @@ init();
 function init() {
 	document.querySelector('#title span').innerHTML = document.title;
 	if (document.location.search.toLowerCase() === '?3d')
-		document.querySelector('#title a').href = '../cuboid3d.html';
+		document.querySelector('#title a').href = '../cuboid3d.html?3';
 	_diameterInput.value = _diameter;
 	_heightInput.value = _height;
 	_bladesNumberInput.value = _bladesNumber;

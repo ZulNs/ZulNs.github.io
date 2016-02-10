@@ -12,7 +12,7 @@ var	TAB_INDENT = 4;
 
 document.querySelector('#title span').innerHTML = document.title;
 if (document.location.search.toLowerCase() === '?3d')
-	document.querySelector('#title a').href = '../cuboid3d.html';
+	document.querySelector('#title a').href = '../cuboid3d.html?2';
 textResult.readOnly = true;
 textInput.focus();
 
