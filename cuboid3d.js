@@ -13,7 +13,9 @@ var lastTransform,
 init();
 
 function init() {
-	var contents = document.querySelectorAll('.cuboid .content');
+	var contents = document.querySelectorAll('.cuboid .content'),
+		option = document.location.search,
+		rotate;
 	for (var i = 0; i < contents.length; i++)
 		addEvent(contents[i], 'mousedown', handleBlockEvent);
 	addEvent(cuboid, 'mousedown', handleMouseDown);
@@ -24,9 +26,12 @@ function init() {
 			addEvent(contents[i], 'touchstart', handleBlockEvent);
 		addEvent(cuboid, 'touchstart', handleTouchStart);
 		addEvent(cuboid, 'touchmove', handleTouchMove);
-		//addEvent(cuboid, 'touchcancel', handleTouchEnd);
+		addEvent(cuboid, 'touchcancel', handleTouchEnd);
 		addEvent(document, 'touchend', handleTouchEnd);
 	}
+	option = (!!option) ? option.substring(1) : 0;
+	rotate = (option == 2) ? 245 : (option == 3) ? 205 : -45;
+	cuboid.style.cssText = addVendorPrefix('transform: rotateY(' + rotate + 'deg);');
 }
 
 function addEvent(elm, evt, callback) {
@@ -77,9 +82,10 @@ function handleMouseUp(evt) {
 }
 
 function handleTouchStart(evt) {
+	var e = evt || window.event;
+	if (isDragging && !isBlocked && !isFiredByMouse && e.touches.length == 1) endDragging();
 	if (!isBlocked && !isDragging) {
-		var e = evt || window.event,
-			touch = e.changedTouches[0];
+		var touch = e.changedTouches[0];
 		e.preventDefault();
 		//e.stopPropagation();
 		isFiredByMouse = false;
