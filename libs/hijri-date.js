@@ -68,7 +68,7 @@ function HijriDate(year, month, date, hour, minute, second, millisecond) {
 	};
 	
 	this.getFullYearString = function() {
-		return (year > 0) ? HijriDate.toDigit(year, 4) + "H" : HijriDate.toDigit(Math.abs(year - 1), 4) + "BH";
+		return (year > 0) ? HijriDate.toDigit(year, 4) + " H" : HijriDate.toDigit(Math.abs(year - 1), 4) + " BH";
 	};
 	
 	this.getMonth = function() {
@@ -293,7 +293,7 @@ Date.prototype.getJavaWeekdayName = function(day) {
 
 Date.prototype.getFullYearString = function() {
 	var y = this.getFullYear();
-	return (y > 0) ? HijriDate.toDigit(y, 4) + "AD" : HijriDate.toDigit(Math.abs(y - 1), 4) + "BC";
+	return (y > 0) ? HijriDate.toDigit(y, 4) + " AD" : HijriDate.toDigit(Math.abs(y - 1), 4) + " BC";
 };
 
 Date.prototype.getDateString = function() {

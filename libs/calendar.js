@@ -319,7 +319,7 @@ function Calendar(isHijri, firstDay, year, month, date) {
 	};
 	
 	var onChangeYear = function() {
-		var y = yearElement.value;
+		var y = parseInt(yearElement.value);
 		if (isNaN(y)) {
 			yearElement.value = year;
 			return;
