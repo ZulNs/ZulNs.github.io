@@ -117,7 +117,7 @@ function write(args) {
 function writeln(args) {
 	var len = textResult.value.length;
 	if (len > 0 && textResult.value.charCodeAt(len - 1) !== 10) write('\n');
-	if (args) write.apply(this, arguments);
+	write.apply(this, arguments);
 	write('\n');
 }
 
