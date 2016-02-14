@@ -14,22 +14,22 @@ function HijriDate(year, month, date, hour, minute, second, millisecond) {
 		day,
 		timezoneOffset = gregDate.getTimezoneOffset() * 6e4;
 	
-	if (typeof year === "undefined") {
+	if (year === undefined) {
 		time = gregDate.getTime() - timezoneOffset;
 		updateDate();
 	}
-	else if (typeof month === "undefined") {
-		time = parseInt(year) - timezoneOffset;
+	else if (month === undefined) {
+		time = HijriDate.parseInt(year, 0) - timezoneOffset;
 		updateDate();
 	}
 	else {
-		year = parseInt(year);
-		month = parseInt(month);
-		date = (typeof date === 'undefined') ? 1 : parseInt(date);
-		hour = (typeof hour === 'undefined') ? 0 : parseInt(hour);
-		minute = (typeof minute === 'undefined') ? 0 : parseInt(minute);
-		second = (typeof second === 'undefined') ? 0 : parseInt(second);
-		millisecond = (typeof millisecond === 'undefined') ? 0 : parseInt(millisecond);
+		year = HijriDate.parseInt(year, 1);
+		month = HijriDate.parseInt(month, 0);
+		date = HijriDate.parseInt(date, 1);
+		hour = HijriDate.parseInt(hour, 0);
+		minute = HijriDate.parseInt(minute, 0);
+		second = HijriDate.parseInt(second, 0);
+		millisecond = HijriDate.parseInt(millisecond, 0);
 		updateTime();
 	}
 	
@@ -76,11 +76,11 @@ function HijriDate(year, month, date, hour, minute, second, millisecond) {
 	};
 	
 	this.getMonthName = function(mon) {
-		return HijriDate.monthNames[(typeof mon === 'undefined') ? month : parseInt(mon)];
+		return HijriDate.monthNames[(mon === undefined) ? month : parseInt(mon)];
 	};
 	
 	this.getMonthShortName = function(mon) {
-		return HijriDate.monthShortNames[(typeof mon === 'undefined') ? month : parseInt(mon)];
+		return HijriDate.monthShortNames[(mon === undefined) ? month : parseInt(mon)];
 	};
 	
 	this.getDate = function() {
@@ -108,11 +108,11 @@ function HijriDate(year, month, date, hour, minute, second, millisecond) {
 	};
 	
 	this.getDayName = function(dy) {
-		return HijriDate.weekdayNames[(typeof dy === 'undefined') ? day : parseInt(dy)];
+		return HijriDate.weekdayNames[(dy === undefined) ? day : parseInt(dy)];
 	};
 	
 	this.getDayShortName = function(dy) {
-		return HijriDate.weekdayShortNames[(typeof dy === 'undefined') ? day : parseInt(dy)];
+		return HijriDate.weekdayShortNames[(dy === undefined) ? day : parseInt(dy)];
 	};
 	
 	this.getDaysInMonth = function() {
@@ -243,6 +243,11 @@ HijriDate.daysCount = function(month) {
 	return parseInt(times * HijriDate.moonCycle) - parseInt((times + month) * HijriDate.moonCycle);
 }
 
+HijriDate.parseInt = function(num, def) {
+	var res = parseInt(num);
+	return isNaN(res) ? def : res;
+}
+
 Date.monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 Date.monthShortNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -265,19 +270,19 @@ Date.prototype.getDaysInMonth = function() {
 };
 
 Date.prototype.getMonthName = function(month) {
-	return Date.monthNames[(typeof month === 'undefined') ? this.getMonth() : parseInt(month)];
+	return Date.monthNames[(month === undefined) ? this.getMonth() : parseInt(month)];
 };
 
 Date.prototype.getMonthShortName = function(month) {
-	return Date.monthShortNames[(typeof month === 'undefined') ? this.getMonth() : parseInt(month)];
+	return Date.monthShortNames[(month === undefined) ? this.getMonth() : parseInt(month)];
 };
 
 Date.prototype.getDayName = function(day) {
-	return Date.weekdayNames[(typeof day === 'undefined') ? this.getDay() : parseInt(day)];
+	return Date.weekdayNames[(day === undefined) ? this.getDay() : parseInt(day)];
 };
 
 Date.prototype.getDayShortName = function(day) {
-	return Date.weekdayShortNames[(typeof day === 'undefined') ? this.getDay() : parseInt(day)];
+	return Date.weekdayShortNames[(day === undefined) ? this.getDay() : parseInt(day)];
 };
 
 Date.prototype.getJavaWeekday = function() {
@@ -288,7 +293,7 @@ Date.prototype.getJavaWeekday = function() {
 };
 
 Date.prototype.getJavaWeekdayName = function(day) {
-	return Date.javaWeekdayNames[(typeof day === 'undefined') ? this.getJavaWeekday() : parseInt(day)];
+	return Date.javaWeekdayNames[(day === undefined) ? this.getJavaWeekday() : parseInt(day)];
 };
 
 Date.prototype.getFullYearString = function() {

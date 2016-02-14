@@ -24,7 +24,7 @@
 			width: 30px;
 		}
 		input {
-			width: 215px;
+			width: 243px;
 			margin-bottom: 8px;
 		}
 	</style>
@@ -38,14 +38,10 @@
 	<div id="greg-cal">
 		<input id="greg-date" type="text" />
 		<button class="icon-button" onclick="showGregCal();">&#x25a6;</button>
-		<button class="icon-button" onclick="hideGregCal();">&#x2715;</button>
-		<button onclick="changeGregFirstDayOfWeek();">Change first day of week</button>
 	</div>
 	<div id="hijri-cal">
 		<input id="hijri-date" type="text" />
 		<button class="icon-button" onclick="showHijriCal();">&#x25a6;</button>
-		<button class="icon-button" onclick="hideHijriCal();">&#x2715;</button>
-		<button onclick="changeHijriFirstDayOfWeek();">Change first day of week</button>
 	</div>
 	<script type="text/javascript" src="../libs/hijri-date.js"></script>
 	<script type="text/javascript" src="../libs/calendar.js"></script>
@@ -53,28 +49,26 @@
 		document.querySelector('#title span').innerHTML = document.title;
 		if (document.location.search.toLowerCase() === '?3d')
 			document.querySelector('#title a').href = '../cuboid3d.html?2';
-		var gc = new Calendar(false, 1);
+		var gc = new Calendar();
 		document.getElementById('greg-cal').appendChild(gc.calendarElement());
 		var gde = document.getElementById('greg-date');
-		var gd = gc.getDate();
-		gde.value = gd.getDateString();
+		gde.value = gc.getDate().getDateString();
 
-		var hc = new Calendar(true, 0);
+		var hc = new Calendar(true, 0, false, true);
 		document.getElementById('hijri-cal').appendChild(hc.calendarElement());
 		var hde = document.getElementById('hijri-date');
-		var hd = hc.getDate();
-		hde.value = hd.getDateString();
+		hde.value = hc.getDate().getDateString();
 
 		gc.callback = function() {
 			hc.setTime(gc.getTime());
-			gde.value = gd.getDateString();
-			hde.value = hd.getDateString();
+			gde.value = gc.getDate().getDateString();
+			hde.value = hc.getDate().getDateString();
 		};
 
 		hc.callback = function() {
 			gc.setTime(hc.getTime());
-			gde.value = gd.getDateString();
-			hde.value = hd.getDateString();
+			gde.value = gc.getDate().getDateString();
+			hde.value = hc.getDate().getDateString();
 		};
 
 		function showGregCal() {
@@ -87,6 +81,10 @@
 
 		function changeGregFirstDayOfWeek() {
 			gc.setFirstDayOfWeek(gc.getFirstDayOfWeek() ^ 1);
+		}
+		
+		function changeDateMode() {
+			gc.changeDateMode();
 		}
 		
 		function showHijriCal() {

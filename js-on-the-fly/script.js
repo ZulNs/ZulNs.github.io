@@ -92,7 +92,7 @@ function evalScript() {
 		eval(textInput.value);
 	}
 	catch (e) {
-		writeln(e.message);
+		writeln(e);
 	}
 	textInput.focus();
 }
@@ -116,9 +116,9 @@ function write(args) {
 
 function writeln(args) {
 	var len = textResult.value.length;
-	if (len > 0 && textResult.value.charCodeAt(len - 1) !== 10) write('\n');
-	write.apply(this, arguments);
-	write('\n');
+	if (len > 0 && textResult.value.charCodeAt(len - 1) != 10) textResult.value += '\n';
+	for (var i = 0; i < arguments.length; i++)
+		textResult.value += arguments[i] + '\n';
 }
 
 function clearResult() {
