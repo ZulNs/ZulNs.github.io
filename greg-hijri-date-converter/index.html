@@ -16,7 +16,7 @@
 		.home-icon {
 			vertical-align: middle;
 		}
-		#greg-cal, #hijri-cal {
+		#cal-1, #cal-2 {
 			margin-left: 12px;
 			margin-top: 10px;
 		}
@@ -35,13 +35,13 @@
 		<span><span>
 	</p>
 	<p>Design by ZulNs @Yogyakarta, January 2016</p>
-	<div id="greg-cal">
-		<input id="greg-date" type="text" />
-		<button class="icon-button" onclick="showGregCal();">&#x25a6;</button>
+	<div id="cal-1">
+		<input id="date-1" type="text" />
+		<button class="icon-button" onclick="showCal1();">&#x25a6;</button>
 	</div>
-	<div id="hijri-cal">
-		<input id="hijri-date" type="text" />
-		<button class="icon-button" onclick="showHijriCal();">&#x25a6;</button>
+	<div id="cal-2">
+		<input id="date-2" type="text" />
+		<button class="icon-button" onclick="showCal2();">&#x25a6;</button>
 	</div>
 	<script type="text/javascript" src="../libs/hijri-date.js"></script>
 	<script type="text/javascript" src="../libs/calendar.js"></script>
@@ -49,34 +49,59 @@
 		document.querySelector('#title span').innerHTML = document.title;
 		if (document.location.search.toLowerCase() === '?3d')
 			document.querySelector('#title a').href = '../cuboid3d.html?2';
-		var gc = new Calendar();
-		document.getElementById('greg-cal').appendChild(gc.calendarElement());
-		var gde = document.getElementById('greg-date');
-		gde.value = gc.getDate().getDateString();
-
-		var hc = new Calendar(true, 0, false, true);
-		document.getElementById('hijri-cal').appendChild(hc.calendarElement());
-		var hde = document.getElementById('hijri-date');
-		hde.value = hc.getDate().getDateString();
-
-		gc.callback = function() {
-			hc.setTime(gc.getTime());
-			gde.value = gc.getDate().getDateString();
-			hde.value = hc.getDate().getDateString();
+		
+		var cal1 = new Calendar(),
+			cal2 = new Calendar(true, 0, false, true),
+			date1 = document.getElementById('date-1'),
+			date2 = document.getElementById('date-2'),
+			cal1Mode = cal1.isHijriMode(),
+			cal2Mode = cal2.isHijriMode();
+		
+		document.getElementById('cal-1').appendChild(cal1.calendarElement());
+		document.getElementById('cal-2').appendChild(cal2.calendarElement());
+		cal1.show();
+		cal2.show();
+		setDateFields();
+		
+		cal1.callback = function() {
+			if (cal1Mode !== cal1.isHijriMode()) {
+				cal2.disableCallback(true);
+				cal2.changeDateMode();
+				cal2.disableCallback(false);
+				cal1Mode = cal1.isHijriMode();
+				cal2Mode = cal2.isHijriMode();
+			}
+			else
+				cal2.setTime(cal1.getTime());
+			setDateFields();
 		};
-
-		hc.callback = function() {
-			gc.setTime(hc.getTime());
-			gde.value = gc.getDate().getDateString();
-			hde.value = hc.getDate().getDateString();
+		
+		cal2.callback = function() {
+			if (cal2Mode !== cal2.isHijriMode()) {
+				cal1.disableCallback(true);
+				cal1.changeDateMode();
+				cal1.disableCallback(false);
+				cal1Mode = cal1.isHijriMode();
+				cal2Mode = cal2.isHijriMode();
+			}
+			else
+				cal1.setTime(cal2.getTime());
+			setDateFields();
 		};
-
-		function showGregCal() {
-			gc.show();
+		
+		function setDateFields() {
+			date1.value = cal1.getDate().getDateString();
+			date2.value = cal2.getDate().getDateString();
 		}
-
-		function showHijriCal() {
-			hc.show();
+		
+		function showCal1() {
+			if (cal1.isHidden()) cal1.show();
+			else cal1.hide();
+		}
+		
+		function showCal2() {
+			if (cal2.isHidden()) cal2.show();
+			else cal2.hide();
 		}
 	</script>
 </body>

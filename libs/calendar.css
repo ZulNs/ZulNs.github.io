@@ -8,8 +8,13 @@
 .hidden {
 	display: none;
 }
-.calendar {
+.calendar.position-relative {
 	position: relative;
+}
+.calendar.position-absolute {
+	position: absolute;
+}
+.calendar {
 	font-family: "Times New Roman", Times, serif;
 	font-size: 14px;
 	width: 280px;
@@ -117,19 +122,23 @@
 .calendar .sunday-date {
 	color: #c22;
 }
-.calendar .current-date {
+.calendar .date-grid .current-date {
 	color: #fff;
 	background: #f31;
 }
-.calendar .specialz-date {
+.calendar .date-grid .specialz-date {
 	color: #fff;
 	background: #2b7;
 }
-.calendar .selected-date {
+.calendar .date-grid .selected-date {
 	color: #000;
 	background: #ffc30d;
 }
-.calendar .excluded-date {
+.calendar .date-grid .excluded-date {
 	font-size: .9em;
 	color: #aaa;
+}
+.calendar .date-grid .normal-date:active {
+	color: #fff;
+	background: #939;
 }
