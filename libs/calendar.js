@@ -5,7 +5,8 @@
  * Design by ZulNs @Yogyakarta, January 2016 *
  *********************************************/
 
-function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate,year, month, date) {
+function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate, year, month, date) {
+	if (typeof HijriDate === 'undefined') throw new Error('HijriDate() class is required!');
 	isHijriMode = !!isHijriMode;
 	firstDayOfWeek = (firstDayOfWeek === undefined) ? 1 : ~~firstDayOfWeek;
 	isAutoHide = (isAutoHide === undefined) ? true : !!isAutoHide;
@@ -19,6 +20,7 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate,ye
 		currentDate = thisDate.getDate(),
 		isHidden = true,
 		isSettingsHidden = true,
+		isExtraButtonsInvisible = true,
 		isDisableCallback = false,
 		isAbsolutePosition = false,
 		hasEventListeners = !!window.addEventListener,
@@ -39,6 +41,7 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate,ye
 		changeFirstDayOfWeekElement = document.createElement('div'),
 		changeAutoHideElement = document.createElement('div'),
 		changeAutoSelectedDateElement = document.createElement('div'),
+		changeExtraButtonsVisibilityElement = document.createElement('div'),
 		hideSettingsElement = document.createElement('div'),
 		hideCalendarElement = document.createElement('div'),
 		weekdayRowElement = document.createElement('div'),
@@ -134,7 +137,7 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate,ye
 	this.show = function() {
 		if (isHidden) {
 			isHidden = false;
-			hideElement(calendarElement, isHidden);
+			Calendar.hideElement(calendarElement, isHidden);
 		}
 	};
 	
@@ -145,7 +148,7 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate,ye
 				setShowSettingsAppearance();
 			}
 			isHidden = true;
-			hideElement(calendarElement, isHidden);
+			Calendar.hideElement(calendarElement, isHidden);
 		}
 	};
 	
@@ -165,55 +168,49 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate,ye
 			calendarElement.classList.remove('position-absolute');
 			calendarElement.classList.add('position-relative');
 		}
-	};
+	},
 	
-	var setShowSettingsAppearance = function() {
-		hideElement(settingsRowElement, isSettingsHidden);
+	setShowSettingsAppearance = function() {
+		Calendar.hideElement(settingsRowElement, isSettingsHidden);
 		showSettingsElement.title = (isSettingsHidden ? 'Show' : 'Hide') + ' menu settings bar';
-		markElement(showSettingsElement, !isSettingsHidden);
-	};
+		Calendar.markElement(showSettingsElement, !isSettingsHidden);
+	},
 	
-	var setDateModeAppearance = function() {
+	setDateModeAppearance = function() {
 		changeDateModeElement.title = 'Change to ' + (isHijriMode ? 'Gregorian' : 'Hijri') + ' Calendar';
-		markElement(changeDateModeElement, isHijriMode);
-	};
+		Calendar.markElement(changeDateModeElement, isHijriMode);
+	},
 	
-	var setFirstDayOfWeekAppearance = function() {
+	setFirstDayOfWeekAppearance = function() {
 		changeFirstDayOfWeekElement.title = 'Set ' + thisDate.getDayName(firstDayOfWeek ^ 1) + ' as first day of week';
-		markElement(changeFirstDayOfWeekElement, !!firstDayOfWeek);
-	};
+		Calendar.markElement(changeFirstDayOfWeekElement, !!firstDayOfWeek);
+	},
 	
-	var setAutoHideAppearance = function() {
+	setAutoHideAppearance = function() {
 		changeAutoHideElement.title = (isAutoHide ? 'Disable' : 'Enable') + ' auto hide calendar on select date';
-		markElement(changeAutoHideElement, isAutoHide);
+		Calendar.markElement(changeAutoHideElement, isAutoHide);
 		if (isAutoHide && isAutoSelectedDate) {
 			isAutoSelectedDate = false;
 			setAutoSelectedDateAppearance();
 		}
-		disableElement(changeAutoSelectedDateElement, isAutoHide);
-	};
+		Calendar.disableElement(changeAutoSelectedDateElement, isAutoHide);
+	},
 	
-	var setAutoSelectedDateAppearance = function() {
+	setAutoSelectedDateAppearance = function() {
 		changeAutoSelectedDateElement.title = (isAutoSelectedDate ? 'Disable' : 'Enable') + ' auto selected date on change at year or month values';
-		markElement(changeAutoSelectedDateElement, isAutoSelectedDate);
-	};
+		Calendar.markElement(changeAutoSelectedDateElement, isAutoSelectedDate);
+	},
 	
-	var hideElement = function(target, mode) {
-		if (mode) target.classList.add('hidden');
-		else target.classList.remove('hidden')
-	};
+	setExtraButtonsVisibilityAppearance = function() {
+		changeExtraButtonsVisibilityElement.title = (isExtraButtonsInvisible ? 'Show' : 'Hide') + ' extra buttons to adjust year value';
+		Calendar.markElement(changeExtraButtonsVisibilityElement, !isExtraButtonsInvisible);
+		Calendar.concealElement(dec100YearElement, isExtraButtonsInvisible);
+		Calendar.concealElement(dec10YearElement, isExtraButtonsInvisible);
+		Calendar.concealElement(inc10YearElement, isExtraButtonsInvisible);
+		Calendar.concealElement(inc100YearElement, isExtraButtonsInvisible);
+	},
 	
-	var markElement = function(target, mode) {
-		if (mode) target.classList.add('active');
-		else target.classList.remove('active');
-	};
-	
-	var disableElement = function(target, mode) {
-		if (mode) target.classList.add('disabled');
-		else target.classList.remove('disabled');
-	};
-	
-	var setDateParams = function(setYear, setMonth, setDate) {
+	setDateParams = function(setYear, setMonth, setDate) {
 		setYear = Calendar.parseInt(setYear, 1);
 		setMonth = Calendar.parseInt(setMonth, 0);
 		setDate = Calendar.parseInt(setDate, 1);
@@ -222,9 +219,9 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate,ye
 		selectedDate.setDate(setDate);
 		thisDate.setTime(selectedDate.getTime());
 		thisDate.setDate(1);
-	};
+	},
 	
-	var createCalendar =  function() {
+	createCalendar =  function() {
 		var header = document.createElement('div');
 		calendarElement.classList.add('calendar');
 		header.classList.add('header-row');
@@ -240,13 +237,14 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate,ye
 		inc10YearElement.classList.add('header-button');
 		inc100YearElement.classList.add('header-button');
 		showSettingsElement.classList.add('header-button');
-		settingsRowElement.classList.add('settings-row');
-		changeDateModeElement.classList.add('settings-button');
-		changeFirstDayOfWeekElement.classList.add('settings-button');
-		changeAutoHideElement.classList.add('settings-button');
-		changeAutoSelectedDateElement.classList.add('settings-button');
-		hideSettingsElement.classList.add('settings-button');
-		hideCalendarElement.classList.add('settings-button');
+		settingsRowElement.classList.add('setting-row');
+		changeDateModeElement.classList.add('setting-button');
+		changeFirstDayOfWeekElement.classList.add('setting-button');
+		changeAutoHideElement.classList.add('setting-button');
+		changeAutoSelectedDateElement.classList.add('setting-button');
+		changeExtraButtonsVisibilityElement.classList.add('setting-button');
+		hideSettingsElement.classList.add('setting-button');
+		hideCalendarElement.classList.add('setting-button');
 		weekdayRowElement.classList.add('weekday-row');
 		dateGridElement.classList.add('date-grid');
 		prevMonthElement.innerHTML = '-';
@@ -270,6 +268,7 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate,ye
 		changeFirstDayOfWeekElement.innerHTML = '\u2693';
 		changeAutoHideElement.innerHTML = '\u2690';
 		changeAutoSelectedDateElement.innerHTML = '\u26cf';
+		changeExtraButtonsVisibilityElement.innerHTML = '«»';
 		hideSettingsElement.innerHTML = '\u2714';
 		hideSettingsElement.title = 'Hide menu settings bar';
 		hideCalendarElement.innerHTML = '\u2715';
@@ -280,7 +279,8 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate,ye
 		setFirstDayOfWeekAppearance();
 		setAutoSelectedDateAppearance();
 		setAutoHideAppearance();
-		hideElement(calendarElement, isHidden);
+		setExtraButtonsVisibilityAppearance();
+		Calendar.hideElement(calendarElement, isHidden);
 		addEvent(prevMonthElement, 'click', onDecrementMonth);
 		addEvent(monthElement, 'change', onChangeMonth);
 		addEvent(nextMonthElement, 'click', onIncrementMonth);
@@ -296,6 +296,7 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate,ye
 		addEvent(changeFirstDayOfWeekElement, 'click', onChangeFirstDayOfWeek);
 		addEvent(changeAutoHideElement, 'click', onChangeAutoHide);
 		addEvent(changeAutoSelectedDateElement, 'click', onChangeAutoSelectedDate);
+		addEvent(changeExtraButtonsVisibilityElement, 'click', onChangeExtraButtonsVisibility),
 		addEvent(hideSettingsElement, 'click', onChangeSettingsShow);
 		addEvent(hideCalendarElement, 'click', onHideCalendar);
 		for (var i = 0; i < 12; i++) {
@@ -319,6 +320,7 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate,ye
 		settingsRowElement.appendChild(changeFirstDayOfWeekElement);
 		settingsRowElement.appendChild(changeAutoHideElement);
 		settingsRowElement.appendChild(changeAutoSelectedDateElement);
+		settingsRowElement.appendChild(changeExtraButtonsVisibilityElement);
 		settingsRowElement.appendChild(hideSettingsElement);
 		settingsRowElement.appendChild(hideCalendarElement);
 		createWeekdayRow();
@@ -327,44 +329,43 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate,ye
 		calendarElement.appendChild(weekdayRowElement);
 		calendarElement.appendChild(dateGridElement);
 		createDateGrid();
-	};
+	},
 	
-	var changeCalendarMode = function() {
+	changeCalendarMode = function() {
 		for (var i = 0; i < 12; i++) monthElement.options[i].text = thisDate.getMonthName(i);
 		recreateWeekdayRow();
-	};
+	},
 	
-	var recreateWeekdayRow = function() {
+	recreateWeekdayRow = function() {
 		while (weekdayRowElement.firstChild) weekdayRowElement.removeChild(weekdayRowElement.firstChild);
 		createWeekdayRow();
 		recreateDateGrid();
-	};
+	},
 	
-	var createWeekdayRow = function() {
+	createWeekdayRow = function() {
 		for (var i = 0; i < 7; i++) {
-			var day = document.createElement('div');
-			var wd = (i + firstDayOfWeek) % 7;
-			var cl = wd === 5 ? 'friday-date' : wd === 0 ? 'sunday-date' : 'normal-date';
+			var day = document.createElement('div'),
+				wd = (i + firstDayOfWeek) % 7,
+				cl = wd === 5 ? 'friday-date' : wd === 0 ? 'sunday-date' : 'normal-date';
 			day.innerHTML = thisDate.getDayShortName(wd);
 			day.classList.add(cl);
 			weekdayRowElement.appendChild(day);
 		}
-	};
+	},
 	
-	var recreateDateGrid = function() {
+	recreateDateGrid = function() {
 		while (dateGridElement.firstChild) dateGridElement.removeChild(dateGridElement.firstChild);
 		createDateGrid();
-	};
+	},
 	
-	var createDateGrid = function() {
+	createDateGrid = function() {
 		monthElement.selectedIndex = thisDate.getMonth();
 		yearElement.value = thisDate.getFullYear();
 		var cdim = thisDate.getDaysInMonth();
 		thisDate.setMonth(thisDate.getMonth() - 1);
 		var pdim = thisDate.getDaysInMonth();
 		thisDate.setMonth(thisDate.getMonth() + 1);
-		var fdim = thisDate.getDay();
-		var pxd = fdim - firstDayOfWeek;
+		var fdim = thisDate.getDay(), pxd = fdim - firstDayOfWeek;
 		if (pxd < 0) pxd += 7;
 		var nxd = (pxd + cdim) % 7;
 		if (nxd > 0) nxd = 7 - nxd;
@@ -374,8 +375,7 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate,ye
 			de.innerHTML = i;
 			dateGridElement.appendChild(de);
 		}
-		var wd;
-		var sd;
+		var wd, sd;
 		for (var i = 1; i <= cdim; i++) {
 			var de = document.createElement('div');
 			de.innerHTML = i;
@@ -396,34 +396,34 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate,ye
 			de.innerHTML = i;
 			dateGridElement.appendChild(de);
 		}
-	};
+	},
 	
-	var updateCalendar = function() {
+	updateCalendar = function() {
 		if (isAutoSelectedDate) {
-			var dim = thisDate.getDaysInMonth();
-			var dt = selectedDate.getDate();
+			var dim = thisDate.getDaysInMonth(),
+				dt = selectedDate.getDate();
 			selectedDate.setTime(thisDate.getTime());
 			selectedDate.setDate(dt > dim ? dim : dt);
 			recreateDateGrid();
 			if (typeof self.callback === 'function' && !isDisableCallback) self.callback();
 		}
 		else recreateDateGrid();
-	};
+	},
 	
-	var changeSelectedDate = function(target) {
+	changeSelectedDate = function(target) {
 		var prevElm = dateGridElement.getElementsByClassName('selected-date')[0];
 		if (target === prevElm) return false;
 		if (prevElm) prevElm.classList.remove('selected-date');
 		target.classList.add('selected-date');
 		return true;
-	};
+	},
 	
-	var addEvent = function(elm, evt, callback) {
+	addEvent = function(elm, evt, callback) {
 		if (hasEventListeners) elm.addEventListener(evt, callback);
 		else elm.attachEvent('on' + evt, callback);
-	};
+	},
 	
-	var onChangeDate = function(evt) {
+	onChangeDate = function(evt) {
 		evt = evt || window.event;
 		var target = evt.target || evt.srcElement;
 		if (!target) return;
@@ -434,49 +434,49 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate,ye
 			if (typeof self.callback === 'function' && !isDisableCallback) self.callback();
 		}
 		return returnEvent(evt);
-	};
+	},
 	
-	var onDecrementMonth = function(evt) {
+	onDecrementMonth = function(evt) {
 		evt = evt || window.event;
 		thisDate.setMonth(thisDate.getMonth() - 1);
 		updateCalendar();
 		return returnEvent(evt);
-	};
+	},
 	
-	var onChangeMonth = function() {
+	onChangeMonth = function() {
 		thisDate.setMonth(parseInt(monthElement.value));
 		updateCalendar();
-	};
+	},
 	
-	var onIncrementMonth = function(evt) {
+	onIncrementMonth = function(evt) {
 		evt = evt || window.event;
 		thisDate.setMonth(thisDate.getMonth() + 1);
 		updateCalendar();
 		return returnEvent(evt);
-	};
+	},
 	
-	var onDecrement100Year = function(evt) {
+	onDecrement100Year = function(evt) {
 		evt = evt || window.event;
 		thisDate.setFullYear(thisDate.getFullYear() - 100);
 		updateCalendar();
 		return returnEvent(evt);
-	};
+	},
 	
-	var onDecrement10Year = function(evt) {
+	onDecrement10Year = function(evt) {
 		evt = evt || window.event;
 		thisDate.setFullYear(thisDate.getFullYear() - 10);
 		updateCalendar();
 		return returnEvent(evt);
-	};
+	},
 	
-	var onDecrementYear = function(evt) {
+	onDecrementYear = function(evt) {
 		evt = evt || window.event;
 		thisDate.setFullYear(thisDate.getFullYear() - 1);
 		updateCalendar();
 		return returnEvent(evt);
-	};
+	},
 	
-	var onChangeYear = function() {
+	onChangeYear = function() {
 		var y = parseInt(yearElement.value);
 		if (isNaN(y)) {
 			yearElement.value = thisDate.getFullYear();
@@ -486,67 +486,75 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate,ye
 			thisDate.setFullYear(y);
 			updateCalendar();
 		}
-	};
+	},
 	
-	var onIncrementYear = function(evt) {
+	onIncrementYear = function(evt) {
 		evt = evt || window.event;
 		thisDate.setFullYear(thisDate.getFullYear() + 1);
 		updateCalendar();
 		return returnEvent(evt);
-	};
+	},
 	
-	var onIncrement10Year = function(evt) {
+	onIncrement10Year = function(evt) {
 		evt = evt || window.event;
 		thisDate.setFullYear(thisDate.getFullYear() + 10);
 		updateCalendar();
 		return returnEvent(evt);
-	};
+	},
 	
-	var onIncrement100Year = function(evt) {
+	onIncrement100Year = function(evt) {
 		evt = evt || window.event;
 		thisDate.setFullYear(thisDate.getFullYear() + 100);
 		updateCalendar();
 		return returnEvent(evt);
-	};
+	},
 	
-	var onChangeSettingsShow = function(evt) {
+	onChangeSettingsShow = function(evt) {
 		evt = evt || window.event;
 		isSettingsHidden ^= true;
 		setShowSettingsAppearance();
 		return returnEvent(evt);
-	};
+	},
 	
-	var onChangeDateMode = function(evt) {
+	onChangeDateMode = function(evt) {
 		evt = evt || window.event;
 		self.changeDateMode();
 		return returnEvent(evt);
-	};
+	},
 	
-	var onChangeFirstDayOfWeek = function(evt) {
+	onChangeFirstDayOfWeek = function(evt) {
 		evt = evt || window.event;
 		self.changeFirstDayOfWeek();
 		return returnEvent(evt);
-	};
+	},
 	
-	var onChangeAutoHide = function(evt) {
+	onChangeAutoHide = function(evt) {
 		evt = evt || window.event;
 		self.changeAutoHide();
 		return returnEvent(evt);
-	};
+	},
 	
-	var onChangeAutoSelectedDate = function(evt) {
+	onChangeAutoSelectedDate = function(evt) {
 		evt = evt || window.event;
 		self.changeAutoSelectedDate();
 		return returnEvent(evt);
-	};
+	},
 	
-	var onHideCalendar = function(evt) {
+	onChangeExtraButtonsVisibility = function(evt) {
+		evt = evt || window.event;
+		isExtraButtonsInvisible ^= true;
+		setExtraButtonsVisibilityAppearance();
+		return returnEvent(evt);
+	},
+	
+	onHideCalendar = function(evt) {
 		evt = evt || window.event;
 		self.hide();
 		return returnEvent(evt);
-	};
+	},
 	
-	var returnEvent = function(evt) {
+	returnEvent = function(evt) {
+		if (evt.stopPropagation) evt.stopPropagation();
 		if (evt.preventDefault) evt.preventDefault();
 		else {
 			evt.returnValue = false;
@@ -565,4 +573,25 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate,ye
 Calendar.parseInt = function(num, def) {
 	var res = parseInt(num);
 	return isNaN(res) ? def : res;
-}
+};
+
+Calendar.hideElement = function(target, mode) {
+	Calendar.addOrRemoveClass(target, mode, 'hidden');
+};
+
+Calendar.markElement = function(target, mode) {
+	Calendar.addOrRemoveClass(target, mode, 'active');
+};
+
+Calendar.disableElement = function(target, mode) {
+	Calendar.addOrRemoveClass(target, mode, 'disabled');
+};
+
+Calendar.concealElement = function(target, mode) {
+	Calendar.addOrRemoveClass(target, mode, 'invisible');
+};
+
+Calendar.addOrRemoveClass = function(target, addFlag, className) {
+	if (addFlag) target.classList.add(className);
+	else target.classList.remove(className);
+};

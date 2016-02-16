@@ -5,15 +5,6 @@
  * Design by ZulNs @Yogyakarta, January 2016 *
  *********************************************/
 
-.hidden {
-	display: none;
-}
-.calendar.position-relative {
-	position: relative;
-}
-.calendar.position-absolute {
-	position: absolute;
-}
 .calendar {
 	font-family: "Times New Roman", Times, serif;
 	font-size: 14px;
@@ -22,8 +13,21 @@
 	background: #fcfcfc;
 	border: 1px solid #000;
 }
+.calendar.hidden,
+.calendar .hidden {
+	display: none;
+}
+.calendar.position-relative {
+	position: relative;
+}
+.calendar.position-absolute {
+	position: absolute;
+}
+.calendar .invisible {
+	visibility: hidden;
+}
 .calendar .header-button,
-.calendar .settings-button,
+.calendar .setting-button,
 .calendar .weekday-row div,
 .calendar .date-grid div {
 	display: inline-block;
@@ -36,7 +40,7 @@
 	vertical-align: middle;
 }
 .calendar .header-row *,
-.calendar .settings-button,
+.calendar .setting-button,
 .calendar .date-grid .normal-date {
 	cursor: pointer;
 }
@@ -46,7 +50,7 @@
 	color: #fff;
 	background: #259;
 }
-.calendar .settings-row {
+.calendar .setting-row {
 	color: #fff;
 	background: #2b7;
 }
@@ -59,16 +63,16 @@
 	color: #fff;
 	background: #47b;
 }
-.calendar .settings-button:active,
-.calendar .settings-button.active:active {
+.calendar .setting-button:active,
+.calendar .setting-button.active:active {
 	color: #2b7;
 	background: #fff;
 }
-.calendar .settings-button.active {
+.calendar .setting-button.active {
 	color: #fff;
 	background: #4d9;
 }
-.calendar .settings-button.disabled {
+.calendar .setting-button.disabled {
 	color: #777;
 	background: #1a6;
 	pointer-events: none;
@@ -100,8 +104,8 @@
 .calendar .header-button {
 	width: 16px;
 }
-.calendar .settings-button {
-	width: 46px;
+.calendar .setting-button {
+	width: 40px;
 }
 .calendar .weekday-row div,
 .calendar .date-grid .excluded-date {
