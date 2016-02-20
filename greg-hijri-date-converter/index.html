@@ -57,8 +57,8 @@
 			cal1Mode = cal1.isHijriMode(),
 			cal2Mode = cal2.isHijriMode();
 		
-		document.getElementById('cal-1').appendChild(cal1.calendarElement());
-		document.getElementById('cal-2').appendChild(cal2.calendarElement());
+		document.getElementById('cal-1').appendChild(cal1.getElement());
+		document.getElementById('cal-2').appendChild(cal2.getElement());
 		cal1.show();
 		cal2.show();
 		setDateFields();
