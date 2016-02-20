@@ -73,7 +73,7 @@
 
 ## Public Property
 - **`callback`**
-  > Assign this property to a function which do some process when a date was selected.
+  > Assign this property to a function which do some processes when a date was selected.
   >
   > For example:
   >
