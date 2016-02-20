@@ -228,9 +228,9 @@ HijriDate.weekdayNames = ["Ahad", "Ithnin", "Thulatha", "Arba'a", "Khams", "Jumu
 HijriDate.weekdayShortNames = ['Ahd', 'Ith', 'Thu', 'Arb', 'Kha', 'Jum', 'Sab'];
 					   
 HijriDate.toDigit = function(num, digit) {
-	var n = String(num);
-	while (n.length < digit) n = '0' + n;
-	return n;
+	var ns = num.toString();
+	if (ns.length > digit) return ns;
+	return ('00000000' + ns).slice(-digit);
 }
 
 HijriDate.daysInMonth = function(month) {

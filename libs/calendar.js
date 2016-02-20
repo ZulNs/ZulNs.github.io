@@ -60,7 +60,7 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate, y
 	};
 	
 	this.changeDateMode = function() {
-		isHijriMode ^= true;
+		isHijriMode = !isHijriMode;
 		thisDate = isHijriMode ? new HijriDate() : new Date();
 		currentYear = thisDate.getFullYear();
 		currentMonth = thisDate.getMonth();
@@ -81,13 +81,13 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate, y
 	};
 	
 	this.changeAutoHide = function() {
-		isAutoHide ^= true;
+		isAutoHide = !isAutoHide;
 		setAutoHideAppearance();
 	};
 	
 	this.changeAutoSelectedDate = function() {
 		if (isAutoHide) return;
-		isAutoSelectedDate ^= true;
+		isAutoSelectedDate = !isAutoSelectedDate;
 		setAutoSelectedDateAppearance();
 	};
 	
@@ -422,7 +422,7 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate, y
 		if (hasEventListeners) elm.addEventListener(evt, callback);
 		else elm.attachEvent('on' + evt, callback);
 	},
-	
+		
 	onChangeDate = function(evt) {
 		evt = evt || window.event;
 		var target = evt.target || evt.srcElement;
@@ -511,7 +511,7 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate, y
 	
 	onChangeSettingsShow = function(evt) {
 		evt = evt || window.event;
-		isSettingsHidden ^= true;
+		isSettingsHidden = !isSettingsHidden;
 		setShowSettingsAppearance();
 		return returnEvent(evt);
 	},
@@ -542,7 +542,7 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate, y
 	
 	onChangeExtraButtonsVisibility = function(evt) {
 		evt = evt || window.event;
-		isExtraButtonsInvisible ^= true;
+		isExtraButtonsInvisible = !isExtraButtonsInvisible;
 		setExtraButtonsVisibilityAppearance();
 		return returnEvent(evt);
 	},
