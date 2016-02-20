@@ -10,8 +10,15 @@
 	font-size: 14px;
 	width: 280px;
 	cursor: default;
-	background: #fcfcfc;
-	border: 1px solid #000;
+	background: #eef;
+	background: -webkit-linear-gradient(#fcc, #cfc, #ccf);
+	background: -moz-linear-gradient(#fcc, #cfc, #ccf);
+	background: -o-linear-gradient(#fcc, #cfc, #ccf);
+	background: linear-gradient(#fcc, #cfc, #ccf);
+	border: 1px solid #550;
+	-webkit-box-shadow: 3px 3px 2px 1px #777;
+	-moz-box-shadow: 3px 3px 2px 1px #777;
+	box-shadow: 3px 3px 2px 1px #777;
 }
 .calendar.hidden,
 .calendar .hidden {
