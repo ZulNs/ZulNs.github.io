@@ -306,6 +306,11 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate, y
 		return true;
 	},
 	
+	hideCalendar = function() {
+		self.hide();
+		if (typeof self.onHide === 'function') self.onHide();
+	},
+	
 	addEvent = function(elm, evt, callback) {
 		if (hasEventListeners) elm.addEventListener(evt, callback);
 		else elm.attachEvent('on' + evt, callback);
@@ -316,7 +321,7 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate, y
 		var target = evt.target || evt.srcElement;
 		if (!target) return;
 		if (changeSelectedDate(target)) {
-			if (isAutoHide) self.hide();
+			if (isAutoHide) hideCalendar();
 			selectedDate.setTime(thisDate.getTime());
 			selectedDate.setDate(parseInt(target.innerHTML));
 			if (typeof self.callback === 'function' && !isDisableCallback) self.callback();
@@ -437,7 +442,7 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate, y
 	
 	onHideCalendar = function(evt) {
 		evt = evt || window.event;
-		self.hide();
+		hideCalendar();
 		return returnEvent(evt);
 	},
 	
@@ -524,8 +529,10 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate, y
 	
 	this.callback;
 	
-	this.disableCallback = function(cb) {
-		isDisableCallback = !!cb;
+	this.onHide;
+	
+	this.disableCallback = function(state) {
+		isDisableCallback = !!state;
 	};
 	
 	this.setAbsolutePosition = function(pos) {
