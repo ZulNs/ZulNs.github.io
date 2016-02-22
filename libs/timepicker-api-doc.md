@@ -1,7 +1,7 @@
 # Timepicker API Documentation
 
 ## Overview
-This widget can be used to display a **Realtime Analog Clock** besides as a **Timepicker**. As an timepicker, this widget can be directly draggable at both *hour hand* and *minute hand*. Drag at behind the axis of both hand which causes reverse rotation also supported. Dragging with touch devices is supported well. Toggling between 12 hours and 24 hours system can be done on the fly.
+This widget can be used to display a **Realtime Analog Clock** besides as a **Timepicker**. As an timepicker, this widget can be directly draggable at both *hour hand* and *minute hand*. Drag at behind the axis of both hands which causes reverse rotation also supported. Dragging with touch devices is supported well. Toggling between 12 hours and 24 hours system can be done on the fly.
 
 ## Download
 - [timepicker.js](https://ZulNs.github.io/libs/timepicker.js)

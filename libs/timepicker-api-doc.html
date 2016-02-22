@@ -18,7 +18,7 @@
 <body>
 <h1>Timepicker API Documentation</h1>
 <h2>Overview</h2>
-<p>This widget can be used to display a <strong>Realtime Analog Clock</strong> besides as a <strong>Timepicker</strong>. As an timepicker, this widget can be directly draggable at both <em>hour hand</em> and <em>minute hand</em>. Drag at behind the axis of both hand which causes reverse rotation also supported. Dragging with touch devices is supported well.</p>
+<p>This widget can be used to display a <strong>Realtime Analog Clock</strong> besides as a <strong>Timepicker</strong>. As an timepicker, this widget can be directly draggable at both <em>hour hands</em> and <em>minute hand</em>. Drag at behind the axis of both hand which causes reverse rotation also supported. Dragging with touch devices is supported well.</p>
 <h2>Download</h2>
 <ul>
 <li><a href="timepicker.js">timepicker.js</a></li>
@@ -194,6 +194,8 @@ widget.callback = function() {
 			pickBtn.style.display = 'none';
 			timepicker.show();
 		}
+		
+		window.scrollTo(0, 0);
 	</script>
 <hr>
 <h4>Made By ZulNs</h4>

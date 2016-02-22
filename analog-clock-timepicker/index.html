@@ -40,6 +40,12 @@
 		<button class="icon-button" onclick="showClock();" title="Show/hide the clock/timepicker">&#x1f554;</button>
 		<button class="icon-button" onclick="changeMode();" title="Change to clock/timepicker mode">&#x231a;</button>
 	</div>
+	<p>See API Documentation:
+		<ul>
+			<li><a href="../libs/timepicker-api-doc.md" target="_blank">Markdown version</a></li>
+			<li><a href="../libs/timepicker-api-doc.html" target="_blank">HTML version</a></li>
+		</ul>
+	</p>
 	<script type="text/javascript" src="../libs/timepicker.js"></script>
 	<script type="text/javascript">
 		document.querySelector('#title span').innerHTML = document.title;
@@ -48,6 +54,7 @@
 		
 		var tp = new Timepicker(true);
 		document.getElementById('clock').appendChild(tp.getElement());
+		tp.show();
 		
 		tp.callback = function() {
 			document.getElementById('clock-time').value = tp.getTimeString();
