@@ -15,9 +15,10 @@
 	<!--link rel="stylesheet" href="plaintext.css"-->
 	<link rel="stylesheet" href="markdown-viewer.css">
 </head>
+<body>
 <h1>Calendar API Documentation</h1>
 <h2>Overview</h2>
-<p>This calendar widget can be used to display <strong>Gregorian</strong> or <strong>Hijri</strong> date, and of course as the converter between the two calendar system, it can also be used as datepicker for both systems. It's full customizable for above both calendar system interchange, first day of week (<strong>Monday</strong> or <strong>Sunday</strong>), auto hide calendar on select a date, auto select the date when <strong>month</strong> or <strong>year</strong> value was changed. This customization can be applied on the fly (at run time) also of course in the way programmatically (at design time). This widget has <em>month bar</em> which has drop down list to select the desired month between 12 available month names for the concerned calendar system. There are two buttons associated with the sequence of the month which serve to lower and raise its sequence by one step. This widget also has <em>year bar</em> which its value can be directly edited. Similar to the <em>month bar</em>, the <em>year bar</em> also has two buttons associated with its value which serve to decrement and increment that value by one. Only difference that <em>year bar</em> has four extra buttons which change the year value respectively decrement by 100, decrement by 10, increment by 10, and increment by 100. Those extra buttons can be displayed or hidden at will of the user.</p>
+<p>This calendar widget can be used to display <strong>Gregorian</strong> or <strong>Hijri</strong> date, and of course as the converter between the two calendar system, it can also be used as datepicker for both systems. It's full customizable for above both calendar system interchange, first day of week (<strong>Monday</strong> or <strong>Sunday</strong>), auto hide calendar on select a date, auto select the date when <strong>month</strong> or <strong>year</strong> value was changed. This customization can be applied on the fly (at run time) also of course in the way programmatically (at design time). This widget has <em>month bar</em> which has drop down list to select the desired month between 12 available month names for the concerned calendar system. There are two buttons associated with the sequence of the month which serve to lower and raise its sequence by one step. This widget also has <em>year bar</em> which its value can be directly edited. Similar to the <em>month bar</em>, the <em>year bar</em> also has two buttons associated with its value which serve to decrement and increment that value by one. Only difference that <em>year bar</em> has four extra buttons which change the year value respectively decrement by 100, decrement by 10, increment by 10, and increment by 100. Those extra buttons can be displayed or hidden on the fly at will of the user.</p>
 <h2>Download</h2>
 <ul>
 <li><a href="calendar.js">calendar.js</a></li>
@@ -32,32 +33,32 @@
 <h3>Arguments:</h3>
 <ul>
 <li>
-<p><strong><code>isHijriMode</code></strong>, set calendar mode</p>
+<p><strong><code>isHijriMode</code></strong>, sets the calendar mode</p>
 <p><strong><code>true</code></strong> : Hijri Calendar mode</p>
 <p><strong><code>false</code></strong> : Gregorian Calendar mode</p>
-<p>default : <strong><code>false</code></strong></p>
+<p>Default : <strong><code>false</code></strong></p>
 </li>
 <li>
-<p><strong><code>firstDayOfWeek</code></strong>, set first day of week</p>
+<p><strong><code>firstDayOfWeek</code></strong>, sets the first day of week</p>
 <p><strong><code>0</code></strong> : Sunday</p>
 <p><strong><code>1</code></strong> : Monday</p>
-<p>default : <strong><code>1</code></strong></p>
+<p>Default : <strong><code>1</code></strong></p>
 </li>
 <li>
 <p><strong><code>isAutoHide</code></strong></p>
-<p><strong><code>true</code></strong> : hide the widget when a date was selected</p>
-<p><strong><code>false</code></strong> : don't hide the widget when a date was selected</p>
-<p>default : <strong><code>true</code></strong></p>
+<p><strong><code>true</code></strong> : hides the widget when a date was selected</p>
+<p><strong><code>false</code></strong> : desn't hide the widget when a date was selected</p>
+<p>Default : <strong><code>true</code></strong></p>
 </li>
 <li>
 <p><strong><code>isAutoSelectedDate</code></strong></p>
 <p><strong><code>true</code></strong> : auto select a date when the month or year value was changed</p>
-<p><strong><code>false</code></strong> : don't select a date when the month or year value was changed</p>
-<p>default : <strong><code>false</code></strong></p>
+<p><strong><code>false</code></strong> : doesn't select a date when the month or year value was changed</p>
+<p>Default : <strong><code>false</code></strong></p>
 </li>
 <li>
 <p><strong><code>year</code></strong>, <strong><code>month</code></strong>, and <strong><code>date</code></strong></p>
-<p>Those arguments are the same as arguments used in JavaScript standard <code>Date()</code> class or custom <code>HijriDate()</code> class, except <code>year</code> argument is using <code>FullYear</code> instead. When those are omitted, the current date is used.</p>
+<p>Those arguments are the same as arguments used in JavaScript standard <code>Date()</code> class or custom <code>HijriDate()</code> class, except <code>year</code> argument is using <code>FullYear</code> instead. When those are omitted, the current date will be used.</p>
 </li>
 </ul>
 <h2>Public Methods</h2>
@@ -80,7 +81,7 @@
 </li>
 <li>
 <p><strong><code>destroy()</code></strong></p>
-<p>Destroys the widget object and release it from memory.</p>
+<p>Destroys the widget object and releases it from memory.</p>
 </li>
 <li>
 <p><strong><code>disableCallback(state)</code></strong></p>
@@ -104,7 +105,7 @@
 </li>
 <li>
 <p><strong><code>hide()</code></strong></p>
-<p>Hides the calendar.</p>
+<p>Hides the widget.</p>
 </li>
 <li>
 <p><strong><code>isAutoHide()</code></strong></p>
@@ -120,7 +121,7 @@
 </li>
 <li>
 <p><strong><code>isHijriMode()</code></strong></p>
-<p>Returns <code>true</code> when the calendar was in Hijri mode or <code>false</code> in Gregorian mode.</p>
+<p>Returns <code>true</code> when the calendar was in Hijri mode or <code>false</code> for Gregorian mode.</p>
 </li>
 <li>
 <p><strong><code>setAbsolutePosition(pos)</code></strong></p>
@@ -169,6 +170,7 @@ cal.onHide = function() {
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://ZulNs.github.io/libs/hijri-date.js&quot;&gt;&lt;/script&gt;
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://ZulNs.github.io/libs/calendar.js&quot;&gt;&lt;/script&gt;
 </code></pre>
+<p>For the following code examples, please insert them at anywhere you want within the document's body.</p>
 	<link rel="stylesheet" href="calendar.css">
 	<script type="text/javascript" src="hijri-date.js"></script>
 	<script type="text/javascript" src="calendar.js"></script>
@@ -321,7 +323,6 @@ cal.onHide = function() {
 		cal1Elm.style.display = 'inline-block';
 		cal2Elm.style.display = 'inline-block';
 		cal2Elm.style.marginLeft = '20px';
-		cal1Elm.style.marginBottom = '20px';
 		cal1.show();
 		cal2.show();
 		
@@ -357,5 +358,9 @@ cal.onHide = function() {
 			cal1.show();
 		};
 	</script>
+<hr>
+<h4>Made By ZulNs</h4>
+<h5>@Yogyakarta, January 2016</h5>
+<hr>
 </body>
 </html>

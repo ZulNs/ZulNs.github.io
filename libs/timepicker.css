@@ -6,7 +6,7 @@
  ****************************************************/
 
 .timepicker {
-	position: absolute;
+	position: relative;
 	width: 240px;
 	height: 286px;
 	padding: 10px;

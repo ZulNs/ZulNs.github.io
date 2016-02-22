@@ -1,7 +1,7 @@
 # Calendar API Documentation
 
 ## Overview
-This calendar widget can be used to display **Gregorian** or **Hijri** date, and of course as the converter between the two calendar system, it can also be used as datepicker for both systems. It's full customizable for above both calendar system interchange, first day of week (**Monday** or **Sunday**), auto hide calendar on select a date, auto select the date when **month** or **year** value was changed. This customization can be applied on the fly (at run time) also of course in the way programmatically (at design time). This widget has *month bar* which has drop down list to select the desired month between 12 available month names for the concerned calendar system. There are two buttons associated with the sequence of the month which serve to lower and raise its sequence by one step. This widget also has *year bar* which its value can be directly edited. Similar to the *month bar*, the *year bar* also has two buttons associated with its value which serve to decrement and increment that value by one. Only difference that *year bar* has four extra buttons which change the year value respectively decrement by 100, decrement by 10, increment by 10, and increment by 100. Those extra buttons can be displayed or hidden at will of the user.
+This calendar widget can be used to display **Gregorian** or **Hijri** date, and of course as the converter between the two calendar system, it can also be used as datepicker for both systems. It's full customizable for above both calendar system interchange, first day of week (**Monday** or **Sunday**), auto hide calendar on select a date, auto select the date when **month** or **year** value was changed. This customization can be applied on the fly (at run time) also of course in the way programmatically (at design time). This widget has *month bar* which has drop down list to select the desired month between 12 available month names for the concerned calendar system. There are two buttons associated with the sequence of the month which serve to lower and raise its sequence by one step. This widget also has *year bar* which its value can be directly edited. Similar to the *month bar*, the *year bar* also has two buttons associated with its value which serve to decrement and increment that value by one. Only difference that *year bar* has four extra buttons which change the year value respectively decrement by 100, decrement by 10, increment by 10, and increment by 100. Those extra buttons can be displayed or hidden on the fly at will of the user.
 
 ## Download
 - [calendar.js](https://ZulNs.github.io/libs/calendar.js)
@@ -14,41 +14,41 @@ This calendar widget can be used to display **Gregorian** or **Hijri** date, and
 **`Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate, year, month, date)`**
 
 ### Arguments:
-- **`isHijriMode`**, set calendar mode
+- **`isHijriMode`**, sets the calendar mode
 
   **`true`** : Hijri Calendar mode
 
   **`false`** : Gregorian Calendar mode
 
-  default : **`false`**
+  Default : **`false`**
 
-- **`firstDayOfWeek`**, set first day of week
+- **`firstDayOfWeek`**, sets the first day of week
 
   **`0`** : Sunday
 
   **`1`** : Monday
 
-  default : **`1`**
+  Default : **`1`**
 
 - **`isAutoHide`**
 
-  **`true`** : hide the widget when a date was selected
+  **`true`** : hides the widget when a date was selected
 
-  **`false`** : don't hide the widget when a date was selected
+  **`false`** : doesn't hide the widget when a date was selected
 
-  default : **`true`**
+  Default : **`true`**
 
 - **`isAutoSelectedDate`**
 
   **`true`** : auto select a date when the month or year value was changed
 
-  **`false`** : don't select a date when the month or year value was changed
+  **`false`** : doesn't select a date when the month or year value was changed
 
-  default : **`false`**
+  Default : **`false`**
 
 - **`year`**, **`month`**, and **`date`**
 
-  Those arguments are the same as arguments used in JavaScript standard `Date()` class or custom `HijriDate()` class, except `year` argument is using `FullYear` instead. When those are omitted, the current date is used.
+  Those arguments are the same as arguments used in JavaScript standard `Date()` class or custom `HijriDate()` class, except `year` argument is using `FullYear` instead. When those are omitted, the current date will be used.
 
 ## Public Methods
 - **`changeAutoHide()`**
@@ -69,7 +69,7 @@ This calendar widget can be used to display **Gregorian** or **Hijri** date, and
 
 - **`destroy()`**
 
-  Destroys the widget object and release it from memory.
+  Destroys the widget object and releases it from memory.
 
 - **`disableCallback(state)`**
 
@@ -93,7 +93,7 @@ This calendar widget can be used to display **Gregorian** or **Hijri** date, and
 
 - **`hide()`**
 
-  Hides the calendar.
+  Hides the widget.
 
 - **`isAutoHide()`**
 
@@ -109,7 +109,7 @@ This calendar widget can be used to display **Gregorian** or **Hijri** date, and
 
 - **`isHijriMode()`**
 
-  Returns `true` when the calendar was in Hijri mode or `false` in Gregorian mode.
+  Returns `true` when the calendar was in Hijri mode or `false` for Gregorian mode.
 
 - **`setAbsolutePosition(pos)`**
 
@@ -159,6 +159,8 @@ Generally, you'll need to include these three files on any page to use the calen
 	<script type="text/javascript" src="https://ZulNs.github.io/libs/hijri-date.js"></script>
 	<script type="text/javascript" src="https://ZulNs.github.io/libs/calendar.js"></script>
 
+For the following code examples, please insert them at anywhere you want within the document's body.
+
 ### Using the Widget as a Calendar
 #### Code example:
 
@@ -180,6 +182,7 @@ Generally, you'll need to include these three files on any page to use the calen
 	</script>
 
 #### Result:
+To see the result you need the [HTML version](https://ZulNs.github.io/libs/calendar-api-doc.html) of this documentation.
 
 ### Using the Widget as a Datepicker
 #### Code example:
@@ -208,6 +211,7 @@ Generally, you'll need to include these three files on any page to use the calen
 	</script>
 
 #### Result:
+To see the result you need the [HTML version](https://ZulNs.github.io/libs/calendar-api-doc.html) of this documentation.
 
 ### Side by Side Gregorian - Hijri Calendar Converter
 #### Code example:
@@ -262,3 +266,9 @@ Generally, you'll need to include these three files on any page to use the calen
 	</script>
 
 #### Result:
+To see the result you need the [HTML version](https://ZulNs.github.io/libs/calendar-api-doc.html) of this documentation.
+
+---
+#### Made By ZulNs
+##### @Yogyakarta, January 2016
+---

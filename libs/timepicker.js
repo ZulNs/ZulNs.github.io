@@ -21,7 +21,7 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 		pickedTime = document.createElement('div'),
 		hourSystemButton = document.createElement('div'),
 		okButton = document.createElement('div'),
-		isHidden = false,
+		isHidden = true,
 		isPM = selectedHours >= 12,
 		isHourHand,
 		isReverseRotate,
@@ -182,7 +182,7 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 		hourHand.style.cssText = Timepicker.addVendorPrefix('transform: rotate(' + lastHourDeg + 'deg);');
 		minuteHand.style.cssText = Timepicker.addVendorPrefix('transform: rotate(' + lastMinuteDeg + 'deg);');
 		secondHand.style.cssText = Timepicker.addVendorPrefix('transform: rotate(' + sec + 'deg);');
-	};
+	},
 	
 	getPickedTimeString = function() {
 		var pts = ('0' + (is24HoursSystem ? selectedHours : selectedHours % 12 === 0 ? 12 : selectedHours % 12)).slice(-2) + ':' + ('0' + selectedMinutes).slice(-2);
@@ -228,6 +228,17 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 		}
 	},
 	
+	scrollToFix = function() {
+		var dw = document.body.offsetWidth,
+			vw = window.innerWidth,
+			vh = window.innerHeight,
+			rect = timepicker.getBoundingClientRect(),
+			hsSpc = dw > vw ? 20 : 0,
+			scrollX = rect.left < 0 ? rect.left : 0,
+			scrollY = rect.bottom - rect.top > vh ? rect.top : rect.bottom > vh - hsSpc ? rect.bottom - vh + hsSpc : 0;
+		window.scrollBy(scrollX, scrollY);
+	},
+	
 	createTimepicker = function() {
 		// Initialize
 		timepicker.classList.add('timepicker');
@@ -250,6 +261,7 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 		secondHand.setAttribute('height', 120);
 		label24HoursSystem();
 		okButton.innerHTML = 'OK';
+		Timepicker.addOrRemoveClass(timepicker, isHidden, 'hidden');
 		timepicker.appendChild(clockFace);
 		timepicker.appendChild(hourHand);
 		timepicker.appendChild(minuteHand);
@@ -423,6 +435,7 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 		if (isHidden) {
 			isHidden = !isHidden;
 			Timepicker.addOrRemoveClass(timepicker, isHidden, 'hidden');
+			scrollToFix();
 		}
 	};
 	
