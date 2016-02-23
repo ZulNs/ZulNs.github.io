@@ -20,19 +20,6 @@
 	-moz-box-shadow: 3px 3px 2px 1px #777;
 	box-shadow: 3px 3px 2px 1px #777;
 }
-.calendar.hidden,
-.calendar .hidden {
-	display: none;
-}
-.calendar.position-relative {
-	position: relative;
-}
-.calendar.position-absolute {
-	position: absolute;
-}
-.calendar .invisible {
-	visibility: hidden;
-}
 .calendar .header-button,
 .calendar .setting-button,
 .calendar .weekday-row div,

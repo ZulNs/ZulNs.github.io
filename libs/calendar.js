@@ -20,9 +20,9 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate, y
 		currentDate = thisDate.getDate(),
 		isHidden = true,
 		isSettingsHidden = true,
-		isExtraButtonsInvisible = true,
+		isExtraButtonsVisible = false,
 		isDisableCallback = false,
-		isAbsolutePosition = false,
+		displayStyle = 'block',
 		hasEventListeners = !!window.addEventListener,
 		calendarElement = document.createElement('div'),
 		prevMonthElement = document.createElement('div'),
@@ -45,21 +45,14 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate, y
 		hideSettingsElement = document.createElement('div'),
 		hideCalendarElement = document.createElement('div'),
 		weekdayRowElement = document.createElement('div'),
-		dateGridElement = document.createElement('div');
+		dateGridElement = document.createElement('div'),
 	
-	var setCalendarPosition = function() {
-		if (isAbsolutePosition) {
-			calendarElement.classList.remove('position-relative');
-			calendarElement.classList.add('position-absolute');
-		}
-		else {
-			calendarElement.classList.remove('position-absolute');
-			calendarElement.classList.add('position-relative');
-		}
+	setCalendarDisplay = function() {
+		calendarElement.style.display = isHidden ? 'none' : displayStyle;
 	},
 	
 	setShowSettingsAppearance = function() {
-		Calendar.hideElement(settingsRowElement, isSettingsHidden);
+		settingsRowElement.style.display = isSettingsHidden ? 'none' : '';
 		showSettingsElement.title = (isSettingsHidden ? 'Show' : 'Hide') + ' menu settings bar';
 		Calendar.markElement(showSettingsElement, !isSettingsHidden);
 	},
@@ -90,12 +83,12 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate, y
 	},
 	
 	setExtraButtonsVisibilityAppearance = function() {
-		changeExtraButtonsVisibilityElement.title = (isExtraButtonsInvisible ? 'Show' : 'Hide') + ' extra buttons to adjust year value';
-		Calendar.markElement(changeExtraButtonsVisibilityElement, !isExtraButtonsInvisible);
-		Calendar.concealElement(dec100YearElement, isExtraButtonsInvisible);
-		Calendar.concealElement(dec10YearElement, isExtraButtonsInvisible);
-		Calendar.concealElement(inc10YearElement, isExtraButtonsInvisible);
-		Calendar.concealElement(inc100YearElement, isExtraButtonsInvisible);
+		changeExtraButtonsVisibilityElement.title = (isExtraButtonsVisible ? 'Hide' : 'Show') + ' extra buttons to adjust year value';
+		Calendar.markElement(changeExtraButtonsVisibilityElement, isExtraButtonsVisible);
+		Calendar.revealElement(dec100YearElement, isExtraButtonsVisible);
+		Calendar.revealElement(dec10YearElement, isExtraButtonsVisible);
+		Calendar.revealElement(inc10YearElement, isExtraButtonsVisible);
+		Calendar.revealElement(inc100YearElement, isExtraButtonsVisible);
 	},
 	
 	setDateParams = function(setYear, setMonth, setDate) {
@@ -161,14 +154,13 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate, y
 		hideSettingsElement.title = 'Hide menu settings bar';
 		hideCalendarElement.innerHTML = '\u2715';
 		hideCalendarElement.title = 'Hide calendar';
-		setCalendarPosition();
 		setShowSettingsAppearance();
 		setDateModeAppearance();
 		setFirstDayOfWeekAppearance();
 		setAutoSelectedDateAppearance();
 		setAutoHideAppearance();
 		setExtraButtonsVisibilityAppearance();
-		Calendar.hideElement(calendarElement, isHidden);
+		setCalendarDisplay();
 		addEvent(prevMonthElement, 'click', onDecrementMonth);
 		addEvent(monthElement, 'change', onChangeMonth);
 		addEvent(nextMonthElement, 'click', onIncrementMonth);
@@ -323,10 +315,9 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate, y
 	onChangeDate = function(evt) {
 		evt = evt || window.event;
 		var target = evt.target || evt.srcElement;
-		if (!target) return;
 		var prevElm = dateGridElement.getElementsByClassName('selected-date')[0];
-		if (target !== prevElm && !!prevElm) {
-			prevElm.classList.remove('selected-date');
+		if (target !== prevElm) {
+			if (!!prevElm) prevElm.classList.remove('selected-date');
 			target.classList.add('selected-date');
 			selectedDate.setTime(thisDate.getTime());
 			selectedDate.setDate(parseInt(target.innerHTML));
@@ -443,7 +434,7 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate, y
 	
 	onChangeExtraButtonsVisibility = function(evt) {
 		evt = evt || window.event;
-		isExtraButtonsInvisible = !isExtraButtonsInvisible;
+		isExtraButtonsVisible = !isExtraButtonsVisible;
 		setExtraButtonsVisibilityAppearance();
 		return returnEvent(evt);
 	},
@@ -543,19 +534,19 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate, y
 		isDisableCallback = !!state;
 	};
 	
-	this.setAbsolutePosition = function(pos) {
-		isAbsolutePosition = !!pos;
-		setCalendarPosition();
-	};
-	
 	this.getElement = function() {
 		return calendarElement;
+	};
+	
+	this.setDisplayStyle = function(style) {
+		displayStyle = style;
+		setCalendarDisplay();
 	};
 	
 	this.show = function() {
 		if (isHidden) {
 			isHidden = false;
-			Calendar.hideElement(calendarElement, isHidden);
+			setCalendarDisplay();
 			scrollToFix();
 		}
 	};
@@ -567,7 +558,7 @@ function Calendar(isHijriMode, firstDayOfWeek, isAutoHide, isAutoSelectedDate, y
 				setShowSettingsAppearance();
 			}
 			isHidden = true;
-			Calendar.hideElement(calendarElement, isHidden);
+			setCalendarDisplay();
 		}
 	};
 	
@@ -591,10 +582,6 @@ Calendar.parseInt = function(num, def) {
 	return isNaN(res) ? def : res;
 };
 
-Calendar.hideElement = function(target, mode) {
-	Calendar.addOrRemoveClass(target, mode, 'hidden');
-};
-
 Calendar.markElement = function(target, mode) {
 	Calendar.addOrRemoveClass(target, mode, 'active');
 };
@@ -603,8 +590,8 @@ Calendar.disableElement = function(target, mode) {
 	Calendar.addOrRemoveClass(target, mode, 'disabled');
 };
 
-Calendar.concealElement = function(target, mode) {
-	Calendar.addOrRemoveClass(target, mode, 'invisible');
+Calendar.revealElement = function(target, mode) {
+	target.style.visibility = mode ? 'visible' : 'hidden';
 };
 
 Calendar.addOrRemoveClass = function(target, addFlag, className) {

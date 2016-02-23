@@ -111,13 +111,13 @@ This calendar widget can be used to display **Gregorian** or **Hijri** date, and
 
   Returns `true` when the calendar was in Hijri mode or `false` for Gregorian mode.
 
-- **`setAbsolutePosition(pos)`**
-
-  Sets the widget position on the page by styling the CSS property `position: absolute` while `pos = true` or `position: relative` while `pos = false` for.
-
 - **`setDate(setYear, setMonth, setDate)`**
 
   Sets the selected date to a desired date.
+
+- **`setDisplayStyle(style)`**
+
+  Sets the widget display style on the page by styling the CSS `display` property to a style which represents by `style` string argument. Default string value is `"block"`, which causes an instance of this widget takes up one row in the document page. To display more than one instance in a row, provide `"inline-block"` to this argument.
 
 - **`setTime(time)`**
 
@@ -166,8 +166,8 @@ For the following code examples, please insert them at anywhere you want within 
 
 	<div id="calendar"><input id="show-button" type="button" onclick="showMe();" value="Show Calendar" /></div>
 	<script type="text/javascript">
-		var showBtn = document.getElementById('show-button');
-		var cal = new Calendar();
+		var showBtn = document.getElementById('show-button'),
+			cal = new Calendar();
 		document.getElementById('calendar').appendChild(cal.getElement());
 		showMe();
 		
@@ -189,12 +189,11 @@ To see the result you need the [HTML version](https://ZulNs.github.io/libs/calen
 
 	<div id="datepicker"><input id="picked-text" type="text" size="35"/><input id="pick-button" type="button" onclick="pickADate();" value="pick"/></div>
 	<script type="text/javascript">
-		var pickedTxt = document.getElementById('picked-text');
-		var pickBtn = document.getElementById('pick-button');
-		var datepicker = new Calendar();
-		var datepickerElm = datepicker.getElement();
-		document.getElementById('datepicker').appendChild(datepickerElm);
-		datepickerElm.style.marginTop = '10px';
+		var pickedTxt = document.getElementById('picked-text'),
+			pickBtn = document.getElementById('pick-button'),
+			datepicker = new Calendar();
+		document.getElementById('datepicker').appendChild(datepicker.getElement());
+		datepicker.getElement().style.marginTop = '10px';
 		
 		datepicker.callback = function() {
 			pickedTxt.value = datepicker.getDate().getDateString();
@@ -218,17 +217,15 @@ To see the result you need the [HTML version](https://ZulNs.github.io/libs/calen
 
 	<div id="calendar-converter"></div>
 	<script type="text/javascript">
-		var cal1 = new Calendar(false, 1, false, true);
-		var cal2 = new Calendar(true, 0, false, true);
-		var cal1Elm = cal1.getElement();
-		var cal2Elm = cal2.getElement();
-		var cal1Mode = cal1.isHijriMode();
-		var cal2Mode = cal2.isHijriMode();
-		document.getElementById('calendar-converter').appendChild(cal1Elm);
-		document.getElementById('calendar-converter').appendChild(cal2Elm);
-		cal1Elm.style.display = 'inline-block';
-		cal2Elm.style.display = 'inline-block';
-		cal2Elm.style.marginLeft = '20px';
+		var cal1 = new Calendar(false, 1, false, true),
+			cal2 = new Calendar(true, 0, false, true),
+			cal1Mode = cal1.isHijriMode(),
+			cal2Mode = cal2.isHijriMode();
+		document.getElementById('calendar-converter').appendChild(cal1.getElement());
+		document.getElementById('calendar-converter').appendChild(cal2.getElement());
+		cal1.setDisplayStyle('inline-block');
+		cal2.setDisplayStyle('inline-block');
+		cal2.getElement().style.marginLeft = '20px';
 		cal1.show();
 		cal2.show();
 		
@@ -260,8 +257,8 @@ To see the result you need the [HTML version](https://ZulNs.github.io/libs/calen
 			cal1.show();
 		};
 		
-		cal1.onHide = function() {
-			cal1.show();
+		cal2.onHide = function() {
+			cal2.show();
 		};
 	</script>
 
