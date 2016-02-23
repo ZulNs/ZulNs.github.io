@@ -164,17 +164,17 @@ cal.onHide = function() {
 </li>
 </ul>
 <h2>Getting Started</h2>
-<h3>Using the Calendar Widget on a Web Page</h3>
+<h3>Embedding the Calendar Widget on a Web Page</h3>
 <p>Generally, you'll need to include these three files on any page to use the calendar widget:</p>
 <pre><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;https://ZulNs.github.io/libs/calendar.css&quot;/&gt;
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://ZulNs.github.io/libs/hijri-date.js&quot;&gt;&lt;/script&gt;
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://ZulNs.github.io/libs/calendar.js&quot;&gt;&lt;/script&gt;
 </code></pre>
-<p>For the following code examples, please insert them at anywhere you want within the document's body.</p>
 	<link rel="stylesheet" href="calendar.css">
 	<script type="text/javascript" src="hijri-date.js"></script>
 	<script type="text/javascript" src="calendar.js"></script>
-<h3>Using the Widget as a Calendar</h3>
+<p>For the following code examples, please insert them at anywhere you want within the document's body below the above code.</p>
+<h3>Embedding the Widget as a Calendar</h3>
 <h4>Code example:</h4>
 <pre><code>&lt;div id=&quot;calendar&quot;&gt;&lt;input id=&quot;show-button&quot; type=&quot;button&quot; onclick=&quot;showMe();&quot; value=&quot;Show Calendar&quot; /&gt;&lt;/div&gt;
 &lt;script type=&quot;text/javascript&quot;&gt;
@@ -210,7 +210,7 @@ cal.onHide = function() {
 			cal.show();
 		}
 	</script>
-<h3>Using the Widget as a Datepicker</h3>
+<h3>Embedding the Widget as a Datepicker</h3>
 <h4>Code example:</h4>
 <pre><code>&lt;div id=&quot;datepicker&quot;&gt;&lt;input id=&quot;picked-text&quot; type=&quot;text&quot; size=&quot;35&quot;/&gt;&lt;input id=&quot;pick-button&quot; type=&quot;button&quot; onclick=&quot;pickADate();&quot; value=&quot;pick&quot;/&gt;&lt;/div&gt;
 &lt;script type=&quot;text/javascript&quot;&gt;
@@ -222,6 +222,9 @@ cal.onHide = function() {
     
     datepicker.callback = function() {
         pickedTxt.value = datepicker.getDate().getDateString();
+        pickedTxt.selectionStart = 0;
+        pickedTxt.selectionEnd = pickedTxt.value.length;
+        pickedTxt.focus();
     };
     
     datepicker.onHide = function() {
@@ -245,6 +248,9 @@ cal.onHide = function() {
 		
 		datepicker.callback = function() {
 			pickedTxt.value = datepicker.getDate().getDateString();
+			pickedTxt.selectionStart = 0;
+			pickedTxt.selectionEnd = pickedTxt.value.length;
+			pickedTxt.focus();
 		};
 		
 		datepicker.onHide = function() {
@@ -279,7 +285,7 @@ cal.onHide = function() {
             cal2.disableCallback(false);
             cal1Mode = cal1.isHijriMode();
             cal2Mode = cal2.isHijriMode();
-        }
+        } // prevent from infinite loop when user change the calendar mode
         else
             cal2.setTime(cal1.getTime());
     };
@@ -291,17 +297,17 @@ cal.onHide = function() {
             cal1.disableCallback(false);
             cal1Mode = cal1.isHijriMode();
             cal2Mode = cal2.isHijriMode();
-        }
+        } // prevent from infinite loop when user change the calendar mode
         else
             cal1.setTime(cal2.getTime());
     };
     
     cal1.onHide = function() {
-        cal1.show();
+        cal1.show(); // prevent the widget from being closed
     };
     
     cal2.onHide = function() {
-        cal2.show();
+        cal2.show(); // prevent the widget from being closed
     };
 &lt;/script&gt;
 </code></pre>

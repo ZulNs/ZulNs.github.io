@@ -108,15 +108,15 @@ This widget can be used to display a **Realtime Analog Clock** besides as a **Ti
 
 ## Getting Started
 
-### Using the Timepicker Widget on a Web Page
+### Embedding the Timepicker Widget on a Web Page
 Generally, you'll need to include these both files on any page to use the widget:
 
 	<link rel="stylesheet" href="https://ZulNs.github.io/libs/timepicker.css"/>
 	<script type="text/javascript" src="https://ZulNs.github.io/libs/timepicker.js"></script>
 
-For the following code examples, please insert them at anywhere you want within the document's body.
+For the following code examples, please insert them at anywhere you want within the document's body below the above code.
 
-### Using the Widget as a Realtime Analog Clock
+### Embedding the Widget as a Realtime Analog Clock
 #### Code example:
 
 	<div id="clock"></div>
@@ -126,14 +126,14 @@ For the following code examples, please insert them at anywhere you want within 
 		clock.show();
 		
 		clock.callback = function() {
-			clock.show();
+			clock.show(); // prevent the widget from being closed
 		};
 	</script>
 
 #### Result:
 To see the result you need the [HTML version](https://ZulNs.github.io/libs/timepicker-api-doc.html) of this documentation.
 
-### Using the Widget as a Timepicker
+### Embedding the Widget as a Timepicker
 #### Code example:
 
 	<div id="timepicker"><input id="picked-text" type="text" size="32"/><input id="pick-button" type="button" onclick="pickATime();" value="pick"/></div>

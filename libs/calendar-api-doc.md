@@ -152,16 +152,16 @@ This calendar widget can be used to display **Gregorian** or **Hijri** date, and
 
 ## Getting Started
 
-### Using the Calendar Widget on a Web Page
+### Embedding the Calendar Widget on a Web Page
 Generally, you'll need to include these three files on any page to use the calendar widget:
 
 	<link rel="stylesheet" href="https://ZulNs.github.io/libs/calendar.css"/>
 	<script type="text/javascript" src="https://ZulNs.github.io/libs/hijri-date.js"></script>
 	<script type="text/javascript" src="https://ZulNs.github.io/libs/calendar.js"></script>
 
-For the following code examples, please insert them at anywhere you want within the document's body.
+For the following code examples, please insert them at anywhere you want within the document's body below the above code.
 
-### Using the Widget as a Calendar
+### Embedding the Widget as a Calendar
 #### Code example:
 
 	<div id="calendar"><input id="show-button" type="button" onclick="showMe();" value="Show Calendar" /></div>
@@ -184,7 +184,7 @@ For the following code examples, please insert them at anywhere you want within 
 #### Result:
 To see the result you need the [HTML version](https://ZulNs.github.io/libs/calendar-api-doc.html) of this documentation.
 
-### Using the Widget as a Datepicker
+### Embedding the Widget as a Datepicker
 #### Code example:
 
 	<div id="datepicker"><input id="picked-text" type="text" size="35"/><input id="pick-button" type="button" onclick="pickADate();" value="pick"/></div>
@@ -197,6 +197,9 @@ To see the result you need the [HTML version](https://ZulNs.github.io/libs/calen
 		
 		datepicker.callback = function() {
 			pickedTxt.value = datepicker.getDate().getDateString();
+			pickedTxt.selectionStart = 0;
+			pickedTxt.selectionEnd = pickedTxt.value.length;
+			pickedTxt.focus();
 		};
 		
 		datepicker.onHide = function() {
@@ -236,7 +239,7 @@ To see the result you need the [HTML version](https://ZulNs.github.io/libs/calen
 				cal2.disableCallback(false);
 				cal1Mode = cal1.isHijriMode();
 				cal2Mode = cal2.isHijriMode();
-			}
+			} // prevent from infinite loop when user change the calendar mode
 			else
 				cal2.setTime(cal1.getTime());
 		};
@@ -248,17 +251,17 @@ To see the result you need the [HTML version](https://ZulNs.github.io/libs/calen
 				cal1.disableCallback(false);
 				cal1Mode = cal1.isHijriMode();
 				cal2Mode = cal2.isHijriMode();
-			}
+			} // prevent from infinite loop when user change the calendar mode
 			else
 				cal1.setTime(cal2.getTime());
 		};
 		
 		cal1.onHide = function() {
-			cal1.show();
+			cal1.show(); // prevent the widget from being closed
 		};
 		
 		cal2.onHide = function() {
-			cal2.show();
+			cal2.show(); // prevent the widget from being closed
 		};
 	</script>
 
