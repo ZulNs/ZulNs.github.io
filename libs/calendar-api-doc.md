@@ -182,7 +182,7 @@ For the following code examples, please insert them at anywhere you want within 
 	</script>
 
 #### Result:
-To see the result you need the [HTML version](https://ZulNs.github.io/libs/calendar-api-doc.html) of this documentation.
+To see the result you need the [HTML version](https://ZulNs.github.io/libs/calendar-api-doc.html) of this documentation or via [CodePen](http://codepen.io/zulns/full/pgMdMY).
 
 ### Embedding the Widget as a Datepicker
 #### Code example:
@@ -213,7 +213,7 @@ To see the result you need the [HTML version](https://ZulNs.github.io/libs/calen
 	</script>
 
 #### Result:
-To see the result you need the [HTML version](https://ZulNs.github.io/libs/calendar-api-doc.html) of this documentation.
+To see the result you need the [HTML version](https://ZulNs.github.io/libs/calendar-api-doc.html) of this documentation or via [CodePen](http://codepen.io/zulns/full/vLopwV).
 
 ### Side by Side Gregorian - Hijri Calendar Converter
 #### Code example:
@@ -266,7 +266,7 @@ To see the result you need the [HTML version](https://ZulNs.github.io/libs/calen
 	</script>
 
 #### Result:
-To see the result you need the [HTML version](https://ZulNs.github.io/libs/calendar-api-doc.html) of this documentation.
+To see the result you need the [HTML version](https://ZulNs.github.io/libs/calendar-api-doc.html) of this documentation or via [CodePen](http://codepen.io/zulns/full/dGxJxK).
 
 ---
 #### Made By ZulNs

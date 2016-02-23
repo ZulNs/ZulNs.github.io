@@ -131,7 +131,7 @@ For the following code examples, please insert them at anywhere you want within 
 	</script>
 
 #### Result:
-To see the result you need the [HTML version](https://ZulNs.github.io/libs/timepicker-api-doc.html) of this documentation.
+To see the result you need the [HTML version](https://ZulNs.github.io/libs/timepicker-api-doc.html) of this documentation or via [CodePen](http://codepen.io/zulns/full/yemvNa).
 
 ### Embedding the Widget as a Timepicker
 #### Code example:
@@ -159,7 +159,7 @@ To see the result you need the [HTML version](https://ZulNs.github.io/libs/timep
 	</script>
 
 #### Result:
-To see the result you need the [HTML version](https://ZulNs.github.io/libs/timepicker-api-doc.html) of this documentation.
+To see the result you need the [HTML version](https://ZulNs.github.io/libs/timepicker-api-doc.html) of this documentation or via [CodePen](http://codepen.io/zulns/full/obKENy/).
 
 ---
 #### Made By ZulNs
