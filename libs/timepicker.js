@@ -21,6 +21,7 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 		pickedTime = document.createElement('div'),
 		hourSystemButton = document.createElement('div'),
 		okButton = document.createElement('div'),
+		displayStyle = 'block',
 		isHidden = true,
 		isPM = selectedHours >= 12,
 		isHourHand,
@@ -32,6 +33,7 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 		lastMinuteDeg,
 		centerX,
 		centerY,
+		cssTransform = Timepicker.getSupportedTransformProp(),
 		secondTimer,
 	
 	handleMouseDown = function(e) {
@@ -122,12 +124,12 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 			if (isReverseRotate) deg = deg - 180;
 			if (deg < 0) deg += 360;
 			target = isHourHand ? hourHand : minuteHand;
-			target.style.cssText = Timepicker.addVendorPrefix('transform: rotate(' + deg + 'deg);');
+			rotateElement(target, deg);
 			if (isHourHand) {
 				if ((0 <= deg && deg < 90 && 270 < lastHourDeg && lastHourDeg < 360) || (0 <= lastHourDeg && lastHourDeg < 90 && 270 < deg && deg < 360)) isPM = !isPM;
 				lastHourDeg = deg;
 				lastMinuteDeg = deg % 30 * 12;
-				minuteHand.style.cssText = Timepicker.addVendorPrefix('transform: rotate(' + lastMinuteDeg + 'deg);');
+				rotateElement(minuteHand, lastMinuteDeg);
 			}
 			else {
 				if ((270 < lastMinuteDeg && lastMinuteDeg < 360 && 0 <= deg && deg < 90) || (270 < deg && deg < 360 && 0 <= lastMinuteDeg && lastMinuteDeg < 90)) {
@@ -142,7 +144,7 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 					lastHourDeg %= 360;
 				}
 				lastMinuteDeg = deg;
-				hourHand.style.cssText = Timepicker.addVendorPrefix('transform: rotate(' + lastHourDeg + 'deg);');
+				rotateElement(hourHand, lastHourDeg);
 			}
 			selectedMinutes = 6 * lastHourDeg / 180;
 			selectedHours = ~~selectedMinutes;
@@ -179,9 +181,9 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 		var sec = selectedSeconds * 6;
 		lastMinuteDeg = (selectedMinutes + sec / 360) * 6;
 		lastHourDeg = (selectedHours % 12 + lastMinuteDeg / 360) * 30;
-		hourHand.style.cssText = Timepicker.addVendorPrefix('transform: rotate(' + lastHourDeg + 'deg);');
-		minuteHand.style.cssText = Timepicker.addVendorPrefix('transform: rotate(' + lastMinuteDeg + 'deg);');
-		secondHand.style.cssText = Timepicker.addVendorPrefix('transform: rotate(' + sec + 'deg);');
+		rotateElement(hourHand, lastHourDeg);
+		rotateElement(minuteHand, lastMinuteDeg);
+		rotateElement(secondHand, sec);
 	},
 	
 	getPickedTimeString = function() {
@@ -192,6 +194,26 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 	
 	label24HoursSystem = function() {
 		hourSystemButton.innerHTML = (is24HoursSystem ? '12' : '24') + 'H';
+	},
+	
+	rotateElement = function(elm, deg) {
+		elm.style[cssTransform] = 'rotate(' + deg + 'deg)';
+	},
+
+	
+	setTimepickerDisplay = function() {
+		timepicker.style.display = isHidden ? 'none' : displayStyle;
+	},
+	
+	scrollToFix = function() {
+		var dw = document.body.offsetWidth,
+			vw = window.innerWidth,
+			vh = window.innerHeight,
+			rect = timepicker.getBoundingClientRect(),
+			hsSpc = dw > vw ? 20 : 0,
+			scrollX = rect.left < 0 ? rect.left : 0,
+			scrollY = rect.bottom - rect.top > vh ? rect.top : rect.bottom > vh - hsSpc ? rect.bottom - vh + hsSpc : 0;
+		window.scrollBy(scrollX, scrollY);
 	},
 	
 	addEvents = function() {
@@ -228,18 +250,12 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 		}
 	},
 	
-	scrollToFix = function() {
-		var dw = document.body.offsetWidth,
-			vw = window.innerWidth,
-			vh = window.innerHeight,
-			rect = timepicker.getBoundingClientRect(),
-			hsSpc = dw > vw ? 20 : 0,
-			scrollX = rect.left < 0 ? rect.left : 0,
-			scrollY = rect.bottom - rect.top > vh ? rect.top : rect.bottom > vh - hsSpc ? rect.bottom - vh + hsSpc : 0;
-		window.scrollBy(scrollX, scrollY);
-	},
-	
 	createTimepicker = function() {
+		if (!cssTransform) {
+			self.destroy();
+			alert('Sorry, your browser not support CSS transform!');
+			return
+		}
 		// Initialize
 		timepicker.classList.add('timepicker');
 		clockFace.classList.add('clock-face');
@@ -261,7 +277,7 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 		secondHand.setAttribute('height', 120);
 		label24HoursSystem();
 		okButton.innerHTML = 'OK';
-		Timepicker.addOrRemoveClass(timepicker, isHidden, 'hidden');
+		setTimepickerDisplay();
 		timepicker.appendChild(clockFace);
 		timepicker.appendChild(hourHand);
 		timepicker.appendChild(minuteHand);
@@ -303,7 +319,7 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 			for (var i = 1; i <= 12; i++) {
 				ctx.fillText(i, 94 * Math.sin(i * Math.PI / 6), -94 * Math.cos(i * Math.PI / 6));
 			}
-			// Create hour pointer
+			// Create hour hand
 			ctx = hourHand.getContext('2d');
 			var radGrd = ctx.createRadialGradient(0, 0, 90, 70, 70, 20);
 			radGrd.addColorStop(0, '#e40');
@@ -315,7 +331,7 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 			ctx.lineTo(20, 90);
 			ctx.lineTo(10, 0);
 			ctx.fill();
-			// Create minute pointer
+			// Create minute hand
 			ctx = minuteHand.getContext('2d');
 			var radGrd = ctx.createRadialGradient(0, 0, 110, 90, 90, 20);
 			radGrd.addColorStop(0, '#06e');
@@ -331,7 +347,7 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 			ctx.beginPath();
 			ctx.arc(6, 90, 2, 0, 2 * Math.PI);
 			ctx.fill();
-			// Create second pointer
+			// Create second hand
 			ctx = secondHand.getContext('2d');
 			var radGrd = ctx.createRadialGradient(0, 0, 120, 100, 100, 20);
 			radGrd.addColorStop(0, '#3a3');
@@ -347,20 +363,22 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 			ctx.beginPath();
 			ctx.arc(4, 90, 2, 0, 2 * Math.PI);
 			ctx.fill();
+			// Finalize
 			Timepicker.addEvent(hourSystemButton, 'click', handleChangeHourSystem);
 			Timepicker.addEvent(okButton, 'click', handleOkButton);
 			if (isClockMode) secondTimer = window.setInterval(updateClockTime, 1000);
 			else {
 				addEvents();
-				Timepicker.addOrRemoveClass(hourHand, true, 'cursor-pointer');
-				Timepicker.addOrRemoveClass(minuteHand, true, 'cursor-pointer');
-				Timepicker.addOrRemoveClass(secondHand, true, 'hidden');
+				Timepicker.setCursor(hourHand, true);
+				Timepicker.setCursor(minuteHand, true);
+				secondHand.style.display = 'none';
 			}
 			updateClockPointers();
 			updatePickedTime();
 		}
 		else {
-			alert('You need Safari or Firefox 1.5+ to see this timepicker.');
+			self.destroy();
+			alert('Sorry, your browser not support HTML canvas!');
 		}
 	};
 	
@@ -411,10 +429,10 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 	};
 	
 	this.changeClockMode = function() {
-		Timepicker.addOrRemoveClass(hourHand, isClockMode, 'cursor-pointer');
-		Timepicker.addOrRemoveClass(minuteHand, isClockMode, 'cursor-pointer');
-		Timepicker.addOrRemoveClass(secondHand, isClockMode, 'hidden');
 		isClockMode = !isClockMode;
+		Timepicker.setCursor(hourHand, !isClockMode);
+		Timepicker.setCursor(minuteHand, !isClockMode);
+		secondHand.style.display = isClockMode ? '' : 'none';
 		if (isClockMode) {
 			removeEvents();
 			updateClockTime();
@@ -434,7 +452,7 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 	this.show = function() {
 		if (isHidden) {
 			isHidden = !isHidden;
-			Timepicker.addOrRemoveClass(timepicker, isHidden, 'hidden');
+			setTimepickerDisplay();
 			scrollToFix();
 		}
 	};
@@ -442,13 +460,18 @@ function Timepicker(isClockMode, is24HoursSystem, selectedHours, selectedMinutes
 	this.hide = function() {
 		if (!isHidden) {
 			isHidden = !isHidden;
-			Timepicker.addOrRemoveClass(timepicker, isHidden, 'hidden');
+			setTimepickerDisplay();
 		}
 	};
 	
 	this.destroy = function() {
 		timepicker.remove();
 		self = null;
+	};
+	
+	this.setDisplayStyle = function(style) {
+		displayStyle = style;
+		setTimepickerDisplay();
 	};
 	
 	this.callback;
@@ -466,15 +489,14 @@ Timepicker.removeEvent = function(elm, evt, callback) {
 	else elm.detachEvent('on' + evt, callback);
 };
 
-Timepicker.addOrRemoveClass = function(target, addFlag, className) {
-	if (addFlag) target.classList.add(className);
-	else target.classList.remove(className);
+Timepicker.setCursor = function(elm, pointer) {
+	elm.style.cursor = pointer ? 'pointer' : 'default';
 };
 
-Timepicker.addVendorPrefix = function(property) {
-	return	'-webkit-' + property +
-			'-moz-' + property +
-			'-o-' + property +
-			'-ms-' + property +
-			property;
+Timepicker.getSupportedTransformProp = function() {
+	var props = ['transform', 'MozTransform', 'WebkitTransfor', 'msTransform', 'OTransform'],
+		root = document.documentElement;
+	for (var i = 0; i < props.length; i++)
+		if (props[i] in root.style) return props[i];
+	return null;
 };

@@ -97,10 +97,3 @@
 	-moz-box-shadow: none;
 	box-shadow: none;
 }
-.timepicker.hidden,
-.timepicker .hidden {
-	display: none;
-}
-.timepicker .cursor-pointer {
-	cursor: pointer;
-}

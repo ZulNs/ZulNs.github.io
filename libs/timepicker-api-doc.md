@@ -1,7 +1,7 @@
 # Timepicker API Documentation
 
 ## Overview
-This widget can be used to display a **Realtime Analog Clock** besides as a **Timepicker**. As an timepicker, this widget can be directly draggable at both *hour hand* and *minute hand*. Drag at behind the axis of both hands which causes reverse rotation also supported. Dragging with touch devices is supported well. Toggling between 12 hours and 24 hours system can be done on the fly.
+This widget can be used to display a **Realtime Analog Clock** besides as a **Timepicker**. As an timepicker, this widget can be directly draggable at both *hour hand* and *minute hand*. Drag at behind the axis of both hands which causes reverse rotation is also supported. Dragging with touch devices is supported well. Dragging at the clock hand is very smoothly, no matter how much angle of rotation have been made by your finger or mouse pointer, over there the appropriate hand will point at without lagging nor leading even a little. Toggling between 12 hours and 24 hours system can be done on the fly.
 
 ## Download
 - [timepicker.js](https://ZulNs.github.io/libs/timepicker.js)
@@ -31,7 +31,7 @@ This widget can be used to display a **Realtime Analog Clock** besides as a **Ti
 
 - **`hours`**, **`minutes`**, and **`seconds`**
 
-  Initial time in 24 hours system format which is the clock's hands pointed at. When those are omitted, the current time will be used.
+  Initial time in 24 hours system format which is the clock's hands will point at. When those are omitted, the current time will be used.
 
 ## Public Methods
 - **`changeClockMode()`**
@@ -77,6 +77,10 @@ This widget can be used to display a **Realtime Analog Clock** besides as a **Ti
 - **`isHidden()`**
 
   Returns `true` when the current widget was hidden or `false` if wasn't.
+
+- **`setDisplayStyle(style)`**
+
+  Sets the widget display style on the page by styling the CSS `display` property to a style which represents by `style` string argument. Default string value is `"block"`, which causes an instance of this widget takes up one row in the document page. To display this widget with another HTML element in a row, provide `"inline-block"` to this argument.
 
 - **`setHours(hours)`**
 
@@ -134,16 +138,18 @@ To see the result you need the [HTML version](https://ZulNs.github.io/libs/timep
 
 	<div id="timepicker"><input id="picked-text" type="text" size="32"/><input id="pick-button" type="button" onclick="pickATime();" value="pick"/></div>
 	<script type="text/javascript">
-		var pickedTxt = document.getElementById('picked-text');
-		var pickBtn = document.getElementById('pick-button');
-		var timepicker = new Timepicker();
-		var timepickerElm = timepicker.getElement();
-		document.getElementById('timepicker').appendChild(timepickerElm);
-		timepickerElm.style.marginTop = '10px';
+		var pickedTxt = document.getElementById('picked-text'),
+			pickBtn = document.getElementById('pick-button'),
+			timepicker = new Timepicker();
+		document.getElementById('timepicker').appendChild(timepicker.getElement());
+		timepicker.getElement().style.marginTop = '10px';
 		
 		timepicker.callback = function() {
-			pickedTxt.value = timepicker.getTimeString();
 			pickBtn.style.display = 'inline-block';
+			pickedTxt.value = timepicker.getTimeString();
+			pickedTxt.selectionStart = 0;
+			pickedTxt.selectionEnd = pickedTxt.value.length;
+			pickedTxt.focus();
 		};
 		
 		function pickATime() {

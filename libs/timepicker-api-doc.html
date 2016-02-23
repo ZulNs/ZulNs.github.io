@@ -18,7 +18,7 @@
 <body>
 <h1>Timepicker API Documentation</h1>
 <h2>Overview</h2>
-<p>This widget can be used to display a <strong>Realtime Analog Clock</strong> besides as a <strong>Timepicker</strong>. As an timepicker, this widget can be directly draggable at both <em>hour hand</em> and <em>minute hand</em>. Drag at behind the axis of both hands which causes reverse rotation also supported. Dragging with touch devices is supported well.</p>
+<p>This widget can be used to display a <strong>Realtime Analog Clock</strong> besides as a <strong>Timepicker</strong>. As an timepicker, this widget can be directly draggable at both <em>hour hand</em> and <em>minute hand</em>. Drag at behind the axis of both hands which causes reverse rotation is also supported. Dragging with touch devices is supported well. Dragging at the clock hand is very smoothly, no matter how much angle of rotation have been made by your finger or mouse pointer, over there the appropriate hand will point at without lagging nor leading even a little. Toggling between 12 hours and 24 hours system can be done on the fly.</p>
 <h2>Download</h2>
 <ul>
 <li><a href="timepicker.js">timepicker.js</a></li>
@@ -45,7 +45,7 @@
 </li>
 <li>
 <p><strong><code>hours</code></strong>, <strong><code>minutes</code></strong>, and <strong><code>seconds</code></strong></p>
-<p>Initial time in 24 hours system format which is the clock's hands pointed at. When those are omitted, the current time will be used.</p>
+<p>Initial time in 24 hours system format which is the clock's hands will point at. When those are omitted, the current time will be used.</p>
 </li>
 </ul>
 <h2>Public Methods</h2>
@@ -93,6 +93,10 @@
 <li>
 <p><strong><code>isHidden()</code></strong></p>
 <p>Returns <code>true</code> when the current widget was hidden or <code>false</code> if wasn't.</p>
+</li>
+<li>
+<p><strong><code>setDisplayStyle(style)</code></strong></p>
+<p>Sets the widget display style on the page by styling the CSS <code>display</code> property to a style which represents by <code>style</code> string argument. Default string value is <code>&quot;block&quot;</code>, which causes an instance of this widget takes up one row in the document page. To display this widget with another HTML element in a row, provide <code>&quot;inline-block&quot;</code> to this argument.</p>
 </li>
 <li>
 <p><strong><code>setHours(hours)</code></strong></p>
@@ -157,16 +161,18 @@ widget.callback = function() {
 <h4>Code example:</h4>
 <pre><code>&lt;div id=&quot;timepicker&quot;&gt;&lt;input id=&quot;picked-text&quot; type=&quot;text&quot; size=&quot;32&quot;/&gt;&lt;input id=&quot;pick-button&quot; type=&quot;button&quot; onclick=&quot;pickATime();&quot; value=&quot;pick&quot;/&gt;&lt;/div&gt;
 &lt;script type=&quot;text/javascript&quot;&gt;
-    var pickedTxt = document.getElementById('picked-text');
-    var pickBtn = document.getElementById('pick-button');
-    var timepicker = new Timepicker();
-    var timepickerElm = timepicker.getElement();
-    document.getElementById('timepicker').appendChild(timepickerElm);
-    timepickerElm.style.marginTop = '10px';
+    var pickedTxt = document.getElementById('picked-text'),
+        pickBtn = document.getElementById('pick-button'),
+        timepicker = new Timepicker();
+    document.getElementById('timepicker').appendChild(timepicker.getElement());
+    timepicker.getElement().style.marginTop = '10px';
     
     timepicker.callback = function() {
-        pickedTxt.value = timepicker.getTimeString();
         pickBtn.style.display = 'inline-block';
+        pickedTxt.value = timepicker.getTimeString();
+        pickedTxt.selectionStart = 0;
+        pickedTxt.selectionEnd = pickedTxt.value.length;
+        pickedTxt.focus();
     };
     
     function pickATime() {
@@ -178,16 +184,18 @@ widget.callback = function() {
 <h4>Result:</h4>
 	<div id="timepicker"><input id="picked-text" type="text" size="32"/><input id="pick-button" type="button" onclick="pickATime();" value="pick"/></div>
 	<script type="text/javascript">
-		var pickedTxt = document.getElementById('picked-text');
-		var pickBtn = document.getElementById('pick-button');
-		var timepicker = new Timepicker();
-		var timepickerElm = timepicker.getElement();
-		document.getElementById('timepicker').appendChild(timepickerElm);
-		timepickerElm.style.marginTop = '10px';
+		var pickedTxt = document.getElementById('picked-text'),
+			pickBtn = document.getElementById('pick-button'),
+			timepicker = new Timepicker();
+		document.getElementById('timepicker').appendChild(timepicker.getElement());
+		timepicker.getElement().style.marginTop = '10px';
 		
 		timepicker.callback = function() {
-			pickedTxt.value = timepicker.getTimeString();
 			pickBtn.style.display = 'inline-block';
+			pickedTxt.value = timepicker.getTimeString();
+			pickedTxt.selectionStart = 0;
+			pickedTxt.selectionEnd = pickedTxt.value.length;
+			pickedTxt.focus();
 		};
 		
 		function pickATime() {
