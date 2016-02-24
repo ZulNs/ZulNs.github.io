@@ -17,7 +17,7 @@
 		float: right;
 	}
 	.style-option select {
-		background: inherit;
+		background-color: transparent;
 		color: inherit;
 		border: 0;
 		outline: 0;
@@ -38,11 +38,11 @@
 <div class="style-option">
 <span>Markdown style option: </span>
 <select id="style-option" onChange="selectStyle();">
-<option value="clearness">Clearness</option>
-<option value="clearness-dark">Clearness Dark</option>
-<option value="github" selected>GitHub</option>
-<option value="standard">Standard</option>
-<option value="top-marks">Top Marks</option>
+<option style="color: #737373; background-color: #fff" value="clearness">Clearness</option>
+<option style="color: #fff; background-color: #282a36" value="clearness-dark">Clearness Dark</option>
+<option style="color: #000; background-color: #F8F8F8" value="github" selected>GitHub</option>
+<option style="color: #333; background-color: #fff" value="standard">Standard</option>
+<option style="color: #000; background-color: #fff" value="top-marks">Top Marks</option>
 </select>
 <script type="text/javascript">
 	var styleOption = document.getElementById('style-option');
@@ -164,9 +164,9 @@
 <p><strong><code>callback</code></strong></p>
 <p>Assign this property to a function that do some processes when a time was selected or when the widget was closed.</p>
 <p>For example:</p>
-<pre><code>var widget = new Timepicker();
-widget.callback = function() {
-    // do stuff
+<pre><code><span class="keyword">var</span> widget = <span class="keyword">new</span> Timepicker();
+widget.callback = <span class="keyword">function</span>() {
+    <span class="comment">// do stuff</span>
 };
 </code></pre>
 </li>
@@ -174,24 +174,24 @@ widget.callback = function() {
 <h2>Getting Started</h2>
 <h3>Embedding the Timepicker Widget on a Web Page</h3>
 <p>Generally, you'll need to include these both files on any page to use the widget:</p>
-<pre><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;https://ZulNs.github.io/libs/timepicker.css&quot;/&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://ZulNs.github.io/libs/timepicker.js&quot;&gt;&lt;/script&gt;
+<pre><code><span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"https://ZulNs.github.io/libs/timepicker.css"</span>/&gt;</span>
+<span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"https://ZulNs.github.io/libs/timepicker.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
 </code></pre>
 <p>For the following code examples, please insert them at anywhere you want within the document's body below the above code.</p>
 	<link rel="stylesheet" href="timepicker.css"/>
 	<script type="text/javascript" src="timepicker.js"></script>
 <h3>Embedding the Widget as a Realtime Analog Clock</h3>
 <h4>Code example:</h4>
-<pre><code>&lt;div id=&quot;clock&quot;&gt;&lt;/div&gt;
-&lt;script type=&quot;text/javascript&quot;&gt;
-    var clock = new Timepicker(true);
-    document.getElementById('clock').appendChild(clock.getElement());
+<pre><code><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"clock"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+<span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript">
+    <span class="keyword">var</span> clock = <span class="keyword">new</span> Timepicker(<span class="literal">true</span>);
+    document.getElementById(<span class="string">'clock'</span>).appendChild(clock.getElement());
     clock.show();
-    
-    clock.callback = function() {
-        clock.show(); // prevent the widget from being closed
+
+    clock.callback = <span class="keyword">function</span>() {
+        clock.show(); <span class="comment">// prevent the widget from being closed</span>
     };
-&lt;/script&gt;
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
 </code></pre>
 <h4>Result:</h4>
 	<div id="clock"></div>
@@ -207,27 +207,27 @@ widget.callback = function() {
 <p>&nbsp;</p>
 <h3>Embedding the Widget as a Timepicker</h3>
 <h4>Code example:</h4>
-<pre><code>&lt;div id=&quot;timepicker&quot;&gt;&lt;input id=&quot;picked-text&quot; type=&quot;text&quot; size=&quot;32&quot;/&gt;&lt;input id=&quot;pick-button&quot; type=&quot;button&quot; onclick=&quot;pickATime();&quot; value=&quot;pick&quot;/&gt;&lt;/div&gt;
-&lt;script type=&quot;text/javascript&quot;&gt;
-    var pickedTxt = document.getElementById('picked-text'),
-        pickBtn = document.getElementById('pick-button'),
-        timepicker = new Timepicker();
-    document.getElementById('timepicker').appendChild(timepicker.getElement());
-    timepicker.getElement().style.marginTop = '10px';
-    
-    timepicker.callback = function() {
-        pickBtn.style.display = 'inline-block';
+<pre><code><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"timepicker"</span>&gt;</span><span class="tag">&lt;<span class="title">input</span> <span class="attribute">id</span>=<span class="value">"picked-text"</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">size</span>=<span class="value">"32"</span>/&gt;</span><span class="tag">&lt;<span class="title">input</span> <span class="attribute">id</span>=<span class="value">"pick-button"</span> <span class="attribute">type</span>=<span class="value">"button"</span> <span class="attribute">onclick</span>=<span class="value">"pickATime();"</span> <span class="attribute">value</span>=<span class="value">"pick"</span>/&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+<span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript">
+    <span class="keyword">var</span> pickedTxt = document.getElementById(<span class="string">'picked-text'</span>),
+        pickBtn = document.getElementById(<span class="string">'pick-button'</span>),
+        timepicker = <span class="keyword">new</span> Timepicker();
+    document.getElementById(<span class="string">'timepicker'</span>).appendChild(timepicker.getElement());
+    timepicker.getElement().style.marginTop = <span class="string">'10px'</span>;
+
+    timepicker.callback = <span class="keyword">function</span>() {
+        pickBtn.style.display = <span class="string">'inline-block'</span>;
         pickedTxt.value = timepicker.getTimeString();
-        pickedTxt.selectionStart = 0;
+        pickedTxt.selectionStart = <span class="number">0</span>;
         pickedTxt.selectionEnd = pickedTxt.value.length;
         pickedTxt.focus();
     };
-    
-    function pickATime() {
-        pickBtn.style.display = 'none';
+
+    <span class="function"><span class="keyword">function</span> <span class="title">pickATime</span><span class="params">()</span> {</span>
+        pickBtn.style.display = <span class="string">'none'</span>;
         timepicker.show();
     }
-&lt;/script&gt;
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
 </code></pre>
 <h4>Result:</h4>
 	<div id="timepicker"><input id="picked-text" type="text" size="32"/><input id="pick-button" type="button" onclick="pickATime();" value="pick"/></div>

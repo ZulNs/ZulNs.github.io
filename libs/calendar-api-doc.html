@@ -17,7 +17,7 @@
 		float: right;
 	}
 	.style-option select {
-		background: inherit;
+		background-color: transparent;
 		color: inherit;
 		border: 0;
 		outline: 0;
@@ -38,11 +38,11 @@
 <div class="style-option">
 <span>Markdown style option: </span>
 <select id="style-option" onChange="selectStyle();">
-<option value="clearness">Clearness</option>
-<option value="clearness-dark">Clearness Dark</option>
-<option value="github" selected>GitHub</option>
-<option value="standard">Standard</option>
-<option value="top-marks">Top Marks</option>
+<option style="color: #737373; background-color: #fff" value="clearness">Clearness</option>
+<option style="color: #fff; background-color: #282a36" value="clearness-dark" selected>Clearness Dark</option>
+<option style="color: #000; background-color: #F8F8F8" value="github">GitHub</option>
+<option style="color: #333; background-color: #fff" value="standard">Standard</option>
+<option style="color: #000; background-color: #fff" value="top-marks">Top Marks</option>
 </select>
 <script type="text/javascript">
 	var styleOption = document.getElementById('style-option');
@@ -193,9 +193,9 @@
 <p><strong><code>callback</code></strong></p>
 <p>Assign this property to a function that do some processes when a date was selected. This function will be called as long as the <em>internal calling permission flag</em> was in the enabled state. The calling permission state can be changed through <code>disableCallback(disabled_state)</code> method.</p>
 <p>For example:</p>
-<pre><code>var cal = new Calendar();
-cal.callback = function() {
-    // do stuff
+<pre><code><span class="keyword">var</span> cal = <span class="keyword">new</span> Calendar();
+cal.callback = <span class="keyword">function</span>() {
+    <span class="comment">// do stuff</span>
 };
 </code></pre>
 </li>
@@ -203,8 +203,8 @@ cal.callback = function() {
 <p><strong><code>onHide</code></strong></p>
 <p>Assign this property to a function that do some processes when the calendar was hidden/closed.</p>
 <p>For example, this destroys the widget when it was closed:</p>
-<pre><code>var cal = new Calendar();
-cal.onHide = function() {
+<pre><code><span class="keyword">var</span> cal = <span class="keyword">new</span> Calendar();
+cal.onHide = <span class="keyword">function</span>() {
     cal.destroy();
 };
 </code></pre>
@@ -213,9 +213,9 @@ cal.onHide = function() {
 <h2>Getting Started</h2>
 <h3>Embedding the Calendar Widget on a Web Page</h3>
 <p>Generally, you'll need to include these three files on any page to use the calendar widget:</p>
-<pre><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;https://ZulNs.github.io/libs/calendar.css&quot;/&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://ZulNs.github.io/libs/hijri-date.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://ZulNs.github.io/libs/calendar.js&quot;&gt;&lt;/script&gt;
+<pre><code><span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"https://ZulNs.github.io/libs/calendar.css"</span>/&gt;</span>
+<span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"https://ZulNs.github.io/libs/hijri-date.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+<span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"https://ZulNs.github.io/libs/calendar.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
 </code></pre>
 	<link rel="stylesheet" href="calendar.css">
 	<script type="text/javascript" src="hijri-date.js"></script>
@@ -223,22 +223,22 @@ cal.onHide = function() {
 <p>For the following code examples, please insert them at anywhere you want within the document's body below the above code.</p>
 <h3>Embedding the Widget as a Calendar</h3>
 <h4>Code example:</h4>
-<pre><code>&lt;div id=&quot;calendar&quot;&gt;&lt;input id=&quot;show-button&quot; type=&quot;button&quot; onclick=&quot;showMe();&quot; value=&quot;Show Calendar&quot; /&gt;&lt;/div&gt;
-&lt;script type=&quot;text/javascript&quot;&gt;
-    var showBtn = document.getElementById('show-button'),
-        cal = new Calendar();
-    document.getElementById('calendar').appendChild(cal.getElement());
+<pre><code><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"calendar"</span>&gt;</span><span class="tag">&lt;<span class="title">input</span> <span class="attribute">id</span>=<span class="value">"show-button"</span> <span class="attribute">type</span>=<span class="value">"button"</span> <span class="attribute">onclick</span>=<span class="value">"showMe();"</span> <span class="attribute">value</span>=<span class="value">"Show Calendar"</span> /&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+<span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript">
+    <span class="keyword">var</span> showBtn = document.getElementById(<span class="string">'show-button'</span>),
+        cal = <span class="keyword">new</span> Calendar();
+    document.getElementById(<span class="string">'calendar'</span>).appendChild(cal.getElement());
     showMe();
-    
-    cal.onHide = function() {
-        showBtn.style.display = 'block'
+
+    cal.onHide = <span class="keyword">function</span>() {
+        showBtn.style.display = <span class="string">'block'</span>
     };
-    
-    function showMe() {
-        showBtn.style.display = 'none';
+
+    <span class="function"><span class="keyword">function</span> <span class="title">showMe</span><span class="params">()</span> {</span>
+        showBtn.style.display = <span class="string">'none'</span>;
         cal.show();
     }
-&lt;/script&gt;
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
 </code></pre>
 <h4>Result:</h4>
 	<div id="calendar"><input id="show-button" type="button" onclick="showMe();" value="Show Calendar" /></div>
@@ -260,30 +260,30 @@ cal.onHide = function() {
 <p>&nbsp;</p>
 <h3>Embedding the Widget as a Datepicker</h3>
 <h4>Code example:</h4>
-<pre><code>&lt;div id=&quot;datepicker&quot;&gt;&lt;input id=&quot;picked-text&quot; type=&quot;text&quot; size=&quot;35&quot;/&gt;&lt;input id=&quot;pick-button&quot; type=&quot;button&quot; onclick=&quot;pickADate();&quot; value=&quot;pick&quot;/&gt;&lt;/div&gt;
-&lt;script type=&quot;text/javascript&quot;&gt;
-    var pickedTxt = document.getElementById('picked-text'),
-        pickBtn = document.getElementById('pick-button'),
-        datepicker = new Calendar();
-    document.getElementById('datepicker').appendChild(datepicker.getElement());
-    datepicker.getElement().style.marginTop = '10px';
-    
-    datepicker.callback = function() {
+<pre><code><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"datepicker"</span>&gt;</span><span class="tag">&lt;<span class="title">input</span> <span class="attribute">id</span>=<span class="value">"picked-text"</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">size</span>=<span class="value">"35"</span>/&gt;</span><span class="tag">&lt;<span class="title">input</span> <span class="attribute">id</span>=<span class="value">"pick-button"</span> <span class="attribute">type</span>=<span class="value">"button"</span> <span class="attribute">onclick</span>=<span class="value">"pickADate();"</span> <span class="attribute">value</span>=<span class="value">"pick"</span>/&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+<span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript">
+    <span class="keyword">var</span> pickedTxt = document.getElementById(<span class="string">'picked-text'</span>),
+        pickBtn = document.getElementById(<span class="string">'pick-button'</span>),
+        datepicker = <span class="keyword">new</span> Calendar();
+    document.getElementById(<span class="string">'datepicker'</span>).appendChild(datepicker.getElement());
+    datepicker.getElement().style.marginTop = <span class="string">'10px'</span>;
+
+    datepicker.callback = <span class="keyword">function</span>() {
         pickedTxt.value = datepicker.getDate().getDateString();
-        pickedTxt.selectionStart = 0;
+        pickedTxt.selectionStart = <span class="number">0</span>;
         pickedTxt.selectionEnd = pickedTxt.value.length;
         pickedTxt.focus();
     };
-    
-    datepicker.onHide = function() {
-        pickBtn.style.display = 'inline-block';
+
+    datepicker.onHide = <span class="keyword">function</span>() {
+        pickBtn.style.display = <span class="string">'inline-block'</span>;
     };
-    
-    function pickADate() {
-        pickBtn.style.display = 'none';
+
+    <span class="function"><span class="keyword">function</span> <span class="title">pickADate</span><span class="params">()</span> {</span>
+        pickBtn.style.display = <span class="string">'none'</span>;
         datepicker.show();
     }
-&lt;/script&gt;
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
 </code></pre>
 <h4>Result:</h4>
 	<div id="datepicker"><input id="picked-text" type="text" size="35"/><input id="pick-button" type="button" onclick="pickADate();" value="pick"/></div>
@@ -313,52 +313,52 @@ cal.onHide = function() {
 <p>&nbsp;</p>
 <h3>Side by Side Gregorian - Hijri Calendar Converter</h3>
 <h4>Code example:</h4>
-<pre><code>&lt;div id=&quot;calendar-converter&quot;&gt;&lt;/div&gt;
-&lt;script type=&quot;text/javascript&quot;&gt;
-    var cal1 = new Calendar(false, 1, false, true),
-        cal2 = new Calendar(true, 0, false, true),
+<pre><code><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"calendar-converter"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+<span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript">
+    <span class="keyword">var</span> cal1 = <span class="keyword">new</span> Calendar(<span class="literal">false</span>, <span class="number">1</span>, <span class="literal">false</span>, <span class="literal">true</span>),
+        cal2 = <span class="keyword">new</span> Calendar(<span class="literal">true</span>, <span class="number">0</span>, <span class="literal">false</span>, <span class="literal">true</span>),
         cal1Mode = cal1.isHijriMode(),
         cal2Mode = cal2.isHijriMode();
-    document.getElementById('calendar-converter').appendChild(cal1.getElement());
-    document.getElementById('calendar-converter').appendChild(cal2.getElement());
-    cal1.setDisplayStyle('inline-block');
-    cal2.setDisplayStyle('inline-block');
-    cal2.getElement().style.marginLeft = '20px';
+    document.getElementById(<span class="string">'calendar-converter'</span>).appendChild(cal1.getElement());
+    document.getElementById(<span class="string">'calendar-converter'</span>).appendChild(cal2.getElement());
+    cal1.setDisplayStyle(<span class="string">'inline-block'</span>);
+    cal2.setDisplayStyle(<span class="string">'inline-block'</span>);
+    cal2.getElement().style.marginLeft = <span class="string">'20px'</span>;
     cal1.show();
     cal2.show();
-    
-    cal1.callback = function() {
-        if (cal1Mode !== cal1.isHijriMode()) {
-            cal2.disableCallback(true);
+
+    cal1.callback = <span class="keyword">function</span>() {
+        <span class="keyword">if</span> (cal1Mode !== cal1.isHijriMode()) {
+            cal2.disableCallback(<span class="literal">true</span>);
             cal2.changeDateMode();
-            cal2.disableCallback(false);
+            cal2.disableCallback(<span class="literal">false</span>);
             cal1Mode = cal1.isHijriMode();
             cal2Mode = cal2.isHijriMode();
-        } // prevent from infinite loop when user change the calendar mode
-        else
+        } <span class="comment">// prevent from infinite loop when user change the calendar mode</span>
+        <span class="keyword">else</span>
             cal2.setTime(cal1.getTime());
     };
-    
-    cal2.callback = function() {
-        if (cal2Mode !== cal2.isHijriMode()) {
-            cal1.disableCallback(true);
+
+    cal2.callback = <span class="keyword">function</span>() {
+        <span class="keyword">if</span> (cal2Mode !== cal2.isHijriMode()) {
+            cal1.disableCallback(<span class="literal">true</span>);
             cal1.changeDateMode();
-            cal1.disableCallback(false);
+            cal1.disableCallback(<span class="literal">false</span>);
             cal1Mode = cal1.isHijriMode();
             cal2Mode = cal2.isHijriMode();
-        } // prevent from infinite loop when user change the calendar mode
-        else
+        } <span class="comment">// prevent from infinite loop when user change the calendar mode</span>
+        <span class="keyword">else</span>
             cal1.setTime(cal2.getTime());
     };
-    
-    cal1.onHide = function() {
-        cal1.show(); // prevent the widget from being closed
+
+    cal1.onHide = <span class="keyword">function</span>() {
+        cal1.show(); <span class="comment">// prevent the widget from being closed</span>
     };
-    
-    cal2.onHide = function() {
-        cal2.show(); // prevent the widget from being closed
+
+    cal2.onHide = <span class="keyword">function</span>() {
+        cal2.show(); <span class="comment">// prevent the widget from being closed</span>
     };
-&lt;/script&gt;
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
 </code></pre>
 <h4>Result:</h4>
 	<div id="calendar-converter"></div>
