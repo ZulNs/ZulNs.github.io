@@ -12,9 +12,57 @@
 	<meta name="copyright" content="ZulNs">
 	<link rel="icon" href="../favicon.ico" type="image/x-icon">
 	<!--link rel="icon" href="favicon.png" type="image/png"-->
-	<link rel="stylesheet" href="markdown-viewer-clearness-dark.css">
+<style type="text/css">
+	.style-option {
+		float: right;
+	}
+	.style-option select {
+		background: inherit;
+		color: inherit;
+		border: 0;
+		outline: 0;
+		padding: 0;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		-o-appearance: none;
+		appearance: none;
+		overflow: hidden;
+		cursor: pointer;
+	}
+	.style-option select::-ms-expand {
+		display: none;
+	}
+</style>
 </head>
 <body>
+<div class="style-option">
+<span>Markdown style option: </span>
+<select id="style-option" onChange="selectStyle();">
+<option value="clearness">Clearness</option>
+<option value="clearness-dark">Clearness Dark</option>
+<option value="github" selected>GitHub</option>
+<option value="standard">Standard</option>
+<option value="top-marks">Top Marks</option>
+</select>
+<script type="text/javascript">
+	var styleOption = document.getElementById('style-option');
+	applyStyle();
+	
+	function selectStyle() {
+		document.body.removeChild(document.getElementById('current-style'));
+		applyStyle();
+	}
+	
+	function applyStyle() {
+		var link = document.createElement('link');
+		link.id = 'current-style';
+		link.rel = 'stylesheet';
+		link.href = 'markdown-viewer-' + styleOption.value + '.css';
+		document.body.appendChild(link);
+	}
+</script>
+</div>
+<p>&nbsp;</p>
 <h1>Calendar API Documentation</h1>
 <h2>Overview</h2>
 <p>This calendar widget can be used to display <strong>Gregorian</strong> or <strong>Hijri</strong> date, and of course as the converter between the two calendar system, it can also be used as datepicker for both systems. It's full customizable for above both calendar system interchange, first day of week (<strong>Monday</strong> or <strong>Sunday</strong>), auto hide calendar on select a date, auto select the date when <strong>month</strong> or <strong>year</strong> value was changed. This customization can be applied on the fly (at run time) also of course in the way programmatically (at design time). This widget has a <em>month bar</em> which has a drop down list to select the desired month between 12 available month names for the concerned calendar system. There are two buttons associated with the sequence of the month which serve to lower and raise its sequence by one step. This widget also has a <em>year bar</em> which its value can be directly edited. Similar to the <em>month bar</em>, the <em>year bar</em> also has two buttons associated with its value which serve to decrement and increment that value by one. Only difference that <em>year bar</em> has another extra four buttons which change the year value respectively decrement by 100, decrement by 10, increment by 10, and increment by 100. Those extra buttons can be displayed or hidden on the fly at will of the user.</p>
@@ -209,9 +257,7 @@ cal.onHide = function() {
 			cal.show();
 		}
 	</script>
-<h4>Result on CodePen:</h4>
-<p data-height="268" data-theme-id="22373" data-slug-hash="pgMdMY" data-default-tab="result" data-user="zulns" class='codepen'>See the Pen <a href='http://codepen.io/zulns/pen/pgMdMY/'>Embedding  the Widget as a Calendar</a> by ZulNs (<a href='http://codepen.io/zulns'>@zulns</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
-<script async src="http://assets.codepen.io/assets/embed/ei.js"></script>
+<p>&nbsp;</p>
 <h3>Embedding the Widget as a Datepicker</h3>
 <h4>Code example:</h4>
 <pre><code>&lt;div id=&quot;datepicker&quot;&gt;&lt;input id=&quot;picked-text&quot; type=&quot;text&quot; size=&quot;35&quot;/&gt;&lt;input id=&quot;pick-button&quot; type=&quot;button&quot; onclick=&quot;pickADate();&quot; value=&quot;pick&quot;/&gt;&lt;/div&gt;
@@ -264,6 +310,7 @@ cal.onHide = function() {
 			datepicker.show();
 		}
 	</script>
+<p>&nbsp;</p>
 <h3>Side by Side Gregorian - Hijri Calendar Converter</h3>
 <h4>Code example:</h4>
 <pre><code>&lt;div id=&quot;calendar-converter&quot;&gt;&lt;/div&gt;
@@ -362,7 +409,8 @@ cal.onHide = function() {
 		
 		window.scrollTo(0,0);
 	</script>
-<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <hr>
 <h4>Made By ZulNs</h4>
 <h5>@Yogyakarta, January 2016</h5>

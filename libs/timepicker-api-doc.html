@@ -12,9 +12,57 @@
 	<meta name="copyright" content="ZulNs">
 	<link rel="icon" href="../favicon.ico" type="image/x-icon">
 	<!--link rel="icon" href="favicon.png" type="image/png"-->
-	<link rel="stylesheet" href="markdown-viewer-clearness.css">
+<style type="text/css">
+	.style-option {
+		float: right;
+	}
+	.style-option select {
+		background: inherit;
+		color: inherit;
+		border: 0;
+		outline: 0;
+		padding: 0;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		-o-appearance: none;
+		appearance: none;
+		overflow: hidden;
+		cursor: pointer;
+	}
+	.style-option select::-ms-expand {
+		display: none;
+	}
+</style>
 </head>
 <body>
+<div class="style-option">
+<span>Markdown style option: </span>
+<select id="style-option" onChange="selectStyle();">
+<option value="clearness">Clearness</option>
+<option value="clearness-dark">Clearness Dark</option>
+<option value="github" selected>GitHub</option>
+<option value="standard">Standard</option>
+<option value="top-marks">Top Marks</option>
+</select>
+<script type="text/javascript">
+	var styleOption = document.getElementById('style-option');
+	applyStyle();
+	
+	function selectStyle() {
+		document.body.removeChild(document.getElementById('current-style'));
+		applyStyle();
+	}
+	
+	function applyStyle() {
+		var link = document.createElement('link');
+		link.id = 'current-style';
+		link.rel = 'stylesheet';
+		link.href = 'markdown-viewer-' + styleOption.value + '.css';
+		document.body.appendChild(link);
+	}
+</script>
+</div>
+<p>&nbsp;</p>
 <h1>Timepicker API Documentation</h1>
 <h2>Overview</h2>
 <p>This widget can be used to display a <strong>Realtime Analog Clock</strong> besides as a <strong>Timepicker</strong>. As an timepicker, this widget can be directly draggable at both <em>hour hand</em> and <em>minute hand</em>. Drag at behind the axis of both hands which causes reverse rotation is also supported. Dragging with touch devices is supported well. Dragging at the clock hand is very smoothly, no matter how much angle of rotation have been made by your finger or mouse pointer, over there the appropriate hand will point at without lagging nor leading even a little. Toggling between 12 hours and 24 hours system can be done on the fly.</p>
@@ -156,6 +204,7 @@ widget.callback = function() {
 			clock.show();
 		};
 	</script>
+<p>&nbsp;</p>
 <h3>Embedding the Widget as a Timepicker</h3>
 <h4>Code example:</h4>
 <pre><code>&lt;div id=&quot;timepicker&quot;&gt;&lt;input id=&quot;picked-text&quot; type=&quot;text&quot; size=&quot;32&quot;/&gt;&lt;input id=&quot;pick-button&quot; type=&quot;button&quot; onclick=&quot;pickATime();&quot; value=&quot;pick&quot;/&gt;&lt;/div&gt;
@@ -204,7 +253,8 @@ widget.callback = function() {
 		
 		window.scrollTo(0, 0);
 	</script>
-<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <hr>
 <h4>Made By ZulNs</h4>
 <h5>@Yogyakarta, February 2016</h5>

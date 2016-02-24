@@ -186,6 +186,8 @@ For the following code examples, please insert them at anywhere you want within 
 <p data-height="268" data-theme-id="22373" data-slug-hash="pgMdMY" data-default-tab="result" data-user="zulns" class='codepen'>See the Pen <a href='http://codepen.io/zulns/pen/pgMdMY/'>Embedding  the Widget as a Calendar</a> by ZulNs (<a href='http://codepen.io/zulns'>@zulns</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
 <script async src="http://assets.codepen.io/assets/embed/ei.js"></script>
 
+&nbsp;
+
 ### Embedding the Widget as a Datepicker
 #### Code example:
 
@@ -218,6 +220,8 @@ For the following code examples, please insert them at anywhere you want within 
 
 <p data-height="268" data-theme-id="22373" data-slug-hash="vLopwV" data-default-tab="result" data-user="zulns" class='codepen'>See the Pen <a href='http://codepen.io/zulns/pen/vLopwV/'>Embedding the Widget as a Datepicker</a> by ZulNs (<a href='http://codepen.io/zulns'>@zulns</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
 <script async src="http://assets.codepen.io/assets/embed/ei.js"></script>
+
+&nbsp;
 
 ### Side by Side Gregorian - Hijri Calendar Converter
 #### Code example:
@@ -273,6 +277,10 @@ For the following code examples, please insert them at anywhere you want within 
 
 <p data-height="268" data-theme-id="22373" data-slug-hash="dGxJxK" data-default-tab="result" data-user="zulns" class='codepen'>See the Pen <a href='http://codepen.io/zulns/pen/dGxJxK/'>Side by Side Gregorian - Hijri Calendar Converter</a> by ZulNs (<a href='http://codepen.io/zulns'>@zulns</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
 <script async src="http://assets.codepen.io/assets/embed/ei.js"></script>
+
+&nbsp;
+
+&nbsp;
 
 ---
 #### Made By ZulNs
