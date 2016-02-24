@@ -182,7 +182,9 @@ For the following code examples, please insert them at anywhere you want within 
 	</script>
 
 #### Result:
-To see the result you need the [HTML version](https://ZulNs.github.io/libs/calendar-api-doc.html) of this documentation or via [CodePen](http://codepen.io/zulns/full/pgMdMY).
+
+<p data-height="268" data-theme-id="22373" data-slug-hash="pgMdMY" data-default-tab="result" data-user="zulns" class='codepen'>See the Pen <a href='http://codepen.io/zulns/pen/pgMdMY/'>Embedding  the Widget as a Calendar</a> by ZulNs (<a href='http://codepen.io/zulns'>@zulns</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+<script async src="http://assets.codepen.io/assets/embed/ei.js"></script>
 
 ### Embedding the Widget as a Datepicker
 #### Code example:
@@ -213,7 +215,9 @@ To see the result you need the [HTML version](https://ZulNs.github.io/libs/calen
 	</script>
 
 #### Result:
-To see the result you need the [HTML version](https://ZulNs.github.io/libs/calendar-api-doc.html) of this documentation or via [CodePen](http://codepen.io/zulns/full/vLopwV).
+
+<p data-height="268" data-theme-id="22373" data-slug-hash="vLopwV" data-default-tab="result" data-user="zulns" class='codepen'>See the Pen <a href='http://codepen.io/zulns/pen/vLopwV/'>Embedding the Widget as a Datepicker</a> by ZulNs (<a href='http://codepen.io/zulns'>@zulns</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+<script async src="http://assets.codepen.io/assets/embed/ei.js"></script>
 
 ### Side by Side Gregorian - Hijri Calendar Converter
 #### Code example:
@@ -266,7 +270,9 @@ To see the result you need the [HTML version](https://ZulNs.github.io/libs/calen
 	</script>
 
 #### Result:
-To see the result you need the [HTML version](https://ZulNs.github.io/libs/calendar-api-doc.html) of this documentation or via [CodePen](http://codepen.io/zulns/full/dGxJxK).
+
+<p data-height="268" data-theme-id="22373" data-slug-hash="dGxJxK" data-default-tab="result" data-user="zulns" class='codepen'>See the Pen <a href='http://codepen.io/zulns/pen/dGxJxK/'>Side by Side Gregorian - Hijri Calendar Converter</a> by ZulNs (<a href='http://codepen.io/zulns'>@zulns</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+<script async src="http://assets.codepen.io/assets/embed/ei.js"></script>
 
 ---
 #### Made By ZulNs

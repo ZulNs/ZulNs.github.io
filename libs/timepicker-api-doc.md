@@ -131,7 +131,9 @@ For the following code examples, please insert them at anywhere you want within 
 	</script>
 
 #### Result:
-To see the result you need the [HTML version](https://ZulNs.github.io/libs/timepicker-api-doc.html) of this documentation or via [CodePen](http://codepen.io/zulns/full/yemvNa).
+
+<p data-height="268" data-theme-id="22373" data-slug-hash="yemvNa" data-default-tab="result" data-user="zulns" class='codepen'>See the Pen <a href='http://codepen.io/zulns/pen/yemvNa/'>Embedding the Widget as a Realtime Analog Clock</a> by ZulNs (<a href='http://codepen.io/zulns'>@zulns</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+<script async src="http://assets.codepen.io/assets/embed/ei.js"></script>
 
 ### Embedding the Widget as a Timepicker
 #### Code example:
@@ -159,7 +161,9 @@ To see the result you need the [HTML version](https://ZulNs.github.io/libs/timep
 	</script>
 
 #### Result:
-To see the result you need the [HTML version](https://ZulNs.github.io/libs/timepicker-api-doc.html) of this documentation or via [CodePen](http://codepen.io/zulns/full/obKENy/).
+
+<p data-height="268" data-theme-id="22373" data-slug-hash="obKENy" data-default-tab="result" data-user="zulns" class='codepen'>See the Pen <a href='http://codepen.io/zulns/pen/obKENy/'>Embedding the Widget as a Timepicker</a> by ZulNs (<a href='http://codepen.io/zulns'>@zulns</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+<script async src="htpp://assets.codepen.io/assets/embed/ei.js"></script>
 
 ---
 #### Made By ZulNs
