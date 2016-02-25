@@ -48,7 +48,7 @@ a {
 	margin-left: 3px;
 }
 #todo a:link, #todo  a:visited {color: #737373;}
-background-image:url(
+/*background-image:url(*/
 a:hover {color: #0896FF !important;}
 a[href^=http]:not([href$=inline]) {background: transparent url(i/doc.png) no-repeat -1px 2px;}
 a[href^=file] {background: transparent url(i/folder.png) no-repeat -1px 3px;}

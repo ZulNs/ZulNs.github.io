@@ -14,7 +14,16 @@
 	<!--link rel="icon" href="favicon.png" type="image/png"-->
 <style type="text/css">
 	.style-option {
-		float: right;
+		position: fixed;
+		top: 16px;
+		right: 16px;
+		font: 12px Arial;
+		color: #444;
+		background-color: #eee;
+		padding: 3px 6px;
+		-moz-box-shadow: 0 4px 8px rgba(0,0,0,.5);
+		-webkit-box-shadow: 0 4px 8px rgba(0,0,0,.5);
+		box-shadow: 0 2px 4px rgba(0,0,0,.5);
 	}
 	.style-option select {
 		background-color: transparent;
@@ -36,8 +45,7 @@
 </head>
 <body>
 <div class="style-option">
-<span>Markdown style option: </span>
-<select id="style-option" onChange="selectStyle();">
+<span>Markdown style :</span><select id="style-option" onChange="selectStyle();">
 <option style="color: #737373; background-color: #fff" value="clearness">Clearness</option>
 <option style="color: #fff; background-color: #282a36" value="clearness-dark" selected>Clearness Dark</option>
 <option style="color: #000; background-color: #F8F8F8" value="github">GitHub</option>
