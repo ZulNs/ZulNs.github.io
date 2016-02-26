@@ -34,11 +34,11 @@
   
 - **`getDayName(day)`**
 
-  Returns the string of day name in the  day of the week (`"Ahad"` for `day = 0` - `"Sabt"` for `day = 6`). If the `day` argument is omitted, then the string of day name for the specified date according to local time would returned.
+  Returns the string of day name in the  day of the week (`"Ahad"` for `day = 0` - `"Sabt"` for `day = 6`). If the `day` argument is omitted, then the string of day name for the specified date according to local time would be returned.
 
 - **`getDayShortName(day)`**
 
-  Returns the string of short name of day in the day of the week (`"Ahd"` for `day = 0` - `"Sab"` for `day = 6`). If the `day` argument is omitted then the string of short name of day for the specified date according to local time would returned.
+  Returns the string of short name of day in the day of the week (`"Ahd"` for `day = 0` - `"Sab"` for `day = 6`). If the `day` argument is omitted then the string of short name of day for the specified date according to local time would be returned.
 
 - **`getDaysInMonth()`**
 
@@ -70,7 +70,7 @@
 
 - **`getJavaWeekdayName(day)`**
 
-  Returns the sting of day name of day of the week by confidence of Java tribe in Indonesia (`"Legi"` for `day = 0` - `"Kliwon"` for `day = 4`). If `day` is omitted, then the string of day name for the specified date according to local time would returned.
+  Returns the sting of day name of day of the week by confidence of Java tribe in Indonesia (`"Legi"` for `day = 0` - `"Kliwon"` for `day = 4`). If `day` is omitted, then the string of day name for the specified date according to local time would be returned.
 
 - **`getMilliseconds()`**
 
@@ -153,11 +153,11 @@ By using this `HijriDate` class, the standard `Date` class will be extended with
 
 - **`getDayName(day)`**
 
-  Returns the string of day name in the  day of the week (`"Sunday"` for `day = 0` - `"Saturday"` for `day = 6`). If the `day` argument is omitted, then the string of day name for the specified date according to local time would returned.
+  Returns the string of day name in the  day of the week (`"Sunday"` for `day = 0` - `"Saturday"` for `day = 6`). If the `day` argument is omitted, then the string of day name for the specified date according to local time would be returned.
 
 - **`getDayShortName(day)`**
 
-  Returns the string of short name of day in the day of the week (`"Sun"` for `day = 0` - `"Sat"` for `day = 6`). If the `day` argument is omitted then the string of short name of day for the specified date according to local time would returned.
+  Returns the string of short name of day in the day of the week (`"Sun"` for `day = 0` - `"Sat"` for `day = 6`). If the `day` argument is omitted then the string of short name of day for the specified date according to local time would be returned.
 
 - **`getDaysInMonth()`**
 
@@ -181,7 +181,7 @@ By using this `HijriDate` class, the standard `Date` class will be extended with
 
 - **`getJavaWeekdayName(day)`**
 
-  Returns the sting of day name of day of the week by confidence of Java tribe in Indonesia (`"Legi"` for `day = 0` - `"Kliwon"` for `day = 4`). If `day` is omitted, then the string of day name for the specified date according to local time would returned.
+  Returns the sting of day name of day of the week by confidence of Java tribe in Indonesia (`"Legi"` for `day = 0` - `"Kliwon"` for `day = 4`). If `day` is omitted, then the string of day name for the specified date according to local time would be returned.
 
 - **`getMonthName(month)`**
 
