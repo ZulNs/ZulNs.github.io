@@ -1,0 +1,281 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<!--meta http-equiv="refresh" content="1;url="-->
+	<title>Calendar API Documentation</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="author" content="ZulNs">
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+	<meta name="robots" content="all">
+	<meta name="copyright" content="ZulNs">
+	<link rel="icon" href="../favicon.ico" type="image/x-icon">
+	<!--link rel="icon" href="favicon.png" type="image/png"-->
+<style type="text/css">
+	.style-option {
+		position: fixed;
+		top: 16px;
+		right: 16px;
+		font: 12px Arial;
+		color: #444;
+		background-color: #eee;
+		padding: 3px 6px;
+		-moz-box-shadow: 0 2px 4px rgba(0,0,0,.5);
+		-webkit-box-shadow: 0 2px 4px rgba(0,0,0,.5);
+		box-shadow: 0 2px 4px rgba(0,0,0,.5);
+	}
+	.style-option select {
+		background-color: transparent;
+		color: inherit;
+		border: 0;
+		outline: 0;
+		padding: 0;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		-o-appearance: none;
+		appearance: none;
+		overflow: hidden;
+		cursor: pointer;
+	}
+	.style-option select::-ms-expand {
+		display: none;
+	}
+</style>
+</head>
+<body>
+<div class="style-option">
+<span>Markdown style :</span><select id="style-option" onChange="selectStyle();">
+<option style="color: #737373; background-color: #fff" value="clearness">Clearness</option>
+<option style="color: #fff; background-color: #282a36" value="clearness-dark" selected>Clearness Dark</option>
+<option style="color: #000; background-color: #F8F8F8" value="github">GitHub</option>
+<option style="color: #333; background-color: #fff" value="standard">Standard</option>
+<option style="color: #000; background-color: #fff" value="top-marks">Top Marks</option>
+</select>
+<script type="text/javascript">
+	var styleOption = document.getElementById('style-option');
+	applyStyle();
+	
+	function selectStyle() {
+		document.body.removeChild(document.getElementById('current-style'));
+		applyStyle();
+	}
+	
+	function applyStyle() {
+		var link = document.createElement('link');
+		link.id = 'current-style';
+		link.rel = 'stylesheet';
+		link.href = 'markdown-viewer-' + styleOption.value + '.css';
+		document.body.appendChild(link);
+	}
+</script>
+</div>
+<p>&nbsp;</p>
+<h1>Hijri-Date API Documentation</h1>
+<h2>Overview</h2>
+<h2>Download</h2>
+<ul>
+<li><a href="https://ZulNs.github.io/libs/hijri-date.js">hijri-date.js</a></li>
+</ul>
+<h2>Public Constructors</h2>
+<ul>
+<li>
+<p><strong><code>HijriDate()</code></strong></p>
+<p>Initializes this <code>HijriDate</code> instance to the current time.</p>
+</li>
+<li>
+<p><strong><code>HijriDate(time)</code></strong></p>
+<p>Initializes this <code>HijriDate</code> instance using the specified millisecond value.</p>
+</li>
+<li>
+<p><strong><code>HijriDate(year, month, date, hour, minute, second, millisecond)</code></strong></p>
+<p>Initializes this <code>HijriDate</code> instance using to the specified date and time in the default <code>TimeZone</code>.</p>
+</li>
+</ul>
+<h2>Public Methods</h2>
+<ul>
+<li>
+<p><strong><code>getDate()</code></strong></p>
+<p>Returns the day of the month (1-30) for the specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>getDateString()</code></strong></p>
+<p>Returns the string represented the specified date according to local time e.g. <code>&quot;Thulatha, 17 Ramadhan 1435 H&quot;</code>.</p>
+</li>
+<li>
+<p><strong><code>getDay()</code></strong></p>
+<p>Returns the day of the week (0-6) for the specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>getDayName(day)</code></strong></p>
+<p>Returns the string of day name in the  day of the week (<code>&quot;Ahad&quot;</code> for <code>day = 0</code> - <code>&quot;Sabt&quot;</code> for <code>day = 6</code>). If the <code>day</code> argument is omitted, then the string of day name for the specified date according to local time would returned.</p>
+</li>
+<li>
+<p><strong><code>getDayShortName(day)</code></strong></p>
+<p>Returns the string of short name of day in the day of the week (<code>&quot;Ahd&quot;</code> for <code>day = 0</code> - <code>&quot;Sab&quot;</code> for <code>day = 6</code>). If the <code>day</code> argument is omitted then the string of short name of day for the specified date according to local time would returned.</p>
+</li>
+<li>
+<p><strong><code>getDaysInMonth()</code></strong></p>
+<p>Returns the number of days (29/30) in the specified month of the specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>getFullDateString()</code></strong></p>
+<p>Returns the string represented the specified date and time according to local time e.g. <code>&quot;Thulatha, 17 Ramadhan 1435 H, 14:11:05.000&quot;</code>.</p>
+</li>
+<li>
+<p><strong><code>getFullYear()</code></strong></p>
+<p>Returns the year (4 digits for 4-digit years) of the specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>getFullYearString()</code></strong></p>
+<p>Returns the string of year (4 digits for 4-digit years) ended with <code>&quot;AH&quot;</code> (After Hijri) symbol (for positive number of year) or <code>&quot;BH&quot;</code> (Before Hijri) symbol (for zero and negative number of year) of the specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>getGregorianDate()</code></strong></p>
+<p>Returns the instance of <code>Date</code> class for the specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>getHours()</code></strong></p>
+<p>Returns the hour (0-23) in the specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>getJavaWeekday()</code></strong></p>
+<p>Returns the day of the week by confidence of Java tribe in Indonesia (0-4) for the specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>getJavaWeekdayName(day)</code></strong></p>
+<p>Returns the sting of day name of day of the week by confidence of Java tribe in Indonesia (<code>&quot;Legi&quot;</code> for <code>day = 0</code> - <code>&quot;Kliwon&quot;</code> for <code>day = 4</code>). If <code>day</code> is omitted, then the string of day name for the specified date according to local time would returned.</p>
+</li>
+<li>
+<p><strong><code>getMilliseconds()</code></strong></p>
+<p>Returns the milliseconds (0-999) in the specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>getMinutes()</code></strong></p>
+<p>Returns the minutes (0-59) in the specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>getMonth()</code></strong></p>
+<p>Returns the month (0-11) in the specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>getMonthName(month)</code></strong></p>
+<p>Returns the string of month name (<code>&quot;Muharram&quot;</code> for <code>month = 0</code> - <code>&quot;Dhul-Hijja&quot;</code> for <code>month = 11</code>). If <code>month</code> is omitted, then the string of month name for the specified time according to local time was returned.</p>
+</li>
+<li>
+<p><strong><code>getMonthShortName(month)</code></strong></p>
+<p>Returns the string of short name of month (<code>&quot;Muh&quot;</code> for <code>month = 0</code> - <code>&quot;DhH&quot;</code> for <code>month = 11</code>). If <code>month</code> is omitted, then the string of short name of the month for the specified time according to local time was returned.</p>
+</li>
+<li>
+<p><strong><code>getSeconds()</code></strong></p>
+<p>Returns the seconds (0-59) in the specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>getTime()</code></strong></p>
+<p>Returns the numeric value of the specified date as the number of milliseconds since Syawwal 22, 1389 H, 06:00:00.000 UTC (this moment is coincide with January 1, 1970, 00:00:00.000 UTC for compatibility of time value with JavaScript standard <code>Date</code> object). Negative for prior times.</p>
+</li>
+<li>
+<p><strong><code>getTimeString()</code></strong></p>
+<p>Returns the string represented the specified time according to local time e.g. <code>&quot;14:11:05.000&quot;</code>.</p>
+</li>
+<li>
+<p><strong><code>setDate(day)</code></strong></p>
+<p>Sets the day of the month for a specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>setFullYear(year)</code></strong></p>
+<p>Sets the full year (e.g. 4 digits for 4-digit years) for a specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>setHours(hours)</code></strong></p>
+<p>Sets the hours for a specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>setMilliseconds(milliseconds)</code></strong></p>
+<p>Sets the milliseconds for a specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>setMinutes(minutes)</code></strong></p>
+<p>Sets the minutes for a specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>setMonth(month)</code></strong></p>
+<p>Sets the month for a specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>setSeconds(seconds)</code></strong></p>
+<p>Sets the seconds for a specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>setTime(time)</code></strong></p>
+<p>Sets the <code>HijriDate</code> object to the time represented by a number of milliseconds since Syawwal 22, 1389 H, 06:00:00.000 UTC, allowing for negative numbers for times prior.</p>
+</li>
+<li>
+<p><strong><code>toString()</code></strong></p>
+<p>Similar to <code>getFullDateString()</code> method which returns the string represented the specified date and time according to local time e.g. <code>&quot;Thulatha, 17 Ramadhan 1435 H, 14:11:05.000&quot;</code>.</p>
+</li>
+<li>
+<p><strong><code>valueOf()</code></strong></p>
+<p>Similar to <code>getTime()</code> method which returns the numeric value of the specified date as the number of milliseconds since Syawwal 22, 1389 H, 06:00:00.000 UTC (this moment is coincide with January 1, 1970, 00:00:00.000 UTC for compatibility of time value with JavaScript standard <code>Date</code> object). Negative for prior times.</p>
+</li>
+</ul>
+<h2>Public Methods of Extended Date Class</h2>
+<p>By using this <code>HijriDate</code> class, the standard <code>Date</code> class will be extended with the following public methods:</p>
+<ul>
+<li>
+<p><strong><code>getDateString()</code></strong></p>
+<p>Returns the string represented the specified date according to local time e.g. <code>&quot;Tuesday, July 14, 2014 AD&quot;</code>.</p>
+</li>
+<li>
+<p><strong><code>getDayName(day)</code></strong></p>
+<p>Returns the string of day name in the  day of the week (<code>&quot;Sunday&quot;</code> for <code>day = 0</code> - <code>&quot;Saturday&quot;</code> for <code>day = 6</code>). If the <code>day</code> argument is omitted, then the string of day name for the specified date according to local time would returned.</p>
+</li>
+<li>
+<p><strong><code>getDayShortName(day)</code></strong></p>
+<p>Returns the string of short name of day in the day of the week (<code>&quot;Sun&quot;</code> for <code>day = 0</code> - <code>&quot;Sat&quot;</code> for <code>day = 6</code>). If the <code>day</code> argument is omitted then the string of short name of day for the specified date according to local time would returned.</p>
+</li>
+<li>
+<p><strong><code>getDaysInMonth()</code></strong></p>
+<p>Returns the number of days (28/29/30/31) in the specified month of the specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>getFullDateString()</code></strong></p>
+<p>Returns the string represented the specified date and time according to local time e.g. <code>&quot;Thulatha, 17 Ramadhan 1435 H, 14:11:05.000&quot;</code>.</p>
+</li>
+<li>
+<p><strong><code>getFullYearString()</code></strong></p>
+<p>Returns the string of year (4 digits for 4-digit years) ended with <code>&quot;AD&quot;</code> (Anno Domini) symbol (for positive number of year) or <code>&quot;BC&quot;</code> (Before the Century) symbol (for zero and negative number of year) of the specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>getHijriDate()</code></strong></p>
+<p>Returns the instance of <code>HijriDate</code> class for the specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>getJavaWeekday()</code></strong></p>
+<p>Returns the day of the week by confidence of Java tribe in Indonesia (0-4) for the specified date according to local time.</p>
+</li>
+<li>
+<p><strong><code>getJavaWeekdayName(day)</code></strong></p>
+<p>Returns the sting of day name of day of the week by confidence of Java tribe in Indonesia (<code>&quot;Legi&quot;</code> for <code>day = 0</code> - <code>&quot;Kliwon&quot;</code> for <code>day = 4</code>). If <code>day</code> is omitted, then the string of day name for the specified date according to local time would returned.</p>
+</li>
+<li>
+<p><strong><code>getMonthName(month)</code></strong></p>
+<p>Returns the string of month name (<code>&quot;January&quot;</code> for <code>month = 0</code> - <code>&quot;December&quot;</code> for <code>month = 11</code>). If <code>month</code> is omitted, then the string of month name for the specified time according to local time was returned.</p>
+</li>
+<li>
+<p><strong><code>getMonthShortName(month)</code></strong></p>
+<p>Returns the string of short name of month (<code>&quot;Jan&quot;</code> for <code>month = 0</code> - <code>&quot;Dec&quot;</code> for <code>month = 11</code>). If <code>month</code> is omitted, then the string of short name of the month for the specified time according to local time was returned.</p>
+</li>
+<li>
+<p><strong><code>getTimeString()</code></strong></p>
+<p>Returns the string represented the specified time according to local time e.g. <code>&quot;14:11:05.000&quot;</code>.</p>
+</li>
+</ul>
+<p> </p>
+<p> </p>
+<hr>
+<h4>Made By ZulNs</h4>
+<h5>@Yogyakarta, February 2016</h5>
+<hr>
+</body>
+</html>

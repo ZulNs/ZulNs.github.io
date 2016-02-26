@@ -10,7 +10,7 @@ This widget can be used to display a **Realtime Analog Clock** besides as a **Ti
 - [timepicker.css](https://ZulNs.github.io/libs/timepicker.css) for styling this widget
 
 ## Public Constructor
-**`Timepicker(isClockMode, is24HoursSystem, hours, minutes, seconds)`**
+**`Timepicker(isClockMode, is24HoursSystem, hour, minute, second)`**
 
 ### Arguments:
 - **`isClockMode`**, sets the widget mode
@@ -29,7 +29,7 @@ This widget can be used to display a **Realtime Analog Clock** besides as a **Ti
 
   Default : **`false`**
 
-- **`hours`**, **`minutes`**, and **`seconds`**
+- **`hour`**, **`minute`**, and **`second**
 
   Initial time in 24 hours system format which is the clock's hands will point at. When those are omitted, the current time will be used.
 

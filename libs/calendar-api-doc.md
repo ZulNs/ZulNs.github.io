@@ -7,7 +7,7 @@ This calendar widget can be used to display **Gregorian** or **Hijri** date, and
 - [calendar.js](https://ZulNs.github.io/libs/calendar.js)
 
 ## Requirements
-- [hijri-date.js](https://ZulNs.github.io/libs/hijri-date.js) which allows the use of `HijriDate()` class
+- [hijri-date.js](https://ZulNs.github.io/libs/hijri-date.js) which allows the use of [`HijriDate()`](https://ZulNs.github.io/libs/hijri-date-api-doc.md) class
 - [calendar.css](https://ZulNs.github.io/libs/calendar.css) for styling this widget
 
 ## Public Constructor
