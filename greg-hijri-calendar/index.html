@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<title>3D Two Cards Animation</title>
+	<!--meta http-equiv="refresh" content="1;url="-->
+	<title>Kalender Masehi/Hijriah</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="ZulNs">
 	<meta name="keywords" content="">
@@ -11,30 +12,28 @@
 	<meta name="copyright" content="ZulNs">
 	<link rel="icon" href="../favicon.ico" type="image/x-icon">
 	<!--link rel="icon" href="favicon.png" type="image/png"-->
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="calendar.css">
+	<style type="text/css">
+		.home-icon {
+			vertical-align: middle;
+		}
+	</style>
 </head>
 <body>
 	<p id="title">
-		<a href="../index.html?3"><img class="home-icon" src="../images/icons/home.png"></a>
+		<a href="../index.html?2"><img class="home-icon" src="../images/icons/home.png"></a>
 		<span></span>
 	</p>
-	<p>Design by ZulNs @Yogyakarta, December 2015</p>
-	<div class="card-wrapper">
-		<div class="card">
-			<div class="faces face1">
-				<div class="backface">ZulNs</div>
-				<div class="frontface"></div>
-			</div>
-			<div class="faces face2">
-				<div class="backface">Merlin</div>
-				<div class="frontface"></div>
-			</div>
-		</div>
-	</div>
+	<p>Design by ZulNs, @Gorontalo, Indonesia, 30 April 2017</p>
+	<script type="text/javascript" src="../libs/id/hijri-date.js"></script>
+	<script type="text/javascript" src="calendar.js"></script>
 	<script type="text/javascript">
 		document.querySelector('#title span').innerHTML = document.title;
 		if (document.location.search.toLowerCase() === '?3d')
-			document.querySelector('#title a').href = '../cuboid3d.html?3';
+			document.querySelector('#title a').href = '../cuboid3d.html?2';
+		
+		var cal = new Calendar();
+		document.body.appendChild(cal.getElement());
 	</script>
 </body>
 </html>
