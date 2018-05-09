@@ -29,6 +29,7 @@
 	<a id="monthly" href="monthly.html">Monthly</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	Latitude: <input type="text" value="0.6269914" id="latitude" size="10" onchange="update();">&nbsp;
 	Longitude: <input type="text" value="122.9798945" id="longitude" size="10" onchange="update();">&nbsp;
+	Elevation: <input type="text" value="50" id="elevation" size="1" onchange="update();" />&nbsp;
 	Year: <input type="text" value="2011" id="year" size="4" onchange="update();">&nbsp;
 	Time Zone: <input type="text" value="8" id="timezone" size="1" onchange="update();">&nbsp;
 	DST: 
@@ -52,6 +53,7 @@
 		<option value="Singapore" selected="selected">Majlis Ulama Islam Singapura, Singapore</option>
 		<option value="France">Union Organization Islamic de France</option>
 		<option value="Turkey">Diyanet İşleri Başkanlığı, Turkey</option>
+		<option value="Indonesia">Kementrian Agama Ri, Indonesia</option>
     </select>
 </form>
 </div>
@@ -87,16 +89,17 @@
 	function update() {
 		var lat = $('latitude').value;
 		var lng = $('longitude').value;
+		var elv = $('elevation').value;
 		var timeZone = $('timezone').value;
 		var dst = $('dst').value;
 		var year = $('year').value;
 		var method = $('method').value;
-		var html = makeTable(method, year, lat, lng, timeZone, dst);
+		var html = makeTable(method, year, lat, lng, elv, timeZone, dst);
 		$('timetable').innerHTML = '<pre>' + html + '</pre>';
 	}
 
 
-	function makeTable(method, year, lat, lng, timeZone, dst) {
+	function makeTable(method, year, lat, lng, elv, timeZone, dst) {
 		var table = ''; 
 		var monthNames = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May',
 				'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
@@ -108,7 +111,7 @@
 		var output = ['Imsak', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Sunset', 'Maghrib', 'Isha', 'Midnight'];
 
 		while (date < endDate) {
-			var times = prayTimes.getTimes(date, [lat, lng], timeZone, dst);
+			var times = prayTimes.getTimes(date, [lat, lng, elv], timeZone, dst);
 			var day = date.getDate();
 			var isToday = (date.getMonth() == today.getMonth() && date.getDate() == today.getDate() && date.getFullYear() == today.getFullYear());
 			if (isToday)

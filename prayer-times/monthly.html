@@ -39,6 +39,7 @@
 	<a id="yearly" href="yearly.html">Yearly</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	Latitude: <input type="text" value="0.6269914" id="latitude" size="10" onchange="update();" />&nbsp;
 	Longitude: <input type="text" value="122.9798945" id="longitude" size="10" onchange="update();" />&nbsp;
+	Elevation: <input type="text" value="50" id="elevation" size="1" onchange="update();" />&nbsp;
 	Time Zone: <input type="text" value="8" id="timezone" size="1" onchange="update();" />&nbsp;
 	DST: 
 	<select id="dst" size="1" style="font-size: 12px;" onchange="update()">
@@ -61,6 +62,7 @@
 		<option value="Singapore" selected="selected">Majlis Ulama Islam Singapura, Singapore</option>
 		<option value="France">Union Organization Islamic de France</option>
 		<option value="Turkey">Diyanet İşleri Başkanlığı, Turkey</option>
+		<option value="Indonesia">Kementrian Agama Ri, Indonesia</option>
     </select>
 </form>
 </div>
@@ -101,6 +103,7 @@
 	function displayMonth(offset) {
 		var lat = $('latitude').value;
 		var lng = $('longitude').value;
+		var elv = $('elevation').value;
 		var timeZone = $('timezone').value;
 		var dst = $('dst').value;
 		var method = $('method').value;
@@ -111,11 +114,11 @@
 		var year = currentDate.getFullYear();
 		var title = monthFullName(month)+ ' '+ year;
 		$('table-title').innerHTML = title;
-		makeTable(year, month, lat, lng, timeZone, dst);
+		makeTable(year, month, lat, lng, elv, timeZone, dst);
 	}
 
 	// make monthly timetable
-	function makeTable(year, month, lat, lng, timeZone, dst) {		
+	function makeTable(year, month, lat, lng, elv, timeZone, dst) {		
 		var items = {day: 'Day', imsak: 'Imsak', fajr: 'Fajr', sunrise: 'Sunrise', 
 					dhuhr: 'Dhuhr', asr: 'Asr', sunset: 'Sunset', 
 					maghrib: 'Maghrib', isha: 'Isha', midnight: 'Midnight'};
@@ -129,7 +132,7 @@
 		var format = timeFormat ? '12hNS' : '24h';
 
 		while (date < endDate) {
-			var times = prayTimes.getTimes(date, [lat, lng], timeZone, dst, format);
+			var times = prayTimes.getTimes(date, [lat, lng, elv], timeZone, dst, format);
 			times.day = date.getDate();
 			var isToday = (date.getMonth() == today.getMonth() && date.getDate() == today.getDate() && date.getFullYear() ==  today.getFullYear());
 			var klass = isToday ? 'today-row' : '';

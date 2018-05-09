@@ -120,7 +120,10 @@ function PrayTimes(method) {
 			params: { fajr: 12, isha: 12 } },
 		Turkey: {
 			name: 'Diyanet İşleri Başkanlığı, Turkey',
-			params: { fajr: 18, isha: 17 } }
+			params: { fajr: 18, isha: 17 } },
+		Indonesia: {
+			name: 'Kementrian Agama RI, Indonesia',
+			params: { fajr: 19, isha: 17 } }
 	},
 
 
@@ -485,7 +488,7 @@ function PrayTimes(method) {
 	// the night portion used for adjusting times in higher latitudes
 	nightPortion: function(angle, night) {
 		var method = setting.highLats;
-		var portion = 1/2 // MidNight
+		var portion = 1/2; // MidNight
 		if (method == 'AngleBased')
 			portion = 1/60* angle;
 		if (method == 'OneSeventh')

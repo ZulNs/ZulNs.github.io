@@ -43,7 +43,7 @@
 	
 	var date = new Date(); // today
 	prayTimes.setMethod('Singapore');
-	var times = prayTimes.getTimes(date, [0.6269914, 122.9798945], -date.getTimezoneOffset() / 60);
+	var times = prayTimes.getTimes(date, [0.6269914, 122.9798945, 50], -date.getTimezoneOffset() / 60);
 	var list = ['Imsak', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Sunset', 'Maghrib', 'Isha', 'Midnight'];
 	
 	var html = '<table id="timetable">';
