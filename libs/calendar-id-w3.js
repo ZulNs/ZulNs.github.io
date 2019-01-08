@@ -77,25 +77,25 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	gridsElm = createElement('div'),
 	weekdayTitleElm = createElement('div', 'w3-cell-row w3-center w3-large w3-theme-light');
 	rootMenuElm = createElement('div', 'w3-dropdown-click'),
-	menuBtnElm = createElement('div', 'w3-btn w3-hover-theme w3-theme', '&#x2630;'),
-	menuContainerElm = createElement('div', 'w3-dropdown-content w3-bar-block w3-border w3-theme-light w3-animate-opacity'),
-	menuCalendarModeElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme'),
-	menuFirstDayOfWeekElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme'),
+	menuBtnElm = createElement('div', 'w3-button', '&#x2630;'),
+	menuContainerElm = createElement('div', 'w3-dropdown-content w3-bar-block w3-border w3-animate-opacity'),
+	menuCalendarModeElm = createElement('span', 'w3-bar-item w3-button'),
+	menuFirstDayOfWeekElm = createElement('span', 'w3-bar-item w3-button'),
 	aboutModalElm = createElement('div', 'w3-modal'),
 	
 	createCalendar = function()
 	{
 		var headerElm = createElement('div', 'w3-container w3-padding w3-theme'),
-			menuItemRefreshElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme', 'Refresh'),
-			menuItemResetElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme', 'Reset'),
-			menuItemAboutElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme', 'About'),
-			menuItemCancelElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme', 'Cancel<span class="w3-right">&times;</span>'),
+			menuItemRefreshElm = createElement('span', 'w3-bar-item w3-button', 'Refresh'),
+			menuItemResetElm = createElement('span', 'w3-bar-item w3-button', 'Reset'),
+			menuItemAboutElm = createElement('span', 'w3-bar-item w3-button', 'About'),
+			menuItemCancelElm = createElement('span', 'w3-bar-item w3-button', 'Cancel<span class="w3-right">&times;</span>'),
 			yearPanelElm = createElement('div', 'w3-center w3-xxlarge'),
-			prevYearBtnElm = createElement('div', 'w3-btn w3-left', '&#xab;'),
-			nextYearBtnElm = createElement('div', 'w3-btn w3-right', '&#xbb;'),
+			prevYearBtnElm = createElement('div', 'w3-button w3-left', '&#xab;'),
+			nextYearBtnElm = createElement('div', 'w3-button w3-right', '&#xbb;'),
 			monthPanelElm = createElement('div', 'w3-center w3-xlarge'),
-			prevMonthBtnElm = createElement('div', 'w3-btn w3-left', '&#x2039;'),
-			nextMonthBtnElm = createElement('div', 'w3-btn w3-right','&#x203a;'),
+			prevMonthBtnElm = createElement('div', 'w3-button w3-left', '&#x2039;'),
+			nextMonthBtnElm = createElement('div', 'w3-button w3-right','&#x203a;'),
 			aboutContentElm = createElement('div', 'w3-modal-content w3-animate-zoom w3-card-4 w3-theme-light'),
 			aboutContentWrapperElm = createElement('div', 'w3-center w3-padding-24'),
 			aboutCloseBtnElm = createElement('span', 'w3-btn w3-large w3-display-topright', '&times;'),
@@ -361,7 +361,7 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 		evt = evt || window.event;
 		if (menuContainerElm.className.indexOf('w3-show') == -1)
 		{
-			menuBtnElm.className = menuBtnElm.className.replace('w3-theme', 'w3-theme-action');
+			//menuBtnElm.className = menuBtnElm.className.replace('w3-theme', 'w3-theme-action');
 			menuContainerElm.className += ' w3-show';
 		}
 		else
@@ -373,7 +373,7 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	
 	hideMenu = function()
 	{
-		menuBtnElm.className = menuBtnElm.className.replace('w3-theme-action', 'w3-theme');
+		//menuBtnElm.className = menuBtnElm.className.replace('w3-theme-action', 'w3-theme');
 		menuContainerElm.className = menuContainerElm.className.replace(' w3-show', '');
 	},
 	
