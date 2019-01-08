@@ -76,8 +76,8 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	monthValueElm = createElement('span', 'w3-button w3-hover-theme'),
 	gridsElm = createElement('div'),
 	weekdayTitleElm = createElement('div', 'w3-cell-row w3-center w3-large w3-theme-light');
-	rootMenuElm = createElement('div', 'w3-dropdown-click w3-theme'),
-	menuBtnElm = createElement('div', 'w3-btn w3-hover-theme', '&#x2630;'),
+	rootMenuElm = createElement('div', 'w3-dropdown-click'),
+	menuBtnElm = createElement('div', 'w3-btn w3-hover-theme w3-theme', '&#x2630;'),
 	menuContainerElm = createElement('div', 'w3-dropdown-content w3-bar-block w3-border w3-theme-light w3-animate-opacity'),
 	menuCalendarModeElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme'),
 	menuFirstDayOfWeekElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme'),
@@ -361,7 +361,7 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 		evt = evt || window.event;
 		if (menuContainerElm.className.indexOf('w3-show') == -1)
 		{
-			menuBtnElm.className += ' w3-theme-light';
+			menuBtnElm.className = menuBtnElm.className.replace('w3-theme', 'w3-theme-action');
 			menuContainerElm.className += ' w3-show';
 		}
 		else
@@ -373,7 +373,7 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	
 	hideMenu = function()
 	{
-		menuBtnElm.className = menuBtnElm.className.replace(' w3-theme-light', '');
+		menuBtnElm.className = menuBtnElm.className.replace('w3-theme-action', 'w3-theme');
 		menuContainerElm.className = menuContainerElm.className.replace(' w3-show', '');
 	},
 	
