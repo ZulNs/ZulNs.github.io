@@ -64,7 +64,7 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 			menuBtnElm = createElement('button', 'w3-btn w3-theme', '&#x2630;'),
 			menuItemRefreshElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme', 'Refresh'),
 			menuItemResetElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme', 'Reset'),
-			menuItemAboutElm = createElement('span', 'w3-bar-item w3-button w3-hiver-theme', 'About'),
+			menuItemAboutElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme', 'About'),
 			menuItemCancelElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme', 'Cancel<span class="w3-right">&times;</span>'),
 			yearPanelElm = createElement('div', 'w3-center w3-xxlarge'),
 			prevYearBtnElm = createElement('button', 'w3-btn w3-left', '&#xab;'),
