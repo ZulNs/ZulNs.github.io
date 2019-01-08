@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<!--meta http-equiv="refresh" content="1;url="-->
+	<title>Kalender Masehi/Hijriah</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="author" content="ZulNs">
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+	<meta name="robots" content="all">
+	<meta name="copyright" content="ZulNs">
+	<link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+	<!--link rel="icon" href="favicon.ico" type="image/x-icon" /-->
+	<!--link rel="icon" href="favicon.png" type="image/png" /-->
+</head>
+<body>
+	<div id="calendar-container"></div>
+	<link rel="stylesheet" href="../libs/calendar-id.css" />
+	<script type="text/javascript" src="../libs/hijri-date-id.js"></script>
+	<script type="text/javascript" src="../libs/calendar-id.js"></script>
+	<script type="text/javascript">
+		var cal = new Calendar();
+		document.getElementById('calendar-container').appendChild(cal.getElement());
+	</script>
+</body>
+</html>

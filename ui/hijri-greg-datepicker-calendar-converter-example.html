@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<!--meta http-equiv="refresh" content="1;url="-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="author" content="ZulNs">
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+	<meta name="robots" content="all">
+	<meta name="copyright" content="ZulNs">
+	<title>Hijri/Gregorian Calendar Converter</title>
+	<link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+	<!--link rel="icon" href="favicon.ico" type="image/x-icon" /-->
+	<!--link rel="icon" href="favicon.png" type="image/png" /-->
+</head>
+<body>
+    <h1></h1>
+	<p>Designed by ZulNs @Yogyakarta, January 2016</p>
+	<div id="calendar-converter"></div>
+	<p>See API Documentation:
+		<ul>
+			<li><a href="../docs/datepicker-api-doc.md" target="_blank">Markdown version</a></li>
+			<li><a href="../docs/datepicker-api-doc.html" target="_blank">HTML version</a></li>
+		</ul>
+	</p>
+	<link rel="stylesheet" href="../libs/datepicker.css">
+	<script type="text/javascript" src="../libs/hijri-date.js"></script>
+	<script type="text/javascript" src="../libs/datepicker.js"></script>
+	<script type="text/javascript">
+		document.querySelector('h1').innerHTML = document.title;
+		
+		var cal1 = new Datepicker(false, 1, false, true),
+			cal2 = new Datepicker(true, 0, false, true),
+			cal1Mode = cal1.isHijriMode(),
+			cal2Mode = cal2.isHijriMode();
+		document.getElementById('calendar-converter').appendChild(cal1.getElement());
+		document.getElementById('calendar-converter').appendChild(cal2.getElement());
+		cal1.setDisplayStyle('inline-block');
+		cal2.setDisplayStyle('inline-block');
+		cal2.getElement().style.marginLeft = '20px';
+		cal1.getElement().style.verticalAlign = 'top';
+		cal2.getElement().style.verticalAlign = 'top';
+		cal1.show();
+		cal2.show();
+
+		cal1.callback = function() {
+			if (cal1Mode !== cal1.isHijriMode()) {
+				cal2.disableCallback(true);
+				cal2.changeDateMode();
+				cal2.disableCallback(false);
+				cal1Mode = cal1.isHijriMode();
+				cal2Mode = cal2.isHijriMode();
+			} // prevent from infinite loop when user change the calendar mode
+			else
+				cal2.setTime(cal1.getTime());
+		};
+
+		cal2.callback = function() {
+			if (cal2Mode !== cal2.isHijriMode()) {
+				cal1.disableCallback(true);
+				cal1.changeDateMode();
+				cal1.disableCallback(false);
+				cal1Mode = cal1.isHijriMode();
+				cal2Mode = cal2.isHijriMode();
+			} // prevent from infinite loop when user change the calendar mode
+			else
+				cal1.setTime(cal2.getTime());
+		};
+
+		cal1.onHide = function() {
+			cal1.show(); // prevent the widget from being closed
+		};
+
+		cal2.onHide = function() {
+			cal2.show(); // prevent the widget from being closed
+		};
+	</script>
+</body>
+</html>
