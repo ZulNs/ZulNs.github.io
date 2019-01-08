@@ -77,7 +77,7 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	gridsElm = createElement('div'),
 	weekdayTitleElm = createElement('div', 'w3-cell-row w3-center w3-large w3-theme-light');
 	rootMenuElm = createElement('div', 'w3-dropdown-click'),
-	menuBtnElm = createElement('button', 'w3-btn w3-hover-theme w3-theme', '&#x2630;'),
+	menuBtnElm = createElement('div', 'w3-btn w3-hover-theme', '&#x2630;'),
 	menuContainerElm = createElement('div', 'w3-dropdown-content w3-bar-block w3-border w3-animate-opacity w3-theme-light'),
 	menuCalendarModeElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme'),
 	menuFirstDayOfWeekElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme'),
@@ -91,11 +91,11 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 			menuItemAboutElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme', 'About'),
 			menuItemCancelElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme', 'Cancel<span class="w3-right">&times;</span>'),
 			yearPanelElm = createElement('div', 'w3-center w3-xxlarge'),
-			prevYearBtnElm = createElement('button', 'w3-btn w3-left', '&#xab;'),
-			nextYearBtnElm = createElement('button', 'w3-btn w3-right', '&#xbb;'),
+			prevYearBtnElm = createElement('div', 'w3-btn w3-left', '&#xab;'),
+			nextYearBtnElm = createElement('div', 'w3-btn w3-right', '&#xbb;'),
 			monthPanelElm = createElement('div', 'w3-center w3-xlarge'),
-			prevMonthBtnElm = createElement('button', 'w3-btn w3-left', '&#x2039;'),
-			nextMonthBtnElm = createElement('button', 'w3-btn w3-right','&#x203a;'),
+			prevMonthBtnElm = createElement('div', 'w3-btn w3-left', '&#x2039;'),
+			nextMonthBtnElm = createElement('div', 'w3-btn w3-right','&#x203a;'),
 			aboutContentElm = createElement('div', 'w3-modal-content w3-animate-zoom w3-card-4 w3-theme-light'),
 			aboutContentWrapperElm = createElement('div', 'w3-center w3-padding-24'),
 			aboutCloseBtnElm = createElement('span', 'w3-btn w3-large w3-display-topright', '&times;'),
@@ -361,7 +361,7 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 		evt = evt || window.event;
 		if (menuContainerElm.className.indexOf('w3-show') == -1)
 		{
-			menuBtnElm.className = menuBtnElm.className.replace('w3-theme', 'w3-theme-light');
+			menuBtnElm.className += ' w3-theme-light';
 			menuContainerElm.className += ' w3-show';
 		}
 		else
@@ -534,7 +534,7 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	
 	hideMenu = function()
 	{
-		menuBtnElm.className = menuBtnElm.className.replace('w3-theme-light', 'w3-theme');
+		menuBtnElm.className = menuBtnElm.className.replace(' w3-theme-light', '');
 		menuContainerElm.className = menuContainerElm.className.replace(' w3-show', '');
 	},
 	
