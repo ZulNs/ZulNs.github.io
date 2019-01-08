@@ -57,11 +57,35 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 		'yellow'
 	],
 	
+	createElement = function(tagName, className, innerHTML)
+	{
+		var elm = document.createElement(tagName);
+		if (className)
+		{
+			elm.className = className;
+		}
+		if (innerHTML)
+		{
+			elm.innerHTML = innerHTML;
+		}
+		return elm;
+	},
+	
+	calendarElm = createElement('div'),
+	yearValueElm = createElement('span', 'w3-button w3-hover-theme'),
+	monthValueElm = createElement('span', 'w3-button w3-hover-theme'),
+	gridsElm = createElement('div'),
+	weekdayTitleElm = createElement('div', 'w3-cell-row w3-center w3-large w3-theme-light');
+	rootMenuElm = createElement('div', 'w3-dropdown-click'),
+	menuBtnElm = createElement('button', 'w3-btn w3-hover-theme', '&#x2630;'),
+	menuContainerElm = createElement('div', 'w3-dropdown-content w3-bar-block w3-border w3-animate-opacity w3-theme-light'),
+	menuCalendarModeElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme'),
+	menuFirstDayOfWeekElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme'),
+	aboutModalElm = createElement('div', 'w3-modal'),
+	
 	createCalendar = function()
 	{
 		var headerElm = createElement('div', 'w3-container w3-padding w3-theme'),
-			rootMenuElm = createElement('div', 'w3-dropdown-click'),
-			menuBtnElm = createElement('button', 'w3-btn w3-theme', '&#x2630;'),
 			menuItemRefreshElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme', 'Refresh'),
 			menuItemResetElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme', 'Reset'),
 			menuItemAboutElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme', 'About'),
@@ -72,15 +96,15 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 			monthPanelElm = createElement('div', 'w3-center w3-xlarge'),
 			prevMonthBtnElm = createElement('button', 'w3-btn w3-left', '&#x2039;'),
 			nextMonthBtnElm = createElement('button', 'w3-btn w3-right','&#x203a;'),
-			aboutContentElm = createElement('div', 'w3-modal-content w3-card-4 w3-animation-zoom w3-theme-light'),
+			aboutContentElm = createElement('div', 'w3-modal-content w3-animate-zoom w3-card-4 w3-theme-light'),
 			aboutContentWrapperElm = createElement('div', 'w3-center w3-padding-24'),
 			aboutCloseBtnElm = createElement('span', 'w3-btn w3-large w3-display-topright', '&times;'),
 			aboutTagsContainerElm = createElement('div', 'w3-container w3-padding-24'),
-			aboutTag1Elm = createElement('div', 'w3-tag w3-jumbo w3-red', 'Z'),
-			aboutTag2Elm = createElement('div', 'w3-tag w3-jumbo', 'u'),
-			aboutTag3Elm = createElement('div', 'w3-tag w3-jumbo w3-yellow', 'l'),
-			aboutTag4Elm = createElement('div', 'w3-tag w3-jumbo', 'N'),
-			aboutTag5Elm = createElement('div', 'w3-tag w3-jumbo w3-teal', 's'),
+			aboutTag1Elm = createElement('span', 'w3-tag w3-jumbo', 'Z'),
+			aboutTag2Elm = createElement('span', 'w3-tag w3-jumbo w3-red', 'u'),
+			aboutTag3Elm = createElement('span', 'w3-tag w3-jumbo w3-blue', 'l'),
+			aboutTag4Elm = createElement('span', 'w3-tag w3-jumbo', 'N'),
+			aboutTag5Elm = createElement('span', 'w3-tag w3-jumbo w3-amber', 's'),
 			aboutTextElm = createElement('p', 'w3-large', 'Gorontalo, 7 January 2019');
 		yearValueElm.style = monthValueElm.style = gridsElm.style = 'cursor: default;';
 		weekdayTitleElm.style = 'padding: 12px 0px; margin-bottom: 8px;';
@@ -105,20 +129,24 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 		calendarElm.appendChild(headerElm);
 		calendarElm.appendChild(gridsElm);
 		aboutTagsContainerElm.appendChild(aboutTag1Elm);
+		aboutTagsContainerElm.appendChild(createElement('span', null, '&nbsp;'));
 		aboutTagsContainerElm.appendChild(aboutTag2Elm);
+		aboutTagsContainerElm.appendChild(createElement('span', null, '&nbsp;'));
 		aboutTagsContainerElm.appendChild(aboutTag3Elm);
+		aboutTagsContainerElm.appendChild(createElement('span', null, '&nbsp;'));
 		aboutTagsContainerElm.appendChild(aboutTag4Elm);
+		aboutTagsContainerElm.appendChild(createElement('span', null, '&nbsp;'));
 		aboutTagsContainerElm.appendChild(aboutTag5Elm);
 		aboutContentWrapperElm.appendChild(aboutCloseBtnElm);
 		aboutContentWrapperElm.appendChild(aboutTagsContainerElm);
 		aboutContentWrapperElm.appendChild(aboutTextElm);
 		aboutContentElm.appendChild(aboutContentWrapperElm);
 		aboutModalElm.appendChild(aboutContentElm);
-		calendarElm.appendChild(aboutModalElm);
 		aboutContentElm.style = 'max-width: 400px;';
+		calendarElm.appendChild(aboutModalElm);
 		// Add event
-		addEvent(rootMenuElm, 'click', onClickMenu);
-		addEvent(menuContainerElm, 'mouseleave', onCancel);
+		addEvent(rootMenuElm, 'mouseleave', onUnhoverMenu);
+		addEvent(menuBtnElm, 'click', onClickMenu);
 		addEvent(menuCalendarModeElm, 'click', onChangeCalendarMode);
 		addEvent(menuFirstDayOfWeekElm, 'click', onChangeFirstDayOfWeek);
 		addEvent(menuItemRefreshElm, 'click', onRefresh);
@@ -136,15 +164,22 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 		createWeekdayTitle();
 		createDayGrid();
 		var themeElm = document.getElementById('currentTheme');
-		isThemeChangeable = themeElm != null;
+		isThemeChangeable = (themeElm != null && themeElm.tagName == 'LINK' && themeElm.rel == 'stylesheet');
 		if (isThemeChangeable)
 		{
 			var theme = themeElm.href;
 			var idx = theme.lastIndexOf('w3-theme-') + 9;
-			themeHref = theme.substring(0, idx);
-			newTheme(themes[Math.floor(Math.random() * themes.length)]);
+			if (idx < 9)
+			{
+				isThemeChangeable = false;
+			}
+			else
+			{
+				themeHref = theme.substring(0, idx);
+				newTheme(themes[Math.floor(Math.random() * themes.length)]);
+			}
 		}
-		
+		alert(isThemeChangeable);
 	},
 	
 	updateCalendarModeMenuLabel = function()
@@ -327,12 +362,20 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 		evt = evt || window.event;
 		if (menuContainerElm.className.indexOf('w3-show') == -1)
 		{
+			menuBtnElm.className += ' w3-theme-light';
 			menuContainerElm.className += ' w3-show';
 		}
 		else
 		{
-			menuContainerElm.className = menuContainerElm.className.replace(' w3-show', '');
+			hideMenu();
 		}
+		return returnEvent(evt);
+	},
+	
+	onUnhoverMenu = function(evt)
+	{
+		evt = evt || window.event;
+		hideMenu();
 		return returnEvent(evt);
 	},
 	
@@ -371,6 +414,7 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	onAbout = function(evt)
 	{
 		evt = evt || window.event;
+		hideMenu();
 		showAbout();
 		return returnEvent(evt);
 	},
@@ -489,39 +533,16 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 		document.body.appendChild(style);
 	},
 	
-	createElement = function(tagName, className, innerHTML)
-	{
-		var elm = document.createElement(tagName);
-		if (className)
-		{
-			elm.className = className;
-		}
-		if (innerHTML)
-		{
-			elm.innerHTML = innerHTML;
-		}
-		return elm;
-	},
-	
 	hideMenu = function()
 	{
+		menuBtnElm.className = menuBtnElm.className.replace(' w3-theme-light', '');
 		menuContainerElm.className = menuContainerElm.className.replace(' w3-show', '');
 	},
 	
 	showAbout = function()
 	{
 		aboutModalElm.style.display = 'block';
-	},
-	
-	calendarElm = createElement('div'),
-	yearValueElm = createElement('span', 'w3-button w3-hover-theme'),
-	monthValueElm = createElement('span', 'w3-button w3-hover-theme'),
-	gridsElm = createElement('div'),
-	weekdayTitleElm = createElement('div', 'w3-cell-row w3-center w3-large w3-theme-light');
-	menuContainerElm = createElement('div', 'w3-dropdown-content w3-bar-block w3-border w3-animate-opacity w3-theme-light'),
-	menuCalendarModeElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme'),
-	menuFirstDayOfWeekElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme'),
-	aboutModalElm = createElement('div', 'w3-modal');
+	};
 	
 	this.getElement = function()
 	{
