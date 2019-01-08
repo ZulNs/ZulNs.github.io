@@ -1,0 +1,228 @@
+/*
+ * Stylesheet for 3D Menu
+ *
+ * Designed by ZulNs, @Gorontalo, Indonesia, 11 May 2017
+ */
+
+body {
+	background: #eee;
+	margin: 0px auto;
+	font-family: Verdana, sans-serif;
+}
+
+/*----- Menu Outline -----*/
+.menu-wrap {
+	position: absolute;
+	right: 130px;
+	top: 130px;
+	perspective: 1000px;
+	perspective-origin: -200px 200px;
+	font-family: Verdana, sans-serif;
+}
+.menu-wrap .hide {
+	display: none;
+}
+.menu-wrap .button {
+	position: absolute;
+	width: 32px;
+	height: 32px;
+	margin: 0;
+	padding: 0;
+	outline: 0;
+	border: 0;
+	top: -117px;
+	right: -117px;
+	background: #0bc;
+	box-shadow: -2px 2px 0 1px rgba(0, 132, 144, 0.8);
+}
+.menu-wrap .button:active {
+	box-shadow: -1px 1px 0 0 rgba(0, 132, 144, 0.8);
+	transform: translateY(2px) translateX(-2px);
+}
+.menu-wrap .button>a {
+	text-decoration: none;
+	display: block;
+	line-height: 32px;
+	text-align: center;
+	vertical-align: middle;
+	color: #fff;
+	font-size: 18px;
+}
+.menu-wrap ul {
+	display: block;
+	margin: 0;
+	padding: 4px 0;
+	width: 100%;
+}
+.menu-wrap li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	position: relative;
+}
+.menu-wrap .title {
+	color: #fff;
+	background: #888;
+	padding: 4px 0 6px 10px;
+	display: block;
+}
+.menu-wrap .cube a {
+	color: #fff;
+	padding: 4px 0 4px 20px;
+	text-decoration: none;
+	display: block;
+}
+.menu-wrap .cube a:hover {
+	color: #fff;
+	background: #666;
+}
+.menu-wrap .cube {
+	position: absolute;
+	transform-style: preserve-3d;
+	transform: translateZ(-90px);
+}
+.menu-wrap .cube>div {
+	position: absolute;
+	font-size: 12px;
+	backface-visibility: hidden;
+	width: 180px;
+	height: 180px;
+	left: -90px;
+	top: -90px;
+	border: 0;
+	outline: 0;
+	margin: 0;
+	padding: 0;
+	background: #0bc;
+}
+.menu-wrap .cube>div:after {
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+    background: rgba(0, 0, 0, 0.3);
+	opacity: 0.5;
+	display: block;
+}
+.menu-wrap .current:after {
+	display: none !important;
+}
+.menu-wrap .front {
+	transform: translateZ(90px);
+}
+.menu-wrap .back {
+	transform: rotateY(180deg) translateZ(90px);
+}
+.menu-wrap .right {
+	transform: rotateY(90deg) translateZ(90px);
+}
+.menu-wrap .left {
+	transform: rotateY(-90deg) translateZ(90px);
+}
+.menu-wrap .top {
+	transform: rotateX(90deg) translateZ(90px);
+}
+.menu-wrap .bottom {
+	transform: rotateX(-90deg) translateZ(90px);
+}
+.menu-wrap .to-back {
+	transform: translateZ(-90px) rotateY(180deg);
+}
+.menu-wrap .to-right {
+	transform: translateZ(-90px) rotateY(-90deg);
+}
+.menu-wrap .to-left {
+	transform: translateZ(-90px) rotateY(90deg);
+}
+.menu-wrap .to-top {
+	transform: translateZ(-90px) rotateX(-90deg);
+}
+.menu-wrap .to-bottom {
+	transform: translateZ(-90px) rotateX(90deg);
+}
+.menu-wrap .anim-collapse {
+	animation: anim-to-collapse .6s linear;
+}
+.menu-wrap .anim-expand {
+	animation: anim-to-expand .6s linear;
+}
+.menu-wrap .anim-to-back {
+	animation: spin-to-back .8s linear;
+}
+.menu-wrap .anim-to-right {
+	animation: spin-to-right .4s linear;
+}
+.menu-wrap .anim-to-left {
+	animation: spin-to-left .4s linear;
+}
+.menu-wrap .anim-to-top {
+	animation: spin-to-top .4s linear;
+}
+.menu-wrap .anim-to-bottom {
+	animation: spin-to-bottom .4s linear;
+}
+.menu-wrap .to-top.anim-to-front,
+.menu-wrap .to-bottom.anim-to-front
+{
+	animation: spin-x-to-front .4s linear;
+}
+.menu-wrap .to-back.anim-to-front {
+	animation: spin-y-to-front .8s linear;
+}
+.menu-wrap .to-right.anim-to-front,
+.menu-wrap .to-left.anim-to-front
+{
+	animation: spin-y-to-front 0.5s linear;
+}
+.menu-wrap .collapse {
+	transform: translateX(1580px) translateY(-1580px) translateZ(-5000px) rotateY(360deg);
+}
+@keyframes anim-to-collapse {
+	0%   { transform: translateX(0px) translateY(0px) translateZ(-90px) rotateY(0deg); }
+	100% { transform: translateX(1580px) translateY(-1580px) translateZ(-5000px) rotateY(360deg); }
+}
+@keyframes anim-to-expand {
+	100% { transform: translateX(0px) translateY(0px) translateZ(-90px) rotateY(0deg); }
+}
+@keyframes spin-to-back {
+	100% { transform: translateZ(-90px) rotateY(180deg); }
+}
+@keyframes spin-to-right {
+	100% { transform: translateZ(-90px) rotateY(-90deg); }
+}
+@keyframes spin-to-left {
+	100% { transform: translateZ(-90px) rotateY(90deg); }
+}
+@keyframes spin-to-top {
+	100% { transform: translateZ(-90px) rotateX(-90deg); }
+}
+@keyframes spin-to-bottom {
+	100% { transform: translateZ(-90px) rotateX(90deg); }
+}
+@keyframes spin-x-to-front {
+	100% { transform: translateZ(-90px) rotateX(0deg); }
+}
+@keyframes spin-y-to-front {
+	100% { transform: translateZ(-90px) rotateY(0deg); }
+}
+
+/*----- Contents Outline -----*/
+.contents {
+	margin: 0 20px;
+}
+.contents>div {
+	visibility: hidden;
+	opacity: 0;
+	position: absolute;
+	margin: 0 auto;
+	padding: 0;
+	line-height: 0%;
+	transition: all linear 0.25s;
+}
+.contents .show {
+	visibility: visible;
+	opacity: 1;
+	line-height: 100%;
+}

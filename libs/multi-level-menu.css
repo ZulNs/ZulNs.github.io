@@ -1,0 +1,156 @@
+/*
+ * Stylesheet for CSS Multi Level Menu
+ *
+ * Designed by ZulNs, @Gorontalo, Indonesia, 3 May 2017
+ */
+
+body {
+	background: #0cc;
+	margin: 0px auto;
+	font-family: Verdana, sans-serif;
+}
+.menu-wrap>nav>ul:after {
+    display: block;
+    clear: both;
+	content: '';
+}
+ 
+/*----- Menu Outline -----*/
+.menu-wrap {
+	width: 100%;
+	box-shadow: 0px 1px 3px rgba(0,0,0,0.2);
+	background: #333;
+	margin: 0px auto;
+	font-family: Verdana, sans-serif;
+	font-size: 16px;
+}
+.menu-wrap>nav {
+	/*width: 1000px;*/
+	margin: 0px auto;
+}
+.menu-wrap li {
+	margin: 0px;
+	list-style: none;
+}
+.menu-wrap a {
+	transition: all linear 0.25s;
+	color: #aaa;
+	text-decoration: none;
+	/*pointer-events: none;*/
+}
+.menu-wrap .current>a {
+	color: #0dd;
+}
+.menu-wrap .down-arrow {
+	font-size: 0.5em;
+}
+.menu-wrap .left-arrow {
+	float: right;
+	font-size: 0.5em;
+	line-height: 250%;
+}
+
+/*----- Top Level -----*/
+.menu-wrap>nav>ul>li {
+	float: left;
+	/*display: inline-block;*/
+	position: relative;
+	font-size: 1em;
+}
+.menu-wrap>nav>ul>li>a {
+	padding: 10px 40px;
+	display: inline-block;
+	text-shadow: 0px 1px 0px rgba(0,0,0,0.4);
+}
+.menu-wrap .root>li:hover>a,
+.menu-wrap .root>.current>a,
+.menu-wrap .root>li>a:focus
+{
+	background: #111;
+}
+.menu-wrap .has-child:hover>a {
+	cursor: default;
+}
+
+/*----- General Sub Menu -----*/
+.menu-wrap .root ul {
+	visibility: hidden;
+	padding: 5px 0px;
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+	transition: all linear 0.25s;
+	box-shadow: 0px 2px 3px rgba(0,0,0,0.2);
+	background: #111;
+}
+.menu-wrap li:hover>ul
+{
+	z-index: 1;
+	opacity: 1;
+	visibility: visible;
+}
+/*
+.menu-wrap li:active>ul {
+	visibility: hidden;
+	z-index: -1;
+	opacity: 0;
+}
+*/
+.menu-wrap .root>li li {
+	font-size: 1em;
+	position: relative;
+}
+.menu-wrap .root>li li>a {
+	display: block;
+	padding: 10px 30px;
+}
+.menu-wrap .root>li li:hover>a,
+.menu-wrap .root>li .current>a,
+.menu-wrap .root>li>ul a:focus
+{
+	background: #333;
+}
+
+/*----- Menu Level 1 -----*/
+.menu-wrap .level-1 {
+	width: 120%;
+	top: 100%;
+	left: 0px;
+	line-height: 0%;
+}
+.menu-wrap .root>li:hover>.level-1 {
+	line-height: 100%;
+}
+
+/*----- Menu Level 2 & 3 -----*/
+.menu-wrap .level-2,
+.menu-wrap .level-3
+{
+	width: 0%;
+	top: -14%;
+	left: 100%;
+}
+.menu-wrap .level-1>li:hover>.level-2,
+.menu-wrap .level-2>li:hover>.level-3
+{
+	width: 100%;
+}
+
+/*----- Contents Outline -----*/
+.contents {
+	margin: 0 20px;
+}
+.contents>div {
+	visibility: hidden;
+	opacity: 0;
+	position: absolute;
+	margin: 0 auto;
+	padding: 0;
+	line-height: 0%;
+	transition: all linear 0.25s;
+}
+.contents .show {
+	visibility: visible;
+	opacity: 1;
+	line-height: 100%;
+}
