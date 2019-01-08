@@ -7,7 +7,7 @@ This datepicker widget can be used to display **Gregorian** or **Hijri** date, a
 - [datepicker.js](../libs/datepicker.js)
 
 ## Requirements
-- [hijri-date.js](../../Hijri-Date-Function/libs/hijri-date.js) which allows the use of [`HijriDate()`](../../Hijri-Date-Function/docs/hijri-date-api-doc.md) class
+- [hijri-date.js](../libs/hijri-date.js) which allows the use of [`HijriDate()`](hijri-date-api-doc.md) class
 - [datepicker.css](../libs/datepicker.css) for styling this widget
 
 ## Public Constructor

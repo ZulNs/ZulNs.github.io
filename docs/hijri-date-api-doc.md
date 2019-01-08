@@ -4,7 +4,8 @@
 
 
 ## Download
-- [hijri-date.js](../libs/hijri-date.js)
+- [hijri-date.js](../libs/hijri-date.js) (English version), or
+- [hijri-date-id.js](..libs/hijri-date-id.js) (Indonesian version)
 
 ## Public Constructors
 - **`HijriDate()`**
