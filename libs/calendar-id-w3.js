@@ -179,7 +179,6 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 				newTheme(themes[Math.floor(Math.random() * themes.length)]);
 			}
 		}
-		alert(isThemeChangeable);
 	},
 	
 	updateCalendarModeMenuLabel = function()
