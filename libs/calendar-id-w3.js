@@ -76,9 +76,9 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	monthValueElm = createElement('span', 'w3-button w3-hover-theme'),
 	gridsElm = createElement('div'),
 	weekdayTitleElm = createElement('div', 'w3-cell-row w3-center w3-large w3-theme-light');
-	rootMenuElm = createElement('div', 'w3-dropdown-click'),
+	rootMenuElm = createElement('div', 'w3-dropdown-click w3-theme'),
 	menuBtnElm = createElement('div', 'w3-btn w3-hover-theme', '&#x2630;'),
-	menuContainerElm = createElement('div', 'w3-dropdown-content w3-bar-block w3-border w3-animate-opacity w3-theme-light'),
+	menuContainerElm = createElement('div', 'w3-dropdown-content w3-bar-block w3-border w3-theme-light w3-animate-opacity'),
 	menuCalendarModeElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme'),
 	menuFirstDayOfWeekElm = createElement('span', 'w3-bar-item w3-button w3-hover-theme'),
 	aboutModalElm = createElement('div', 'w3-modal'),
@@ -371,6 +371,12 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 		return returnEvent(evt);
 	},
 	
+	hideMenu = function()
+	{
+		menuBtnElm.className = menuBtnElm.className.replace(' w3-theme-light', '');
+		menuContainerElm.className = menuContainerElm.className.replace(' w3-show', '');
+	},
+	
 	onUnhoverMenu = function(evt)
 	{
 		evt = evt || window.event;
@@ -418,17 +424,22 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 		return returnEvent(evt);
 	},
 	
-	onCancel = function(evt)
+	showAbout = function()
 	{
-		evt = evt || window.event;
-		hideMenu();
-		return returnEvent(evt);
+		aboutModalElm.style.display = 'block';
 	},
 	
 	onCloseAbout = function(evt)
 	{
 		evt = evt || window.event;
 		aboutModalElm.style.display = 'none';
+		return returnEvent(evt);
+	},
+	
+	onCancel = function(evt)
+	{
+		evt = evt || window.event;
+		hideMenu();
 		return returnEvent(evt);
 	},
 	
@@ -530,17 +541,6 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 		style.rel = 'stylesheet';
 		style.href = themeHref + themes[currentTheme] + '.css';
 		document.body.appendChild(style);
-	},
-	
-	hideMenu = function()
-	{
-		menuBtnElm.className = menuBtnElm.className.replace(' w3-theme-light', '');
-		menuContainerElm.className = menuContainerElm.className.replace(' w3-show', '');
-	},
-	
-	showAbout = function()
-	{
-		aboutModalElm.style.display = 'block';
 	};
 	
 	this.getElement = function()
