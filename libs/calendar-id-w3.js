@@ -361,23 +361,23 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	
 	onHoverMenu = function(evt)
 	{
-		evt = evt || window.event;
+		//evt = evt || window.event;
 		if (currentTheme > 5)
 		{
 			menuBtnElm.children[0].style.stroke = '#000';
 		}
-		return returnEvent(evt);
+		//return returnEvent(evt);
 	},
 	
 	onUnhoverMenu = function(evt)
 	{
-		evt = evt || window.event;
+		//evt = evt || window.event;
 		hideMenu();
 		if (currentTheme > 5)
 		{
 			menuBtnElm.children[0].style.stroke = '#fff';
 		}
-		return returnEvent(evt);
+		//return returnEvent(evt);
 	},
 	
 	hideMenu = function()
@@ -387,7 +387,7 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	
 	onClickMenu = function(evt)
 	{
-		evt = evt || window.event;
+		//evt = evt || window.event;
 		if (menuContainerElm.className.indexOf('w3-show') == -1)
 		{
 			menuContainerElm.className += ' w3-show';
@@ -396,47 +396,47 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 		{
 			hideMenu();
 		}
-		return returnEvent(evt);
+		//return returnEvent(evt);
 	},
 	
 	onChangeCalendarMode = function(evt)
 	{
-		evt = evt || window.event;
+		//evt = evt || window.event;
 		hideMenu();
 		self.setHijriMode(!isHijriMode);
-		return returnEvent(evt);
+		//return returnEvent(evt);
 	},
 	
 	onChangeFirstDayOfWeek = function(evt)
 	{
-		evt = evt || window.event;
+		//evt = evt || window.event;
 		hideMenu();
 		self.setFirstDayOfWeek(1 - firstDayOfWeek);
-		return returnEvent(evt);
+		//return returnEvent(evt);
 	},
 	
 	onRefresh = function(evt)
 	{
-		evt = evt || window.event;
+		//evt = evt || window.event;
 		hideMenu();
 		self.refresh();
-		return returnEvent(evt);
+		//return returnEvent(evt);
 	},
 	
 	onReset = function(evt)
 	{
-		evt = evt || window.event;
+		//evt = evt || window.event;
 		hideMenu();
 		self.reset();
-		return returnEvent(evt);
+		//return returnEvent(evt);
 	},
 	
 	onAbout = function(evt)
 	{
-		evt = evt || window.event;
+		//evt = evt || window.event;
 		hideMenu();
 		showAbout();
-		return returnEvent(evt);
+		//return returnEvent(evt);
 	},
 	
 	showAbout = function()
@@ -446,16 +446,16 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	
 	onCloseAbout = function(evt)
 	{
-		evt = evt || window.event;
+		//evt = evt || window.event;
 		aboutModalElm.style.display = 'none';
-		return returnEvent(evt);
+		//return returnEvent(evt);
 	},
 	
 	onCancel = function(evt)
 	{
-		evt = evt || window.event;
+		//evt = evt || window.event;
 		hideMenu();
-		return returnEvent(evt);
+		//return returnEvent(evt);
 	},
 	
 	onResizeWindow = function(evt)
