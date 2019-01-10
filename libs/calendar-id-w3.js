@@ -21,7 +21,7 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	currentDate,
 	isThemeChangeable,
 	isDisplayCurrentDate,
-	currentTheme = -1,
+	currentTheme = 16,
 	themeHref,
 	isSmallScreen =
 	(
@@ -78,7 +78,7 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	weekdayTitleElm = createElement('div', 'w3-cell-row w3-center w3-large w3-theme-light');
 	rootMenuElm = createElement('div', 'w3-dropdown-click'),
 	menuBtnElm = createElement('div', 'w3-button',
-		'<svg xmlns="http://www.w3.org/2000/svg" width="18" height="23" stroke="#000"><path d="M0 7L18 7M0 14L18 14M0 21L18 21" stroke-width="3" /></svg>'
+		'<svg xmlns="http://www.w3.org/2000/svg" width="18" height="23" stroke="#fff"><path d="M0 7L18 7M0 14L18 14M0 21L18 21" stroke-width="3" /></svg>'
 	),
 	menuContainerElm = createElement('div', 'w3-dropdown-content w3-bar-block w3-border w3-animate-opacity'),
 	menuCalendarModeElm = createElement('span', 'w3-bar-item w3-button'),
