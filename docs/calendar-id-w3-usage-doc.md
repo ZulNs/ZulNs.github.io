@@ -2,32 +2,8 @@
 
 ## Requirements
 - [hijri-date-id.js](../libs/hijri-date-id.js) which allows the use of [`HijriDate()`](hijri-date-api-doc.md) class
-- [calendar-id-w3.js](../libs/calendar-id-w3.js) for generate this calendar,
-  for styling you need these following CSS files:
-- [w3.css](../libs/w3css/w3.css)
-- [w3-theme-amber](../libs/w3css/w3-theme-amber.css)
-- [w3-theme-black](../libs/w3css/w3-theme-black.css)
-- [w3-theme-blue](../libs/w3css/w3-theme-blue.css)
-- [w3-theme-blue-grey](../libs/w3css/w3-theme-blue-grey.css)
-- [w3-theme-brown](../libs/w3css/w3-theme-brown.css)
-- [w3-theme-cyan](../libs/w3css/w3-theme-cyan.css)
-- [w3-theme-dark-grey](../libs/w3css/w3-theme-dark-grey.css)
-- [w3-theme-deep-orange](../libs/w3css/w3-theme-deep-orange.css)
-- [w3-theme-deep-purple](../libs/w3css/w3-theme-deep-purple.css)
-- [w3-theme-green](../libs/w3css/w3-theme-green.css)
-- [w3-theme-grey](../libs/w3css/w3-theme-grey.css)
-- [w3-theme-indigo](../libs/w3css/w3-theme-indigo.css)
-- [w3-theme-khaki](../libs/w3css/w3-theme-khaki.css)
-- [w3-theme-light-blue](../libs/w3css/w3-theme-light-blue.css)
-- [w3-theme-light-green](../libs/w3css/w3-theme-light-green.css)
-- [w3-theme-lime](../libs/w3css/w3-theme-lime.css)
-- [w3-theme-orange](../libs/w3css/w3-theme-orange.css)
-- [w3-theme-pink](../libs/w3css/w3-theme-pink.css)
-- [w3-theme-purple](../libs/w3css/w3-theme-purple.css)
-- [w3-theme-red](../libs/w3css/w3-theme-red.css)
-- [w3-theme-teal](../libs/w3css/w3-theme-teal.css)
-- [w3-theme-w3schools](../libs/w3css/w3-theme-w3schools.css)
-- [w3-theme-yellow](../libs/w3css/w3-theme-yellow.css)
+- [calendar-id-w3.js](../libs/calendar-id-w3.js) a library to generate this calendar,
+- [w3.css](../libs/w3css/w3.css) for styling
 
 ## Getting Started
 
@@ -39,7 +15,6 @@ Offline mode:
 ```html
 <div id="calendar-container"></div>
 <link rel="stylesheet" href="../libs/w3css/w3.css" />
-<link rel="stylesheet" href="../libs/w3css/w3-theme-indigo.css" id="currentTheme" />
 <script type="text/javascript" src="../libs/hijri-date-id.js"></script>
 <script type="text/javascript" src="../libs/calendar-id-w3.js"></script>
 <script type="text/javascript">
@@ -53,11 +28,77 @@ Or online mode:
 ```html
 <div id="calendar-container"></div>
 <link rel="stylesheet" href="https://ZulNs.github.io/libs/w3css/w3.css" />
-<link rel="stylesheet" href="https://ZulNs.github.io/libs/w3css/w3-theme-indigo.css" id="currentTheme" />
 <script type="text/javascript" src="https://ZulNs.github.io/libs/hijri-date-id.js"></script>
 <script type="text/javascript" src="https://ZulNs.github.io/libs/calendar-id-w3.js"></script>
 <script type="text/javascript">
     var cal = new Calendar();
+    document.getElementById('calendar-container').appendChild(cal.getElement());
+</script>
+```
+
+Every time a new load to this calendar, or a pressed to the Refresh menu button
+that adjusts to the current time and date, a new color theme is applied at once.
+To disable this default behaviour simply add this code:
+
+```javascript
+cal.setThemeAutoChanged(false);
+```
+
+To reenable:
+
+```javascript
+cal.setThemeAutoChanged(true);
+```
+
+To set up a desired color theme:
+
+```javascript
+cal.setTheme('desired-color');
+```
+
+The color themes are consist of:
+- amber
+- aqua
+- cyan
+- grey
+- khaki
+- light-blue
+- light-green
+- lime
+- orange
+- pale-blue
+- pale-green
+- pale-red
+- pale-yellow
+- sand
+- white
+- yellow
+- black
+- blue
+- blue-grey
+- brown
+- dark-grey
+- deep-orange
+- deep-purple
+- green
+- indigo
+- light-green
+- pink
+- purple
+- red
+- teal
+
+For example, to set-up a calendar with deep-orange color theme and auto change theme is disabled:
+
+```html
+<div id="calendar-container"></div>
+<link rel="stylesheet" href="https://ZulNs.github.io/libs/w3css/w3.css" />
+<script type="text/javascript" src="https://ZulNs.github.io/libs/hijri-date-id.js"></script>
+<script type="text/javascript" src="https://ZulNs.github.io/libs/calendar-id-w3.js"></script>
+<script type="text/javascript">
+    var cal = new Calendar();
+    cal.setTheme('deep-orange');
+    cal.setThemeAutoChanged(false);
     document.getElementById('calendar-container').appendChild(cal.getElement());
 </script>
 ```
@@ -68,5 +109,5 @@ Or online mode:
 
 ---
 #### Designed By ZulNs
-##### @Gorontalo, 6 January 2019
+##### @Gorontalo, 11 January 2019
 ---
