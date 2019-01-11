@@ -2,8 +2,8 @@
 
 ## Requirements
 - [hijri-date-id.js](../libs/hijri-date-id.js) which allows the use of [`HijriDate()`](hijri-date-api-doc.md) class
-- [calendar-id-w3.js](../libs/calendar-id-w3.js) a library to generate this calendar,
-- [w3.css](../libs/w3css/w3.css) for styling
+- [calendar-id-w3.js](../libs/calendar-id-w3.js) is a library to generate this calendar,
+- [w3.css](../libs/w3css/w3.css) is for styling
 
 ## Getting Started
 
