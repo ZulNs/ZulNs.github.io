@@ -387,10 +387,7 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	onUnhoverMenu = function(evt)
 	{
 		hideMenu();
-		if (currentThemeIdx >= BLACK_TEXT_THEME_NUMBER)
-		{
-			setStrokeColor(evt.target.children[0], '#fff');
-		}
+		setStrokeColor(evt.target.children[0], currentThemeIdx >= BLACK_TEXT_THEME_NUMBER ? '#fff' : '#000');
 	},
 	
 	onHoverBtn = function(evt)
@@ -402,16 +399,12 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	{
 		if (currentThemeIdx >= BLACK_TEXT_THEME_NUMBER)
 		{
-			setStrokeColor(evt.target, '#fff');
+			setStrokeColor(evt.target, currentThemeIdx >= BLACK_TEXT_THEME_NUMBER ? '#fff' : '#000');
 		}
 	},
 	
-	setStrokeColor = function(elm, color, isCurrentColor)
+	setStrokeColor = function(elm, color)
 	{
-		if (isCurrentColor)
-		{
-			color = window.getComputedStyle(elm).getPropertyValue('color');
-		}
 		elm.children[0].setAttribute('stroke', color);
 		elm.children[0].setAttribute('fill', color);
 	}
