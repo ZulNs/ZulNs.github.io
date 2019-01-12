@@ -58,7 +58,6 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 		'deep-purple',
 		'green',
 		'indigo',
-		'light-green',
 		'pink',
 		'purple',
 		'red',
@@ -381,25 +380,34 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	
 	onHoverMenu = function(evt)
 	{
-		setStrokeColor(evt.target.children[0], '#000');
+		if (currentThemeIdx >= BLACK_TEXT_THEME_NUMBER)
+		{
+			setStrokeColor(evt.target.children[0], '#000');
+		}
 	},
 	
 	onUnhoverMenu = function(evt)
 	{
 		hideMenu();
-		setStrokeColor(evt.target.children[0], currentThemeIdx >= BLACK_TEXT_THEME_NUMBER ? '#fff' : '#000');
+		if (currentThemeIdx >= BLACK_TEXT_THEME_NUMBER)
+		{
+			setStrokeColor(evt.target.children[0], '#fff');
+		}
 	},
 	
 	onHoverBtn = function(evt)
 	{
-		setStrokeColor(evt.target, '#000');
+		if (currentThemeIdx >= BLACK_TEXT_THEME_NUMBER)
+		{
+			setStrokeColor(evt.target, '#000');
+		}
 	},
 	
 	onUnhoverBtn = function(evt)
 	{
 		if (currentThemeIdx >= BLACK_TEXT_THEME_NUMBER)
 		{
-			setStrokeColor(evt.target, currentThemeIdx >= BLACK_TEXT_THEME_NUMBER ? '#fff' : '#000');
+			setStrokeColor(evt.target, '#fff');
 		}
 	},
 	

@@ -82,7 +82,6 @@ The color themes are consist of:
 - deep-purple
 - green
 - indigo
-- light-green
 - pink
 - purple
 - red
