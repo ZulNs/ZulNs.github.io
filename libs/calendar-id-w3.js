@@ -24,12 +24,7 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	isDisplayToday,
 	isThemeAutoChanged = true,
 	currentThemeIdx = -1,
-	isSmallScreen =
-	(
-		window.innerWidth ||
-		document.documentElement.clientWidth ||
-		document.body.clientWidth
-	) < 640,
+	isSmallScreen = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) < 640,
 	hasEventListeners = !!window.addEventListener,
 	themes =
 	[
@@ -79,7 +74,7 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	},
 	
 	calendarElm = createElement('div'),
-	headerElm = createElement('div', 'w3-container w3-padding w3-color'),
+	headerElm = createElement('div', 'w3-container w3-padding w3-theme-color'),
 	yearValueElm = createElement('span'),
 	monthValueElm = createElement('span'),
 	gridsElm = createElement('div'),
@@ -221,7 +216,15 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	
 	updateHeader = function()
 	{
-		yearValueElm.innerHTML = thisDate.getFullYear() + '&nbsp;' + (isHijriMode ? 'H' : 'M');
+		var year = thisDate.getFullYear();
+		if (year > 0)
+		{
+			yearValueElm.innerHTML = year + '&nbsp;' + (isHijriMode ? 'H' : 'M');
+		}
+		else
+		{
+			yearValueElm.innerHTML = (-year + 1) + '&nbsp;' + (isHijriMode ? 'SH' : 'SM');
+		}
 		monthValueElm.innerHTML = thisDate.getMonthName();
 	},
 	
@@ -255,8 +258,8 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	
 	createDayGrid = function()
 	{
-		var thisTime = thisDate.getTime(),
-			ppdr = thisDate.getDay() - firstDayOfWeek;
+		var thisTime = thisDate.getTime();
+		var ppdr = thisDate.getDay() - firstDayOfWeek;
 		if (ppdr < 0)
 		{
 			ppdr += 7;
@@ -283,9 +286,9 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 				var row = createElement('div', 'w3-cell-row w3-center');
 				gridsElm.appendChild(row);
 			}
-			var grid = createElement('div', 'w3-cell'),
-				pde = createElement('div', 'w3-xlarge'),
-				sde = createElement('div', 'w3-small');
+			var grid = createElement('div', 'w3-cell');
+			var pde = createElement('div', 'w3-xlarge');
+			var sde = createElement('div', 'w3-small');
 			grid.style.cssText = 'width: 14.2857%; padding: 6px 0px;';
 			grid.appendChild(pde);
 			grid.appendChild(sde);
@@ -539,15 +542,15 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 			}
 			while (currentThemeIdx == themeIdx);
 		}
-		currentThemeIdx = themeIdx;
 		headerElm.className = headerElm.className.substring(0, headerElm.className.lastIndexOf('w3-'));
-		headerElm.className += 'w3-' + themes[currentThemeIdx];
+		headerElm.className += 'w3-' + themes[themeIdx];
 		var elms = calendarElm.querySelectorAll('div.w3-button');
-		var color = currentThemeIdx < BLACK_TEXT_THEME_NUMBER ? '#000' : '#fff';
+		var color = themeIdx < BLACK_TEXT_THEME_NUMBER ? '#000' : '#fff';
 		for (var i = 0; i < elms.length; i++)
 		{
 			setStrokeColor(elms[i], color);
 		}
+		currentThemeIdx = themeIdx;
 		return true;
 	};
 	
@@ -674,8 +677,14 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 			month = 0;
 		}
 	}
-	thisDate = isHijriMode ?
-		new HijriDate(year, month, 1, 6) :
-		new Date(year, month, 1);
+	if (isHijriMode)
+	{
+		thisDate = new HijriDate(year, month, 1, 6);
+	}
+	else
+	{
+		thisDate = new Date(year, month, 1);
+		thisDate.setFullYear(year);
+	}
 	createCalendar();
 }
