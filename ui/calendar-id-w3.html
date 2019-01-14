@@ -19,8 +19,9 @@
 	<script type="text/javascript" src="../libs/hijri-date-id.js"></script>
 	<script type="text/javascript" src="../libs/calendar-id-w3.js"></script>
 	<script type="text/javascript">
-		var cal = new Calendar();
+		var cal = new Calendar(true, 1, 1);
 		document.getElementById('calendar-container').appendChild(cal.getElement());
+		cal.setActionTimeout(30);
 	</script>
 </body>
 </html>

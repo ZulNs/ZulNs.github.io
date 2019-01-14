@@ -2,7 +2,7 @@
  * Kalender Masehi/Hijriah using W3CSS
  * 
  * Designed by ZulNs, @Gorontalo, Indonesia, 30 April 2017
- * Revised to using W3CSS, @Gorontalo, Indonesia, 11 January 2019
+ * Revised to using W3CSS, @Gorontalo, Indonesia, 14 January 2019
  */
 
 function Calendar(isHijriMode, firstDayOfWeek, year, month)
@@ -17,15 +17,22 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	const BLACK_TEXT_THEME_NUMBER = 16;
 	
 	var self = this,
+	thisHDate,
+	thisGDate,
 	thisDate,
+	thatDate,
+	currentHDate = new HijriDate(),
+	currentGDate = currentHDate.getGregorianDate(),
 	currentYear,
 	currentMonth,
 	currentDate,
-	isDisplayToday,
-	isThemeAutoChanged = true,
+	actionTimeout = 300, // in seconds (default is 5 minutes)
+	actionTimeoutId,
+	isDisplayToday = false,
 	currentThemeIdx = -1,
 	isSmallScreen = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) < 640,
 	hasEventListeners = !!window.addEventListener,
+	
 	themes =
 	[
 		'amber',
@@ -90,10 +97,10 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 			menuBtnElm = createElement('div', 'w3-button',
 				'<svg xmlns="http://www.w3.org/2000/svg" width="18" height="23"><path d="M0 6L18 6L18 8L0 8Z M0 13L18 13L18 15L0 15Z M0 20L18 20L18 22L0 22Z" stroke-width="1" /></svg>'
 			),
-			menuItemRefreshElm = createElement('span', 'w3-bar-item w3-button', 'Refresh'),
-			menuItemResetElm = createElement('span', 'w3-bar-item w3-button', 'Reset'),
-			menuItemAboutElm = createElement('span', 'w3-bar-item w3-button', 'About'),
-			menuItemCancelElm = createElement('span', 'w3-bar-item w3-button', 'Cancel<span class="w3-right">&times;</span>'),
+			menuItemTodayElm = createElement('span', 'w3-bar-item w3-button', 'Hari&nbsp;ini'),
+			menuItemNewThemeElm = createElement('span', 'w3-bar-item w3-button', 'Tema&nbsp;baru'),
+			menuItemAboutElm = createElement('span', 'w3-bar-item w3-button', 'Tentang'),
+			menuItemCancelElm = createElement('span', 'w3-bar-item w3-button', 'Batal<span class="w3-right">&times;</span>'),
 			yearPanelElm = createElement('div', 'w3-center w3-xxxlarge'),
 			prevYearBtnElm = createElement('div', 'w3-button w3-medium w3-left',
 				'<svg xmlns="http://www.w3.org/2000/svg" width="18" height="23"><path d="M7 7L2 15L7 23L9 23L4 15L9 7Z M14 7L9 15L14 23L16 23L11 15L16 7Z" stroke-width="1" /></svg>'
@@ -112,20 +119,20 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 			aboutContentWrapperElm = createElement('div', 'w3-center w3-padding-24'),
 			aboutCloseBtnElm = createElement('span', 'w3-button w3-large w3-display-topright', '&times;'),
 			aboutTagsContainerElm = createElement('div', 'w3-container w3-padding-24'),
-			aboutTag1Elm = createElement('span', 'w3-tag w3-jumbo', 'Z'),
-			aboutTag2Elm = createElement('span', 'w3-tag w3-jumbo w3-red', 'u'),
-			aboutTag3Elm = createElement('span', 'w3-tag w3-jumbo w3-blue', 'l'),
-			aboutTag4Elm = createElement('span', 'w3-tag w3-jumbo', 'N'),
-			aboutTag5Elm = createElement('span', 'w3-tag w3-jumbo w3-amber', 's'),
-			aboutTextElm = createElement('p', 'w3-large', 'Gorontalo, 7 January 2019');
+			aboutTag1Elm = createElement('span', 'w3-tag w3-jumbo', '&#90;'),
+			aboutTag2Elm = createElement('span', 'w3-tag w3-jumbo w3-red', '&#117;'),
+			aboutTag3Elm = createElement('span', 'w3-tag w3-jumbo w3-blue', '&#108;'),
+			aboutTag4Elm = createElement('span', 'w3-tag w3-jumbo', '&#78;'),
+			aboutTag5Elm = createElement('span', 'w3-tag w3-jumbo w3-amber', '&#115;'),
+			aboutTextElm = createElement('p', 'w3-large', '&#71;&#111;&#114;&#111;&#110;&#116;&#97;&#108;&#111;&#44;&nbsp;&#49;&#52;&nbsp;&#74;&#97;&#110;&#117;&#97;&#114;&#121;&nbsp;&#50;&#48;&#49;&#57;');
 		prevYearBtnElm.style.cssText = nextYearBtnElm.style.cssText = 'margin-top: 14px;';
 		prevMonthBtnElm.style.cssText = nextMonthBtnElm.style.cssText = 'margin-top: 6px;';
 		yearValueElm.style.cssText = monthValueElm.style.cssText = gridsElm.style.cssText = 'cursor: default;';
 		weekdayTitleElm.style.cssText = 'padding: 12px 0px; margin-bottom: 8px;';
 		menuContainerElm.appendChild(menuCalendarModeElm);
 		menuContainerElm.appendChild(menuFirstDayOfWeekElm);
-		menuContainerElm.appendChild(menuItemRefreshElm);
-		menuContainerElm.appendChild(menuItemResetElm);
+		menuContainerElm.appendChild(menuItemTodayElm);
+		menuContainerElm.appendChild(menuItemNewThemeElm);
 		menuContainerElm.appendChild(menuItemAboutElm);
 		menuContainerElm.appendChild(menuItemCancelElm);
 		rootMenuElm.appendChild(menuBtnElm);
@@ -172,8 +179,8 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 		addEvent(menuBtnElm, 'click', onClickMenu);
 		addEvent(menuCalendarModeElm, 'click', onChangeCalendarMode);
 		addEvent(menuFirstDayOfWeekElm, 'click', onChangeFirstDayOfWeek);
-		addEvent(menuItemRefreshElm, 'click', onRefresh);
-		addEvent(menuItemResetElm, 'click', onReset);
+		addEvent(menuItemTodayElm, 'click', onDisplayToday);
+		addEvent(menuItemNewThemeElm, 'click', onNewTheme);
 		addEvent(menuItemAboutElm, 'click', onAbout);
 		addEvent(menuItemCancelElm, 'click', onCancel);
 		addEvent(prevYearBtnElm, 'click', onDecrementYear);
@@ -268,8 +275,8 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 		var pndr = (ppdr + pcdr) % 7;
 		pndr = pndr > 0 ? 7 - pndr : 0;
 		thisDate.setDate(1 - ppdr);
-		var thatDate = isHijriMode ? thisDate.getGregorianDate() : thisDate.getHijriDate(),
-			pdate = thisDate.getDate(),
+		thatDate.setTime(thisDate.getTime());
+		var pdate = thisDate.getDate(),
 			sdate = thatDate.getDate(),
 			pdim = thisDate.getDaysInMonth(),
 			sdim = thatDate.getDaysInMonth(),
@@ -305,7 +312,6 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 			else if (isToday)
 			{
 				grid.className += ' w3-dark-grey';
-				isDisplayToday = ppdr < i && i <= ppdr + pcdr;
 			}
 			if (thisTime == 262368e5 && pdate == 5 && sdate == 5)
 			{
@@ -317,6 +323,15 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 			{
 				grid.className += ' w3-disabled';
 				grid.style.cursor = 'default';
+			}
+			else if (isToday)
+			{
+				isDisplayToday = true;
+				if (actionTimeoutId)
+				{
+					window.clearTimeout(actionTimeoutId);
+					actionTimeoutId = null;
+				}
 			}
 			pde.innerHTML = pdate;
 			sde.innerHTML = sdate + '&nbsp;' + smsn;
@@ -361,24 +376,28 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	{
 		thisDate.setMonth(thisDate.getMonth() - 1);
 		updateCalendar();
+		applyActionTimeout();
 	},
 	
 	onIncrementMonth = function(evt)
 	{
 		thisDate.setMonth(thisDate.getMonth() + 1);
 		updateCalendar();
+		applyActionTimeout();
 	},
 	
 	onDecrementYear = function(evt)
 	{
 		thisDate.setFullYear(thisDate.getFullYear() - 1);
 		updateCalendar();
+		applyActionTimeout();
 	},
 	
 	onIncrementYear = function(evt)
 	{
 		thisDate.setFullYear(thisDate.getFullYear() + 1);
 		updateCalendar();
+		applyActionTimeout();
 	},
 	
 	onHoverMenu = function(evt)
@@ -449,40 +468,51 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	{
 		hideMenu();
 		self.setHijriMode(!isHijriMode);
+		applyActionTimeout();
 	},
 	
 	onChangeFirstDayOfWeek = function(evt)
 	{
 		hideMenu();
 		self.setFirstDayOfWeek(1 - firstDayOfWeek);
+		applyActionTimeout();
 	},
 	
-	onRefresh = function(evt)
+	onDisplayToday = function(evt)
 	{
 		hideMenu();
-		self.refresh();
+		self.today();
 	},
 	
-	onReset = function(evt)
+	onNewTheme = function(evt)
 	{
 		hideMenu();
-		self.reset();
+		newTheme();
 	},
 	
 	onAbout = function(evt)
 	{
 		hideMenu();
-		showAbout();
-	},
-	
-	showAbout = function()
-	{
 		aboutModalElm.style.display = 'block';
+		if (actionTimeoutId)
+		{
+			window.clearTimeout(actionTimeoutId);
+		}
+		actionTimeoutId = window.setTimeout(function()
+		{
+			aboutModalElm.style.display = 'none';
+			if (!isDisplayToday)
+			{
+				newTheme();
+				self.today();
+			}
+		}, actionTimeout * 1000);
 	},
 	
 	onCloseAbout = function(evt)
 	{
 		aboutModalElm.style.display = 'none';
+		applyActionTimeout();
 	},
 	
 	onCancel = function(evt)
@@ -492,11 +522,7 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	
 	onResizeWindow = function(evt)
 	{
-		if
-		(
-			isSmallScreen && calendarElm.clientWidth >= 640 ||
-			!isSmallScreen && calendarElm.clientWidth < 640
-		)
+		if (isSmallScreen && calendarElm.clientWidth >= 640 || !isSmallScreen && calendarElm.clientWidth < 640)
 		{
 			isSmallScreen = !isSmallScreen;
 			recreateWeekdayTitle();
@@ -505,15 +531,49 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 	
 	getCurrentDate = function()
 	{
-		var nd = new Date();
-		nd.setHours(0);
 		if (isHijriMode)
 		{
-			nd = nd.getHijriDate();
+			currentYear = currentHDate.getFullYear();
+			currentMonth = currentHDate.getMonth();
+			currentDate = currentHDate.getDate();
 		}
-		currentYear = nd.getFullYear();
-		currentMonth = nd.getMonth();
-		currentDate = nd.getDate();
+		else
+		{
+			currentYear = currentGDate.getFullYear();
+			currentMonth = currentGDate.getMonth();
+			currentDate = currentGDate.getDate();
+		}
+	},
+	
+	beginNewDate = function()
+	{
+		var now = Date.now();
+		var tzOffset = currentGDate.getTimezoneOffset() * 60000;
+		now -= tzOffset;
+		var to = 86400000 - now % 86400000;
+		window.setTimeout(beginNewDate, to);
+		now -= now % 86400000 - tzOffset;
+		currentHDate.setTime(now);
+		currentGDate.setTime(now);
+		getCurrentDate();
+		if (isDisplayToday)
+		{
+			newTheme();
+			self.today();
+		}
+	},
+	
+	applyActionTimeout = function()
+	{
+		if (actionTimeoutId)
+		{
+			window.clearTimeout(actionTimeoutId);
+			actionTimeoutId = null;
+		}
+		if (!isDisplayToday)
+		{
+			actionTimeoutId = window.setTimeout(self.today, actionTimeout * 1000);
+		}
 	},
 	
 	newTheme = function(theme)
@@ -564,30 +624,33 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 		if ((hm === true || hm === false) && isHijriMode != hm)
 		{
 			isHijriMode = hm;
+			thatDate.setTime(thisDate.getTime());
 			if (isHijriMode)
 			{
-				thisDate = thisDate.getHijriDate();
+				thisDate = thisHDate;
+				thatDate = thisGDate;
 			}
 			else
 			{
-				thisDate = thisDate.getGregorianDate();
+				thisDate = thisGDate;
+				thatDate = thisHDate;
 			}
+			getCurrentDate();
+			updateCalendarModeMenuLabel();
 			if (isDisplayToday)
 			{
 				thisDate.setDate(1);
-				this.reset();
+				this.today();
 			}
 			else
 			{
-				if (thisDate.getDate() >= 15)
+				if (thisDate.getDate() > 15)
 				{
 					thisDate.setMonth(thisDate.getMonth() + 1);
 				}
 				thisDate.setDate(1);
-				getCurrentDate();
 				updateCalendar();
 			}
-			updateCalendarModeMenuLabel();
 		}
 	};
 	
@@ -619,30 +682,8 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 		}
 	};
 	
-	this.refresh = function()
+	this.today = function()
 	{
-		if (isThemeAutoChanged)
-		{
-			newTheme();
-		}
-		var cy = currentYear,
-			cm = currentMonth,
-			cd = currentDate;
-		getCurrentDate();
-		if
-		(
-			(currentYear != cy || currentMonth != cm || currentDate != cd) &&
-			thisDate.getFullYear() == cy &&
-			thisDate.getMonth() == cm
-		)
-		{
-			recreateDayGrid();
-		}
-	};
-	
-	this.reset = function()
-	{
-		getCurrentDate();
 		thisDate.setFullYear(currentYear);
 		thisDate.setMonth(currentMonth);
 		updateCalendar();
@@ -653,15 +694,18 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 		newTheme(theme);
 	};
 	
-	this.setThemeAutoChanged = function(tac)
+	this.setActionTimeout = function(to)
 	{
-		if (tac === true || tac === false)
+		if (!isNaN(to) && to >= 10)
 		{
-			isThemeAutoChanged = tac;
+			actionTimeout = to;
+			applyActionTimeout();
 		}
 	};
 	
-	getCurrentDate();
+	beginNewDate();
+	year = parseInt(year);
+	month = parseInt(month);
 	if (isNaN(year))
 	{
 		year = currentYear;
@@ -670,21 +714,24 @@ function Calendar(isHijriMode, firstDayOfWeek, year, month)
 			month = currentMonth;
 		}
 	}
-	else
+	else if (isNaN(month))
 	{
-		if (isNaN(month))
-		{
-			month = 0;
-		}
+		month = 0;
 	}
 	if (isHijriMode)
 	{
-		thisDate = new HijriDate(year, month, 1, 6);
+		thisHDate = new HijriDate(year, month, 1, 6);
+		thisGDate = thisHDate.getGregorianDate();
+		thisDate = thisHDate;
+		thatDate = thisGDate;
 	}
 	else
 	{
-		thisDate = new Date(year, month, 1);
-		thisDate.setFullYear(year);
+		thisHDate = new HijriDate(currentHDate.getTime());
+		thisGDate = thisHDate.getGregorianDate();
+		thisGDate.setDate(1);
+		thisDate = thisGDate;
+		thatDate = thisHDate;
 	}
 	createCalendar();
 }
