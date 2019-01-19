@@ -1,320 +1,188 @@
 /**
  *
  * @description JavaScript Hijri Date Function
- * @version 1.0
+ * @version 2.0
  * 
  * @author (c) ZulNs, Yogyakarta, December 2013
+ * revised to version 2.0: Gorontalo, 18 January 2019
  * 
  * @namespace HijriDate
  */
-
-function HijriDate(year, month, date, hour, minute, second, millisecond) {
-	var gregDate = new Date(),
+function HijriDate(year,month,date,hour,minute,second,millisecond){
+	var gDate=new Date(),
 		time,
-		day,
-		timezoneOffset = gregDate.getTimezoneOffset() * 6e4;
-	
-	if (year === undefined) {
-		time = gregDate.getTime() - timezoneOffset;
-		updateDate();
+		tzOffset=gDate.getTimezoneOffset(),
+		tzOffsetInMillis=tzOffset*6e4,
+		utc={yyy:0,mmm:0,ddd:0,day:0,hh:0,mm:0,ss:0,ms:0},
+		loc={yyy:0,mmm:0,ddd:0,day:0,hh:0,mm:0,ss:0,ms:0},
+		tzStr=gDate.toString();
+	tzStr=tzStr.substring(tzStr.lastIndexOf('GMT'));
+	if(year==undefined){
+		time=gDate.getTime();
+		updateDate(utc,time);
+		updateDate(loc,time-tzOffsetInMillis);
+	}else if(month==undefined){
+		time=HijriDate.parseInt(year,0);
+		updateDate(utc,time);
+		updateDate(loc,time-tzOffsetInMillis);
+	}else{
+		loc.yyy=HijriDate.parseInt(year,1);
+		loc.mmm=HijriDate.parseInt(month,0);
+		loc.ddd=HijriDate.parseInt(date,1);
+		loc.hh=HijriDate.parseInt(hour,0);
+		loc.mm=HijriDate.parseInt(minute,0);
+		loc.ss=HijriDate.parseInt(second,0);
+		loc.ms=HijriDate.parseInt(millisecond,0);
+		updateLocTime();
 	}
-	else if (month === undefined) {
-		time = HijriDate.parseInt(year, 0) - timezoneOffset;
-		updateDate();
+	//////////////////////////////////////////////////
+	// Public Getter Methods
+	//////////////////////////////////////////////////
+	this.getDate=function(){return loc.ddd;};
+	this.getDay=function(){return loc.day;};
+	this.getFullYear=function(){return loc.yyy;};
+	this.getHours=function(){return loc.hh;};
+	this.getMilliseconds=function(){return loc.ms;};
+	this.getMinutes=function(){return loc.mm;};
+	this.getMonth=function(){return loc.mmm;};
+	this.getSeconds=function(){return loc.ss;};
+	this.getTime=function(){return time;};
+	this.getTimezoneOffset=function(){return tzOffset;};
+	this.getUTCDate=function(){return utc.ddd;};
+	this.getUTCDay=function(){return utc.day;};
+	this.getUTCFullYear=function(){return utc.yyy;};
+	this.getUTCHours=function(){return utc.hh;};
+	this.getUTCMilliseconds=function(){return utc.ms;};
+	this.getUTCMinutes=function(){return utc.mm;};
+	this.getUTCMonth=function(){return utc.mmm;};
+	this.getUTCSeconds=function(){return utc.ss;};
+	//////////////////////////////////////////////////
+	// Public Setter Methods
+	//////////////////////////////////////////////////
+	this.setDate=function(dt){loc.ddd=parseInt(dt);updateLocTime();};
+	this.setFullYear=function(yr){loc.yyy=parseInt(yr);updateLocTime();};
+	this.setHours=function(hr){loc.hh=parseInt(hr);updateLocTime();};
+	this.setMilliseconds=function(ms){loc.ms=parseInt(ms);updateLocTime();};
+	this.setMinutes=function(min){loc.mm=parseInt(min);updateLocTime();};
+	this.setMonth=function(mon){loc.mmm=parseInt(mon);updateLocTime();};
+	this.setSeconds=function(sec){loc.ss=parseInt(sec);updateLocTime();};
+	this.setTime=function(tm){time=parseInt(tm);updateDate(utc,time);updateDate(loc,time-tzOffsetInMillis);};
+	this.setUTCDate=function(dt){utc.ddd=parseInt(dt);updateUtcTime();};
+	this.setUTCFullYear=function(yr){utc.yyy=parseInt(yr);updateUtcTime();};
+	this.setUTCHours=function(hr){utc.hh=parseInt(hr);updateUtcTime();};
+	this.setUTCMilliseconds=function(ms){utc.ms=parseInt(ms);updateUtcTime();};
+	this.setUTCMinutes=function(min){utc.mm=parseInt(min);updateUtcTime();};
+	this.setUTCMonth=function(mon){utc.mmm=parseInt(mon);updateUtcTime();};
+	this.setUTCSeconds=function(sec){utc.ss=parseInt(sec);updateUtcTime();};
+	//////////////////////////////////////////////////
+	// Public Conversion Getter Methods
+	//////////////////////////////////////////////////
+	this.toDateString=function(){return HijriDate.shortWeekdayNames[loc.day]+' '+HijriDate.shortMonthNames[loc.mmm]+' '+HijriDate.toDigit(loc.ddd,2)+' '+HijriDate.toDigit(loc.yyy,4);};
+	this.toISOString=function(){return HijriDate.toDigit(utc.yyy,utc.yyy<0?6:4)+'-'+HijriDate.toDigit(utc.mmm+1,2)+'-'+HijriDate.toDigit(utc.ddd,2)+'T'+getUtcTimeStr()+'.'+HijriDate.toDigit(utc.ms,3)+'Z';};
+	this.toJSON=function(){return this.toISOString();};
+	this.toString=function(){return this.toDateString()+' '+this.toTimeString();};
+	this.toTimeString=function(){return getLocTimeStr()+' '+tzStr;};
+	this.toUTCString=function(){return HijriDate.shortWeekdayNames[utc.day]+', '+HijriDate.toDigit(utc.ddd,2)+' '+HijriDate.shortMonthNames[utc.mmm]+' '+HijriDate.toDigit(utc.yyy,4)+' '+getUtcTimeStr()+' GMT';};
+	this.valueOf=function(){return time;};
+	//////////////////////////////////////////////////
+	// Public Exclusive Getter Methods
+	//////////////////////////////////////////////////
+	this.getDaysInMonth=function(){return HijriDate.daysInMonth((loc.yyy-1)*12+loc.mmm);};
+	this.getGregorianDate=function(){return gDate;};
+	this.getUTCDaysInMonth=function(){return HijriDate.daysInMonth((utc.yyy-1)*12+utc.mmm);};
+	//////////////////////////////////////////////////
+	// Public Exclusive Methods
+	//////////////////////////////////////////////////
+	this.syncDates=function(){if(gDate.setTime){gDate.setTime(time);return true;}return false;};
+	//////////////////////////////////////////////////
+	// Private Methods
+	//////////////////////////////////////////////////
+	function getUtcTimeStr(){
+		return HijriDate.toDigit(utc.hh,2)+':'+HijriDate.toDigit(utc.mm,2)+':'+HijriDate.toDigit(utc.ss,2);
 	}
-	else {
-		year = HijriDate.parseInt(year, 1);
-		month = HijriDate.parseInt(month, 0);
-		date = HijriDate.parseInt(date, 1);
-		hour = HijriDate.parseInt(hour, 0);
-		minute = HijriDate.parseInt(minute, 0);
-		second = HijriDate.parseInt(second, 0);
-		millisecond = HijriDate.parseInt(millisecond, 0);
-		updateTime();
+	function getLocTimeStr(){
+		return HijriDate.toDigit(loc.hh,2)+':'+HijriDate.toDigit(loc.mm,2)+':'+HijriDate.toDigit(loc.ss,2);
 	}
-	
-    this.toString = function() {
-		return this.getFullDateString();
-	};
-	
-	this.valueOf = function() {
-		return time;
-	};
-	
-	this.getDateString = function() {
-		return	this.getDayName() + ', ' +
-				date + ' ' +
-				this.getMonthName() + ' ' +
-				this.getFullYearString();
-	};
-	
-	this.getTimeString = function() {
-		return	HijriDate.toDigit(hour, 2) + ':' +
-				HijriDate.toDigit(minute, 2) + ':' +
-				HijriDate.toDigit(second, 2) + '.' +
-				HijriDate.toDigit(millisecond, 3);
-	};
-	
-	this.getFullDateString = function() {
-		return this.getDateString() + ' ' + this.getTimeString();
-	};
-	
-	this.getTime = function() {
-		return time + timezoneOffset;
-	};
-	
-	this.getFullYear = function() {
-		return year;
-	};
-	
-	this.getFullYearString = function() {
-		return (year > 0) ? HijriDate.toDigit(year, 4) + " H" : HijriDate.toDigit(Math.abs(year - 1), 4) + " BH";
-	};
-	
-	this.getMonth = function() {
-		return month;
-	};
-	
-	this.getMonthName = function(mon) {
-		return HijriDate.monthNames[(mon === undefined) ? month : parseInt(mon)];
-	};
-	
-	this.getMonthShortName = function(mon) {
-		return HijriDate.monthShortNames[(mon === undefined) ? month : parseInt(mon)];
-	};
-	
-	this.getDate = function() {
-		return date;
-	};
-	
-	this.getHours = function() {
-		return hour;
-	};
-	
-	this.getMinutes = function() {
-		return minute;
-	};
-	
-	this.getSeconds = function() {
-		return second;
-	};
-	
-	this.getMilliseconds = function() {
-		return millisecond;
-	};
-	
-	this.getDay = function() {
-		return day;
-	};
-	
-	this.getDayName = function(dy) {
-		return HijriDate.weekdayNames[(dy === undefined) ? day : parseInt(dy)];
-	};
-	
-	this.getDayShortName = function(dy) {
-		return HijriDate.weekdayShortNames[(dy === undefined) ? day : parseInt(dy)];
-	};
-	
-	this.getDaysInMonth = function() {
-		return HijriDate.daysInMonth((year - 1) * 12 + month);
-	};
-	
-	this.getJavaWeekday = function() {
-		return this.getGregorianDate().getJavaWeekday();
-	};
-	
-	this.getJavaWeekdayName = function(dy) {
-		return this.getGregorianDate().getJavaWeekdayName(dy);
-	};
-	
-	this.getGregorianDate = function() {
-		gregDate.setTime(time + timezoneOffset);
-		return gregDate;
-	};
-	
-	this.setTime = function(tm) {
-		time = parseInt(tm) - timezoneOffset;
-		updateDate();
-	};
-	
-	this.setFullYear = function(yr) {
-		year = parseInt(yr);
-		updateTime();
-	};
-	
-	this.setMonth = function(mon) {
-		month = parseInt(mon);
-		updateTime();
-	};
-	
-	this.setDate = function(dt) {
-		date = parseInt(dt);
-		updateTime();
-	};
-	
-	this.setHours = function(hr) {
-		hour = parseInt(hr);
-		updateTime();
-	};
-	
-	this.setMinutes = function(min) {
-		minute = parseInt(min);
-		updateTime();
-	};
-	
-	this.setSeconds = function(sec) {
-		second = parseInt(sec);
-		updateTime();
-	};
-	
-	this.setMilliseconds = function(ms) {
-		millisecond = parseInt(ms);
-		updateTime();
-	};
-	
-	function updateDate() {
-		var tm = time - HijriDate.constInterval,
-			range;
-		month = parseInt(parseInt((tm / 864e5)) / HijriDate.moonCycle);
-		month = (tm >= 0) ? month : --month;
-		date = HijriDate.daysCount(month) * 864e5;
-		tm = (tm >= 0) ? tm - date : date + tm;
-		millisecond = tm % 1e3;
-		tm = parseInt(tm / 1e3);
-		second = tm % 60;
-		tm = parseInt(tm / 60);
-		minute  = tm % 60;
-		tm = parseInt(tm / 60);
-		hour = tm % 24;
-		tm = parseInt(tm / 24);
-		date = tm;
-		range = HijriDate.daysInMonth(month);
-		if (date >= range) {
-			month++;
-			date -= range;
+	function updateUtcTime(){
+		updateTime(utc);
+		updateDate(utc,time);
+		updateDate(loc,time-tzOffsetInMillis);
+	}
+	function updateLocTime(){
+		updateTime(loc);
+		updateDate(loc,time);
+		time+=tzOffsetInMillis;
+		updateDate(utc,time);
+	}
+	function updateTime(region){
+		var trueMonth=(region.yyy-1)*12+region.mmm;
+		time=HijriDate.dayCount(trueMonth);
+		time+=region.ddd-1;
+		time*=864e5;
+		time+=region.hh*36e5;
+		time+=region.mm*6e4;
+		time+=region.ss*1e3;
+		time+=region.ms;
+		time+=HijriDate.constInterval;
+	}
+	function updateDate(region,timeVal){
+		timeVal-=HijriDate.constInterval;
+		var timePortion=timeVal%864e5,
+			dayCount=parseInt(timeVal/864e5),
+			trueMonth=parseInt(dayCount/HijriDate.moonCycle);
+		if(timeVal<0){
+			if(timePortion<0){dayCount--;timePortion+=864e5;}
+			if (dayCount<HijriDate.dayCount(trueMonth))trueMonth--;
 		}
-		date++;
-		year = Math.floor(month / 12) + 1;
-		month = (month >= 0) ? month % 12 : (month % 12 === 0) ? 0 : 12 + month % 12;
-		day = Math.floor(time / 864e5);
-		day = (day + 4) % 7;
-		day = (day < 0) ? day + 7 : day;
-	}
-	
-	function updateTime() {
-		var months = (year - 1) * 12 + month;
-		time = (months >= 0) ? HijriDate.daysCount(months) : -HijriDate.daysCount(months);
-		time += date;
-		time *= 864e5;
-		time += hour * 36e5 + minute * 6e4 + second * 1e3 + millisecond - 864e5;
-		time += HijriDate.constInterval;
-		updateDate();
+		region.ddd=1+dayCount-HijriDate.dayCount(trueMonth);
+		if(region.ddd>HijriDate.daysInMonth(trueMonth))region.ddd-=HijriDate.daysInMonth(trueMonth++);
+		region.yyy=Math.floor(trueMonth/12)+1;
+		region.mmm=(trueMonth%12+12)%12;//this handle both neg and pos value
+		region.ms=timePortion%1e3;
+		timePortion=parseInt(timePortion/1e3);
+		region.ss=timePortion%60;
+		timePortion=parseInt(timePortion/60);
+		region.mm=timePortion%60;
+		timePortion=parseInt(timePortion/60);
+		region.hh=timePortion%24;
+		region.day=((dayCount+5)%7+7)%7;
 	}
 }
-
-HijriDate.moonCycle = 29.5305882;
-
-HijriDate.constInterval = -42521608800000; // -42521587200000;
-	// value of time interval in milliseconds
-	// from July 18, 622AD 06:00 PM to January 1, 1970AD, 00:00 AM
-
-HijriDate.monthNames = ["Muharram", "Safar", "Rabi'ul-Awwal", "Rabi'ul-Akhir", "Jumadal-Ula", "Jumadal-Akhir",
-					   "Rajab", "Sha'ban", "Ramadan", "Syawwal", "Dhul-Qa'da", "Dhul-Hijja"];
-
-HijriDate.monthShortNames = ['Muh', 'Saf', 'RAw', 'RAk', 'JAw', 'JAk', 'Raj', 'Sha', 'Ram', 'Sya', 'DhQ', 'DhH'];
-
-HijriDate.weekdayNames = ["Ahad", "Ithnin", "Thulatha", "Arba'a", "Khams", "Jumu'ah", "Sabt"];
-
-HijriDate.weekdayShortNames = ['Ahd', 'Ith', 'Thu', 'Arb', 'Kha', 'Jum', 'Sab'];
-					   
-HijriDate.toDigit = function(num, digit) {
-	var ns = num.toString();
-	if (ns.length > digit) return ns;
-	return ('00000000' + ns).slice(-digit);
-}
-
-HijriDate.daysInMonth = function(month) {
-	return (month >= 0) ? HijriDate.daysCount(month + 1) - HijriDate.daysCount(month) : HijriDate.daysCount(month) - HijriDate.daysCount(month + 1);
-}
-
-HijriDate.daysCount = function(month) {
-	if (month >= 0) return parseInt(month * HijriDate.moonCycle);
-	var times = (parseInt(-month / 30601) + 1) * 30601;
-	return parseInt(times * HijriDate.moonCycle) - parseInt((times + month) * HijriDate.moonCycle);
-}
-
-HijriDate.parseInt = function(num, def) {
-	var res = parseInt(num);
-	return isNaN(res) ? def : res;
-}
-
-Date.monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-Date.monthShortNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-Date.weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ];
-
-Date.weekdayShortNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-Date.javaWeekdayNames = ['Legi', 'Pahing', 'Pon', 'Wage', 'Kliwon'];
-
-Date.prototype.getHijriDate = function() {
-	return new HijriDate(this.getTime());
+//////////////////////////////////////////////////
+// Static Members
+//////////////////////////////////////////////////
+HijriDate.moonCycle=29.5305882;
+HijriDate.constInterval=-42521587200000;//Value of time interval in milliseconds from January 1, 1970AD, 00:00:00 AM to July 19, 622AD, 00:00:00 AM 
+HijriDate.monthNames=["Muharram","Safar","Rabi'ul-Awwal","Rabi'ul-Akhir","Jumadal-Ula","Jumadal-Akhir","Rajab","Sha'ban","Ramadan","Syawwal","Dhul-Qa'da","Dhul-Hijja"];
+HijriDate.shortMonthNames=["Muh","Saf","RAw","RAk","JAw","JAk","Raj","Sha","Ram","Sya","DhQ","DhH"];
+HijriDate.weekdayNames=["Ahad","Ithnin","Thulatha","Arba'a","Khams","Jumu'ah","Sabt"];
+HijriDate.shortWeekdayNames=["Ahd","Ith","Thu","Arb","Kha","Jum","Sab"];
+//////////////////////////////////////////////////
+// Static Methods
+//////////////////////////////////////////////////
+HijriDate.daysInMonth=function(month){return HijriDate.dayCount(month+1)-HijriDate.dayCount(month);};
+HijriDate.dayCount=function(month){
+	if(month>=0) return parseInt(month*HijriDate.moonCycle);
+	var range=(parseInt(month/360)-1)*360;//30 years cycle
+	return parseInt(range*HijriDate.moonCycle)-parseInt((range-month)*HijriDate.moonCycle);
 };
-
-Date.prototype.getDaysInMonth = function() {
-	var y = this.getFullYear(),
-		isLeapYear = (y % 100 !== 0) && (y % 4 === 0) || (y % 400 === 0),
-		daysInMonth = [31, isLeapYear ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+HijriDate.parseInt=function(num,def){var res=parseInt(num);return isNaN(res)?def:res;};
+HijriDate.toDigit=function(num,digitCount){
+	var ns=Math.abs(num).toString();
+	if(ns.length<digitCount)ns=('00000000'+ns).slice(-digitCount);
+	if(num<0)ns='-'+ns;
+	return ns;
+};
+//////////////////////////////////////////////////
+// Public Exclusive Methods for Date Object
+//////////////////////////////////////////////////
+Date.prototype.hijriDate;
+Date.prototype.getDaysInMonth=function(){
+	var y=this.getFullYear(),isLeapYear=(y%100!=0)&&(y%4==0)||(y%400==0),daysInMonth=[31,isLeapYear?29:28,31,30,31,30,31,31,30,31,30,31];
 	return daysInMonth[this.getMonth()];
 };
-
-Date.prototype.getMonthName = function(month) {
-	return Date.monthNames[(month === undefined) ? this.getMonth() : parseInt(month)];
+Date.prototype.getUTCDaysInMonth=function(){
+	var y=this.getUTCFullYear(),isLeapYear=(y%100!=0)&&(y%4==0)||(y%400==0),daysInMonth=[31,isLeapYear?29:28,31,30,31,30,31,31,30,31,30,31];
+	return daysInMonth[this.getUTCMonth()];
 };
-
-Date.prototype.getMonthShortName = function(month) {
-	return Date.monthShortNames[(month === undefined) ? this.getMonth() : parseInt(month)];
-};
-
-Date.prototype.getDayName = function(day) {
-	return Date.weekdayNames[(day === undefined) ? this.getDay() : parseInt(day)];
-};
-
-Date.prototype.getDayShortName = function(day) {
-	return Date.weekdayShortNames[(day === undefined) ? this.getDay() : parseInt(day)];
-};
-
-Date.prototype.getJavaWeekday = function() {
-	var day = (this.getTime() - this.getTimezoneOffset() * 6e4) / 864e5;
-	day = Math.floor(day);
-	day = (day + 3) % 5;
-	return (day < 0) ? day + 5 : day;
-};
-
-Date.prototype.getJavaWeekdayName = function(day) {
-	return Date.javaWeekdayNames[(day === undefined) ? this.getJavaWeekday() : parseInt(day)];
-};
-
-Date.prototype.getFullYearString = function() {
-	var y = this.getFullYear();
-	return (y > 0) ? HijriDate.toDigit(y, 4) + " AD" : HijriDate.toDigit(Math.abs(y - 1), 4) + " BC";
-};
-
-Date.prototype.getDateString = function() {
-	return	this.getDayName() + ', ' +
-			this.getMonthName() + ' ' +
-			this.getDate() + ', ' +
-			this.getFullYearString();
-};
-
-Date.prototype.getTimeString = function() {
-	return	HijriDate.toDigit(this.getHours(), 2) + ':' +
-			HijriDate.toDigit(this.getMinutes(), 2) + ':' +
-			HijriDate.toDigit(this.getSeconds(), 2) + '.' +
-			HijriDate.toDigit(this.getMilliseconds(), 3);
-};
-
-Date.prototype.getFullDateString = function() {
-	return this.getDateString() + ' ' + this.getTimeString();
-};
+Date.prototype.syncDates=function(){if(this.hijriDate.setTime){this.hijriDate.setTime(this.getTime());return true;}return false;};
