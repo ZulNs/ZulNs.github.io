@@ -338,7 +338,7 @@ function Calendar(isHijr,firstDay,year,month){
 			for(var i=0;i<Calendar.themes.length;i++)if(theme==Calendar.themes[i]){themeIdx=i;break;}
 			if(themeIdx==-1)return false;
 		}else{
-			do{themeIdx=Math.floor(Math.random() * Calendar.themes.length);}
+			do{themeIdx=Math.floor(Math.random()*Calendar.themes.length);}
 			while(curThemIdx==themeIdx);
 		}
 		headerElm.className=headerElm.className.substring(0,headerElm.className.lastIndexOf('w3-'));

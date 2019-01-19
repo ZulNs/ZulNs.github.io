@@ -29,9 +29,10 @@
 <script type="text/javascript">
 	var lang='en';
 	var isMobile=false;
-	var isSmallScreen=false;
+	var isSmallScreen=(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth)>=691;
 	var calContainer=document.getElementById('calendar');
 	var cal=new Calendar();
+	resize();
 	if(window.addEventListener)
 		window.addEventListener('resize',resize);
 	else if(window.attachEvent)
@@ -42,8 +43,9 @@
 	cal.setTodayTimeout(30);
 	
 	function resize(){
+		console.log(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth);
 		var btn=document.getElementById('mobile');
-		var premise=(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth)<640;
+		var premise=(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth)<691;
 		if(isSmallScreen&&!premise){
 			btn.className=btn.className.replace(' w3-hide','');
 			isSmallScreen=false;
