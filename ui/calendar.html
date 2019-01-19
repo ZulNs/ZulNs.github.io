@@ -22,14 +22,36 @@
 	<div class="w3-bar w3-large w3-red">
 		<div id="en" class="w3-bar-item w3-button w3-dark-grey w3-hover-dark-grey" onclick="changeLang();" style="cursor:default;">English</div>
 		<div id="id" class="w3-bar-item w3-button" onclick="changeLang();">Indonesian</div>
+		<div id="mobile" class="w3-bar-item w3-button" onclick="changeSize();">Mobile</div>
 	</div>
 	<div id="calendar" class="w3-container w3-padding w3-padding-16"></div>
 </div>
 <script type="text/javascript">
 	var lang='en';
+	var isMobile=false;
+	var isSmallScreen=false;
+	var calContainer=document.getElementById('calendar');
 	var cal=new Calendar();
-	document.getElementById('calendar').appendChild(cal.getElement());
-	cal.setActionTimeout(30);
+	if(window.addEventListener)
+		window.addEventListener('resize',resize);
+	else if(window.attachEvent)
+		window.attachEvent('onresize',resize);
+	else
+		window.onresize=resize;
+	cal.attachTo(calContainer);
+	cal.setTodayTimeout(30);
+	
+	function resize(){
+		var btn=document.getElementById('mobile');
+		var premise=(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth)<640;
+		if(isSmallScreen&&!premise){
+			btn.className=btn.className.replace(' w3-hide','');
+			isSmallScreen=false;
+		}else if(!isSmallScreen&&premise){
+			btn.className+=' w3-hide';
+			isSmallScreen=true;
+		}
+	}
 	
 	function changeLang(){
 		var btn=window.event.target;
@@ -41,6 +63,22 @@
 		btn2.style.cursor=null;
 		lang=btn.id;
 		cal.setLanguage(lang);
+		cal.setTheme();
+	}
+	
+	function changeSize(){
+		var btn=document.getElementById('mobile');
+		isMobile=!isMobile;
+		if(isMobile){
+			btn.className+=' w3-dark-grey';
+			calContainer.className=calContainer.className.replace('w3-container','w3-card');
+			calContainer.style.cssText='max-width:400px;';
+		}else{
+			btn.className=btn.className.replace(' w3-dark-grey','');
+			calContainer.className=calContainer.className.replace('w3-card','w3-container');
+			calContainer.style.cssText=null;
+		}
+		cal.fireResize();
 	}
 </script>
 </body>
