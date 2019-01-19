@@ -43,7 +43,6 @@
 	cal.setTodayTimeout(30);
 	
 	function resize(){
-		console.log(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth);
 		var btn=document.getElementById('mobile');
 		var premise=(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth)<691;
 		if(isSmallScreen&&!premise){
