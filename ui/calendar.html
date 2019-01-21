@@ -20,14 +20,14 @@
 <h1 class="w3-center">Hijri/Gregorian Calendar</h1>
 <div class="w3-border">
 	<div class="w3-bar w3-large w3-red">
-		<div id="en" class="w3-bar-item w3-button w3-dark-grey w3-hover-dark-grey" onclick="changeLang();" style="cursor:default;">English</div>
-		<div id="id" class="w3-bar-item w3-button" onclick="changeLang();">Indonesian</div>
+		<div id="en" class="w3-bar-item w3-button w3-dark-grey w3-hover-dark-grey" onclick="changeLang(this);" style="cursor:default;">English</div>
+		<div id="id" class="w3-bar-item w3-button" onclick="changeLang(this);">Indonesian</div>
 		<div id="mobile" class="w3-bar-item w3-button" onclick="changeSize();">Mobile</div>
 	</div>
 	<div id="calendar" class="w3-container w3-padding w3-padding-16"></div>
 </div>
 <script type="text/javascript">
-	var lang='en';
+	var curLang='en';
 	var isMobile=false;
 	var isSmallScreen=(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth)>=691;
 	var calContainer=document.getElementById('calendar');
@@ -54,16 +54,15 @@
 		}
 	}
 	
-	function changeLang(){
-		var btn=window.event.target;
-		if(btn.id==lang)return;
-		var btn2=document.getElementById(lang);
+	function changeLang(btn){
+		if(btn.id==curLang)return;
+		var btn2=document.getElementById(curLang);
 		btn.className+=' w3-dark-grey w3-hover-dark-grey';
 		btn.style.cursor='default';
 		btn2.className=btn2.className.substring(0,btn2.className.lastIndexOf(' w3-dark'));
 		btn2.style.cursor=null;
-		lang=btn.id;
-		cal.setLanguage(lang);
+		curLang=btn.id;
+		cal.setLanguage(curLang);
 		cal.setTheme();
 	}
 	

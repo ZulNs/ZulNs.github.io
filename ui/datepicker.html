@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Datepicker</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="ZulNs">
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="robots" content="all">
+<meta name="copyright" content="ZulNs">
+<!--link rel="icon" href="favicon.ico" type="image/x-icon" /-->
+<!--link rel="icon" href="favicon.png" type="image/png" /-->
+</head>
+<body>
+	<div id="datepicker"></div>
+	<link rel="stylesheet" href="../libs/w3css/w3.css"/>
+	<script type="text/javascript" src="../libs/hijri-date.js"></script>
+	<script type="text/javascript" src="../libs/datepicker.js"></script>
+	<script type="text/javascript">
+		var cal = new Datepicker();
+		cal.attachTo(document.getElementById('calendar-container'));
+		cal.show();
+	</script>
+</body>
+</html>

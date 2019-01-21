@@ -77,12 +77,12 @@ function HijriDate(year,month,date,hour,minute,second,millisecond){
 	//////////////////////////////////////////////////
 	// Public Conversion Getter Methods
 	//////////////////////////////////////////////////
-	this.toDateString=function(){return HijriDate.shortWeekdayNames[loc.day]+' '+HijriDate.shortMonthNames[loc.mmm]+' '+HijriDate.toDigit(loc.ddd,2)+' '+HijriDate.toDigit(loc.yyy,4);};
+	this.toDateString=function(){return HijriDate.weekdayShortNames[loc.day]+' '+HijriDate.monthShortNames[loc.mmm]+' '+HijriDate.toDigit(loc.ddd,2)+' '+HijriDate.toDigit(loc.yyy,4);};
 	this.toISOString=function(){return HijriDate.toDigit(utc.yyy,utc.yyy<0?6:4)+'-'+HijriDate.toDigit(utc.mmm+1,2)+'-'+HijriDate.toDigit(utc.ddd,2)+'T'+getUtcTimeStr()+'.'+HijriDate.toDigit(utc.ms,3)+'Z';};
 	this.toJSON=function(){return this.toISOString();};
 	this.toString=function(){return this.toDateString()+' '+this.toTimeString();};
 	this.toTimeString=function(){return getLocTimeStr()+' '+tzStr;};
-	this.toUTCString=function(){return HijriDate.shortWeekdayNames[utc.day]+', '+HijriDate.toDigit(utc.ddd,2)+' '+HijriDate.shortMonthNames[utc.mmm]+' '+HijriDate.toDigit(utc.yyy,4)+' '+getUtcTimeStr()+' GMT';};
+	this.toUTCString=function(){return HijriDate.weekdayShortNames[utc.day]+', '+HijriDate.toDigit(utc.ddd,2)+' '+HijriDate.monthShortNames[utc.mmm]+' '+HijriDate.toDigit(utc.yyy,4)+' '+getUtcTimeStr()+' GMT';};
 	this.valueOf=function(){return time;};
 	//////////////////////////////////////////////////
 	// Public Exclusive Getter Methods
@@ -154,9 +154,9 @@ function HijriDate(year,month,date,hour,minute,second,millisecond){
 HijriDate.moonCycle=29.5305882;
 HijriDate.constInterval=-42521587200000;//Value of time interval in milliseconds from January 1, 1970AD, 00:00:00 AM to July 19, 622AD, 00:00:00 AM 
 HijriDate.monthNames=["Muharram","Safar","Rabi'ul-Awwal","Rabi'ul-Akhir","Jumadal-Ula","Jumadal-Akhir","Rajab","Sha'ban","Ramadan","Syawwal","Dhul-Qa'da","Dhul-Hijja"];
-HijriDate.shortMonthNames=["Muh","Saf","RAw","RAk","JAw","JAk","Raj","Sha","Ram","Sya","DhQ","DhH"];
+HijriDate.monthShortNames=["Muh","Saf","RAw","RAk","JAw","JAk","Raj","Sha","Ram","Sya","DhQ","DhH"];
 HijriDate.weekdayNames=["Ahad","Ithnin","Thulatha","Arba'a","Khams","Jumu'ah","Sabt"];
-HijriDate.shortWeekdayNames=["Ahd","Ith","Thu","Arb","Kha","Jum","Sab"];
+HijriDate.weekdayShortNames=["Ahd","Ith","Thu","Arb","Kha","Jum","Sab"];
 //////////////////////////////////////////////////
 // Static Methods
 //////////////////////////////////////////////////

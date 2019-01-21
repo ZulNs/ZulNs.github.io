@@ -14,8 +14,7 @@ function Calendar(isHijr,firstDay,year,month){
 	hDate=new HijriDate(),
 	gDate=hDate.getGregorianDate(),
 	dispDate=isHijr?hDate:gDate,
-	tzOffset=hDate.getTimezoneOffset(),
-	curY,curM,curD,
+	tzOffset=hDate.getTimezoneOffset()*6e4,
 	curLang='en',
 	gridAni='zoom',
 	actTmo=300,//in seconds (default is 5 minutes)
@@ -24,48 +23,53 @@ function Calendar(isHijr,firstDay,year,month){
 	isAttached=false,
 	curThemIdx=-1,
 	isSmallScreen=(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth)<640,
-	createElement=function(tagName,className,innerHTML){
+	createElm=function(tagName,className,innerHTML){
 		var elm=document.createElement(tagName);
 		if(className)elm.className=className;
 		if(innerHTML)elm.innerHTML=innerHTML;
 		return elm;
 	},
-	calElm=createElement('div'),
-	headerElm=createElement('div','w3-container w3-padding-small w3-theme-color'),
-	yearValElm=createElement('span'),
-	monthValElm=createElement('span'),
-	gridsElm=createElement('div'),
-	weekdayTitleElm=createElement('div','w3-cell-row w3-center w3-large w3-light-grey');
-	menuWrapElm=createElement('div','w3-dropdown-content w3-bar-block w3-border w3-animate-opacity'),
-	menuCalModElm=createElement('span','w3-bar-item w3-button'),
-	menuFirstDayElm=createElement('span','w3-bar-item w3-button'),
-	menuTodayElm=createElement('span','w3-bar-item w3-button'),
-	menuNewThemeElm=createElement('span','w3-bar-item w3-button'),
-	menuAboutElm=createElement('span','w3-bar-item w3-button'),
-	menuCancelElm=createElement('span','w3-bar-item w3-button'),
-	aboutModalElm=createElement('div','w3-modal'),
+	calElm=createElm('div','w3-card-4'),
+	headerElm=createElm('div','w3-display-container w3-theme-color'),
+	todayElm=createElm('div','w3-display-topright w3-xlarge');
+	yearValElm=createElm('div','w3-display-middle w3-xxxlarge'),
+	monthValElm=createElm('div','w3-display-bottommiddle w3-xxlarge'),
+	menuWrapElm=createElm('div','w3-dropdown-content w3-bar-block w3-border w3-animate-opacity'),
+	menuCalModElm=createElm('span','w3-bar-item w3-button'),
+	menuFirstDayElm=createElm('span','w3-bar-item w3-button'),
+	menuTodayElm=createElm('span','w3-bar-item w3-button'),
+	menuNewThemeElm=createElm('span','w3-bar-item w3-button'),
+	menuAboutElm=createElm('span','w3-bar-item w3-button'),
+	menuCancelElm=createElm('span','w3-bar-item w3-button'),
+	weekdayTitleElm=createElm('div','w3-cell-row w3-center w3-large w3-light-grey');
+	gridsElm=createElm('div'),
+	aboutModalElm=createElm('div','w3-modal'),
 	createCal=function(){
-		var rootMenuElm=createElement('div','w3-dropdown-click'),
-			menuBtnElm=createElement('div','w3-button','<svg xmlns="http://www.w3.org/2000/svg" width="18" height="23"><path d="M0 6L18 6L18 8L0 8Z M0 13L18 13L18 15L0 15Z M0 20L18 20L18 22L0 22Z" stroke-width="1"/></svg>'),
-			yearPanelElm=createElement('div','w3-center w3-xxxlarge'),
-			prevYearBtnElm=createElement('div','w3-button w3-medium w3-left','<svg xmlns="http://www.w3.org/2000/svg" width="18" height="23"><path d="M7 7L2 15L7 23L9 23L4 15L9 7Z M14 7L9 15L14 23L16 23L11 15L16 7Z" stroke-width="1"/></svg>'),
-			nextYearBtnElm=createElement('div','w3-button w3-medium w3-right','<svg xmlns="http://www.w3.org/2000/svg" width="18" height="23"><path d="M11 7L16 15L11 23L9 23L14 15L9 7Z M4 7L9 15L4 23L2 23L7 15L2 7Z" stroke-width="1"/></svg>'),
-			monthPanelElm=createElement('div','w3-center w3-xxlarge'),
-			prevMonthBtnElm=createElement('div','w3-button w3-medium w3-left','<svg xmlns="http://www.w3.org/2000/svg" width="18" height="23"><path d="M10 7L5 15L10 23L12 23L7 15L12 7Z" stroke-width="1"/></svg>'),
-			nextMonthBtnElm=createElement('div','w3-button w3-medium w3-right','<svg xmlns="http://www.w3.org/2000/svg" width="18" height="23"><path d="M8 7L13 15L8 23L6 23L11 15L6 7Z" stroke-width="1"/></svg>'),
-			aboutContentElm=createElement('div','w3-modal-content w3-animate-zoom w3-card-4'),
-			aboutContentWrapElm=createElement('div','w3-center w3-padding-24'),
-			aboutCloseBtnElm=createElement('span','w3-button w3-large w3-display-topright','&times;'),
-			aboutTagsWrapElm=createElement('div','w3-container w3-padding-24'),
-			aboutTag1Elm=createElement('span','w3-tag w3-jumbo','&#90;'),
-			aboutTag2Elm=createElement('span','w3-tag w3-jumbo w3-red','&#117;'),
-			aboutTag3Elm=createElement('span','w3-tag w3-jumbo w3-blue','&#108;'),
-			aboutTag4Elm=createElement('span','w3-tag w3-jumbo','&#78;'),
-			aboutTag5Elm=createElement('span','w3-tag w3-jumbo w3-amber','&#115;'),
-			aboutTextElm=createElement('p','w3-large','&#71;&#111;&#114;&#111;&#110;&#116;&#97;&#108;&#111;&#44;&nbsp;&#49;&#52;&nbsp;&#74;&#97;&#110;&#117;&#97;&#114;&#121;&nbsp;&#50;&#48;&#49;&#57;');
-		prevYearBtnElm.style.cssText=nextYearBtnElm.style.cssText='margin-top:14px;';
-		prevMonthBtnElm.style.cssText=nextMonthBtnElm.style.cssText='margin-top:6px;';
-		yearValElm.style.cssText=monthValElm.style.cssText=gridsElm.style.cssText='cursor:default;';
+		var rootMenuElm=createElm('div','w3-dropdown-click w3-display-topleft'),
+			menuBtnElm=createElm('div','w3-button','<svg xmlns="http://www.w3.org/2000/svg" width="18" height="23"><path d="M0 6L18 6L18 8L0 8Z M0 13L18 13L18 15L0 15Z M0 20L18 20L18 22L0 22Z" stroke-width="1"/></svg>'),
+			prevYearBtnElm=createElm('div','w3-button w3-display-left','<svg xmlns="http://www.w3.org/2000/svg" width="18" height="23"><path d="M7 7L2 15L7 23L9 23L4 15L9 7Z M14 7L9 15L14 23L16 23L11 15L16 7Z" stroke-width="1"/></svg>'),
+			nextYearBtnElm=createElm('div','w3-button w3-display-right','<svg xmlns="http://www.w3.org/2000/svg" width="18" height="23"><path d="M11 7L16 15L11 23L9 23L14 15L9 7Z M4 7L9 15L4 23L2 23L7 15L2 7Z" stroke-width="1"/></svg>'),
+			prevMonthBtnElm=createElm('div','w3-button w3-display-bottomleft','<svg xmlns="http://www.w3.org/2000/svg" width="18" height="23"><path d="M10 7L5 15L10 23L12 23L7 15L12 7Z" stroke-width="1"/></svg>'),
+			nextMonthBtnElm=createElm('div','w3-button w3-display-bottomright','<svg xmlns="http://www.w3.org/2000/svg" width="18" height="23"><path d="M8 7L13 15L8 23L6 23L11 15L6 7Z" stroke-width="1"/></svg>'),
+			aboutContentElm=createElm('div','w3-modal-content w3-animate-zoom w3-card-4'),
+			aboutContentWrapElm=createElm('div','w3-center w3-padding-24'),
+			aboutCloseBtnElm=createElm('span','w3-button w3-large w3-display-topright','&times;'),
+			aboutTagsWrapElm=createElm('div','w3-container w3-padding-24'),
+			aboutTag1Elm=createElm('span','w3-tag w3-jumbo','&#90;'),
+			aboutTag2Elm=createElm('span','w3-tag w3-jumbo w3-red','&#117;'),
+			aboutTag3Elm=createElm('span','w3-tag w3-jumbo w3-blue','&#108;'),
+			aboutTag4Elm=createElm('span','w3-tag w3-jumbo','&#78;'),
+			aboutTag5Elm=createElm('span','w3-tag w3-jumbo w3-amber','&#115;'),
+			aboutTextElm=createElm('p','w3-large','&#71;&#111;&#114;&#111;&#110;&#116;&#97;&#108;&#111;&#44;&nbsp;&#49;&#52;&nbsp;&#74;&#97;&#110;&#117;&#97;&#114;&#121;&nbsp;&#50;&#48;&#49;&#57;');
+		headerElm.style.cssText='height:180px;';
+		todayElm.style.cssText='margin:16px 28px 0px 0px;cursor:default;';
+		yearValElm.style.cssText=gridsElm.style.cssText='cursor:default;';
+		monthValElm.style.cssText='margin-bottom:8px;cursor:default;';
+		rootMenuElm.style.cssText='margin:12px 0px 0px 12px;';
+		prevYearBtnElm.style.cssText='margin-left:12px;';
+		nextYearBtnElm.style.cssText='margin-right:12px;';
+		prevMonthBtnElm.style.cssText='margin:0px 0px 12px 12px;';
+		nextMonthBtnElm.style.cssText='margin:0px 12px 12px 0px;';
 		weekdayTitleElm.style.cssText='padding:8px 0px;margin-bottom:8px;';
 		menuWrapElm.appendChild(menuCalModElm);
 		menuWrapElm.appendChild(menuFirstDayElm);
@@ -75,26 +79,25 @@ function Calendar(isHijr,firstDay,year,month){
 		menuWrapElm.appendChild(menuCancelElm);
 		rootMenuElm.appendChild(menuBtnElm);
 		rootMenuElm.appendChild(menuWrapElm);
-		yearPanelElm.appendChild(prevYearBtnElm);
-		yearPanelElm.appendChild(nextYearBtnElm);
-		yearPanelElm.appendChild(yearValElm);
-		monthPanelElm.appendChild(prevMonthBtnElm);
-		monthPanelElm.appendChild(nextMonthBtnElm);
-		monthPanelElm.appendChild(monthValElm);
+		headerElm.appendChild(todayElm);
+		headerElm.appendChild(yearValElm);
+		headerElm.appendChild(monthValElm);
 		headerElm.appendChild(rootMenuElm);
-		headerElm.appendChild(yearPanelElm);
-		headerElm.appendChild(monthPanelElm);
+		headerElm.appendChild(prevYearBtnElm);
+		headerElm.appendChild(nextYearBtnElm);
+		headerElm.appendChild(prevMonthBtnElm);
+		headerElm.appendChild(nextMonthBtnElm);
 		gridsElm.appendChild(weekdayTitleElm);
 		calElm.appendChild(headerElm);
 		calElm.appendChild(gridsElm);
 		aboutTagsWrapElm.appendChild(aboutTag1Elm);
-		aboutTagsWrapElm.appendChild(createElement('span',null,'&nbsp;'));
+		aboutTagsWrapElm.appendChild(createElm('span',null,'&nbsp;'));
 		aboutTagsWrapElm.appendChild(aboutTag2Elm);
-		aboutTagsWrapElm.appendChild(createElement('span',null,'&nbsp;'));
+		aboutTagsWrapElm.appendChild(createElm('span',null,'&nbsp;'));
 		aboutTagsWrapElm.appendChild(aboutTag3Elm);
-		aboutTagsWrapElm.appendChild(createElement('span',null,'&nbsp;'));
+		aboutTagsWrapElm.appendChild(createElm('span',null,'&nbsp;'));
 		aboutTagsWrapElm.appendChild(aboutTag4Elm);
-		aboutTagsWrapElm.appendChild(createElement('span',null,'&nbsp;'));
+		aboutTagsWrapElm.appendChild(createElm('span',null,'&nbsp;'));
 		aboutTagsWrapElm.appendChild(aboutTag5Elm);
 		aboutContentWrapElm.appendChild(aboutCloseBtnElm);
 		aboutContentWrapElm.appendChild(aboutTagsWrapElm);
@@ -147,16 +150,17 @@ function Calendar(isHijr,firstDay,year,month){
 	updCalModMenuLbl=function(){
 		menuCalModElm.innerHTML=Calendar.strData[curLang]['menuItem0'][isHijr?1:0];
 	},
+	updTodayLbl=function(){todayElm.innerHTML=isSmallScreen?dispDate.todayShortString():dispDate.todayString();},
 	updHeader=function(){
 		var year=dispDate.getFullYear(),idx=isHijr?0:2;
 		if(year<1){idx++;year=-year+1;}
 		yearValElm.innerHTML=year+'&nbsp;'+Calendar.strData[curLang]['eraSuffix'][idx];
-		monthValElm.innerHTML=dispDate.getMonthName(curLang);
+		monthValElm.innerHTML=dispDate.getMonthName();
 	},
 	createWdayTitle=function(){
-		var lengthType=isSmallScreen?'shortWeekdayNames':'weekdayNames';
+		var lengthType=isSmallScreen?'weekdayShortNames':'weekdayNames';
 		for(var i=firstDay;i<7+firstDay;i++){
-			var dayTitleElm=createElement('div','w3-cell',Calendar.strData[curLang][lengthType][i%7]);
+			var dayTitleElm=createElm('div','w3-cell',Calendar.strData[curLang][lengthType][i%7]);
 			if(i==5)dayTitleElm.className+=' w3-text-teal';
 			if(i%7==0)dayTitleElm.className+=' w3-text-red';
 			dayTitleElm.style.width='14.2857%';
@@ -178,29 +182,31 @@ function Calendar(isHijr,firstDay,year,month){
 			sdate=dispDate.getOppositeDate().getDate(),
 			pdim=dispDate.getDaysInMonth(),
 			sdim=dispDate.getOppositeDate().getDaysInMonth(),
-			smsn=dispDate.getOppositeDate().getShortMonthName(curLang),
+			smsn=dispDate.getOppositeDate().getMonthShortName(),
 			isFri=6-firstDay,isSun=1-firstDay,
 			gridCtr=0,isToday;
+		dispDate.setDate(1);
+		dispDate.getOppositeDate().setDate(1);
 		isDispToday=false;
 		menuTodayElm.className=menuTodayElm.className.replace(' w3-disabled','');
 		menuTodayElm.style.cursor='';
 		for(var i=1;i<=ppdr+pcdr+pndr;i++){
 			if(gridCtr==0){
-				var row=createElement('div','w3-cell-row w3-center');
+				var row=createElm('div','w3-cell-row w3-center');
 				gridsElm.appendChild(row);
 			}
-			var grid=createElement('div','w3-cell w3-animate-'+gridAni),
-				pde=createElement('div','w3-xlarge'),
-				sde=createElement('div','w3-small');
+			var grid=createElm('div','w3-cell w3-animate-'+gridAni),
+				pde=createElm('div','w3-xlarge'),
+				sde=createElm('div','w3-small');
 			grid.style.cssText='width:14.2857%;padding:6px 0px;';
 			grid.appendChild(pde);
 			grid.appendChild(sde);
 			row.appendChild(grid);
-			isToday=dispDate.getFullYear()==curY&&dispDate.getMonth()==curM&&pdate==curD;
+			isToday=getCurTime()==dispDate.getTime()+(pdate-1)*864e5;
 			if(i%7==isFri)grid.className+=isToday?' w3-teal':' w3-text-teal';
 			else if(i%7==isSun)grid.className+=isToday?' w3-red':' w3-text-red';
 			else if(isToday)grid.className+=' w3-dark-grey';
-			if(dispTm==262584e5&&pdate==sdate&&pdate==5){
+			if(2658456e4==dispDate.getTime()+(pdate-1)*864e5){
 				grid.className+=' w3-black';
 				grid.style.cursor='pointer';
 				addEvt(grid,'click',onAbout);
@@ -218,20 +224,21 @@ function Calendar(isHijr,firstDay,year,month){
 			pdate++;
 			if(pdate>pdim){
 				pdate=1;
-				dispDate.setDate(1);
 				dispDate.setMonth(dispDate.getMonth()+1);
 				pdim=dispDate.getDaysInMonth();
 			}
 			sdate++;
 			if(sdate>sdim){
 				sdate=1;
-				dispDate.getOppositeDate().setDate(1);
 				dispDate.getOppositeDate().setMonth(dispDate.getOppositeDate().getMonth()+1);
 				sdim=dispDate.getOppositeDate().getDaysInMonth();
-				smsn=dispDate.getOppositeDate().getShortMonthName(curLang);
+				smsn=dispDate.getOppositeDate().getMonthShortName();
 			}
 			gridCtr=(gridCtr+1)%7;
 		}
+		var spacer=createElm('div','w3-cell-row');
+		spacer.style.cssText='height:8px;';
+		gridsElm.appendChild(spacer);
 		dispDate.setTime(dispTm);
 	},
 	recreateDates=function(){
@@ -242,25 +249,25 @@ function Calendar(isHijr,firstDay,year,month){
 		updHeader();
 		recreateDates();
 	},
-	onDecMonth=function(evt){
+	onDecMonth=function(){
 		dispDate.setMonth(dispDate.getMonth()-1);
 		gridAni='right';
 		updCal();
 		applyTodayTmout();
 	},
-	onIncMonth=function(evt){
+	onIncMonth=function(){
 		dispDate.setMonth(dispDate.getMonth()+1);
 		gridAni='left';
 		updCal();
 		applyTodayTmout();
 	},
-	onDecYear=function(evt){
+	onDecYear=function(){
 		dispDate.setFullYear(dispDate.getFullYear()-1);
 		gridAni='right';
 		updCal();
 		applyTodayTmout();
 	},
-	onIncYear=function(evt){
+	onIncYear=function(){
 		dispDate.setFullYear(dispDate.getFullYear()+1);
 		gridAni='left';
 		updCal();
@@ -297,15 +304,15 @@ function Calendar(isHijr,firstDay,year,month){
 	},
 	setStrokeCol=function(elm,color){elm.children[0].setAttribute('stroke',color);elm.children[0].setAttribute('fill',color);},
 	hideMenu=function(){menuWrapElm.className=menuWrapElm.className.replace(' w3-show','');},
-	onClickMenu=function(evt){
+	onClickMenu=function(){
 		if(menuWrapElm.className.indexOf('w3-show')==-1)menuWrapElm.className+=' w3-show';
 		else hideMenu();
 	},
-	onChgCalMod=function(evt){hideMenu();self.setHijriMode(!isHijr);applyTodayTmout();},
-	onChgFirstDay=function(evt){hideMenu();self.setFirstDayOfWeek(1-firstDay);applyTodayTmout();},
-	onDispToday=function(evt){hideMenu();self.today();},
-	onNewTheme=function(evt){hideMenu();newTheme();},
-	onAbout=function(evt){
+	onChgCalMod=function(){hideMenu();self.setHijriMode(!isHijr);applyTodayTmout();},
+	onChgFirstDay=function(){hideMenu();self.setFirstDayOfWeek(1-firstDay);applyTodayTmout();},
+	onDispToday=function(){hideMenu();self.today();},
+	onNewTheme=function(){hideMenu();newTheme();},
+	onAbout=function(){
 		hideMenu();
 		aboutModalElm.style.display='block';
 		if(actTmoId)window.clearTimeout(actTmoId);
@@ -314,18 +321,14 @@ function Calendar(isHijr,firstDay,year,month){
 			if(!isDispToday){newTheme();self.today();}
 		},actTmo*1000);
 	},
-	onCloseAbout=function(evt){aboutModalElm.style.display='none';applyTodayTmout();},
-	onCancel=function(evt){hideMenu();},
-	onRszWdw=function(evt){
-		if(isSmallScreen&&calElm.clientWidth>=640||!isSmallScreen&&calElm.clientWidth<640){isSmallScreen=!isSmallScreen;recreateWdayTitle();}
+	onCloseAbout=function(){aboutModalElm.style.display='none';applyTodayTmout();},
+	onCancel=function(){hideMenu();},
+	onRszWdw=function(){
+		if(isSmallScreen&&calElm.clientWidth>=640||!isSmallScreen&&calElm.clientWidth<640){isSmallScreen=!isSmallScreen;updTodayLbl();recreateWdayTitle();}
 	},
-	getCurDate=function(){
-		var savedTm=dispDate.getTime();
-		dispDate.setTime(Date.now());curY=dispDate.getFullYear();curM=dispDate.getMonth();curD=dispDate.getDate();
-		dispDate.setTime(savedTm);
-	},
+	getCurTime=function(){var now=Date.now()-tzOffset;return now-now%864e5+216e4+tzOffset;},
 	beginNewDate=function(){
-		var now=Date.now();now-=tzOffset*6e4;var to=864e5-now%864e5;window.setTimeout(beginNewDate,to);getCurDate();
+		var now=Date.now()-tzOffset*6e4;var to=864e5-now%864e5;window.setTimeout(beginNewDate,to);updTodayLbl();
 		if(isDispToday){newTheme();self.today();}
 	},
 	applyTodayTmout=function(){
@@ -350,69 +353,113 @@ function Calendar(isHijr,firstDay,year,month){
 	};
 	this.attachTo=function(elm){if(elm.appendChild&&!isAttached){elm.appendChild(calElm);onRszWdw();isAttached=true;return true;}return false;};
 	this.fireResize=function(){onRszWdw()};
+	this.setDate=function(year,month){
+		var oldTm=dispDate.getTime();
+		year=parseInt(year);month=parseInt(month);
+		if(!isNaN(year))dispDate.setFullYear(year);
+		if(!isNaN(month))dispDate.setMonth(month);
+		if(dispDate.getTime()!=oldTm){gridAni='zoom';updCal();return true;}
+		return false;
+	};
+	this.setFirstDayOfWeek=function(fdow){
+		if((fdow==0||fdow==1)&&fdow!=firstDay){firstDay=fdow;recreateWdayTitle();gridAni='bottom';recreateDates();return true;}
+		return false;
+	};
+	this.setFullYear=function(year){return this.setDate(year);};
 	this.setHijriMode=function(hm){
 		if((hm==true||hm==false)&&isHijr!=hm){
-			isHijr=hm;dispDate.syncDates();dispDate=dispDate.getOppositeDate();getCurDate();updCalModMenuLbl();
+			isHijr=hm;dispDate.syncDates();dispDate=dispDate.getOppositeDate();updCalModMenuLbl();updTodayLbl();
 			if(isDispToday){dispDate.setDate(1);this.today();}
 			else{if(dispDate.getDate()>15)dispDate.setMonth(dispDate.getMonth()+1);dispDate.setDate(1);gridAni='bottom';updCal();}
 			return true;
 		}return false;
 	};
-	this.setFirstDayOfWeek=function(fdow){if((fdow==0||fdow==1)&&fdow!=firstDay){firstDay=fdow;recreateWdayTitle();gridAni='bottom';recreateDates();return true;}return false;};
-	this.setFullYear=function(year){if(!isNaN(year)&&year!=dispDate.getFullYear()){dispDate.setFullYear(year);gridAni='zoom';updCal();return true;}return false;};
-	this.setMonth=function(month){if(!isNaN(month)&&month!=dispDate.getMonth()){dispDate.setMonth(month);gridAni='zoom';updCal();return true;}return false;};
-	this.setDate=function(year,month){
-		if(!isNaN(year)){
-			if(isNaN(month))month=0;
-			if(year!=dispDate.getFullYear()||month!=dispDate.getMonth()){
-				dispDate.setFullYear(year);dispDate.setMonth(month);gridAni='zoom';updCal();return true;
-			}			
-		}return false;
-	};
-	this.today=function(){dispDate.setFullYear(curY);dispDate.setMonth(curM);gridAni='bottom';updCal();};
 	this.setLanguage=function(lang){
 		lang=lang.toLowerCase();
 		for(var li in Calendar.strData){
-			if(li==lang){curLang=li;gridAni='zoom';updMenuLbl();updCalModMenuLbl();updHeader();recreateWdayTitle();recreateDates();return true;}
+			if(li==lang){
+				curLang=li;
+				dispDate.language=li;
+				dispDate.getOppositeDate().language=li;
+				gridAni='zoom';
+				updMenuLbl();
+				updCalModMenuLbl();
+				updTodayLbl();
+				updHeader();
+				recreateWdayTitle();
+				recreateDates();
+				return true;
+			}
 		}return false;
 	};
+	this.setMonth=function(month){return this.setDate(null,month);};
 	this.setTheme=function(theme){return newTheme(theme);};
 	this.setTodayTimeout=function(tmo){if(!isNaN(tmo)&&tmo>=10){actTmo=tmo;applyTodayTmout();return true;}return false;};
+	this.today=function(){dispDate.setTime(getCurTime());dispDate.setDate(1);gridAni='bottom';updCal();};
 	gDate.hijriDate=hDate;
 	beginNewDate();
 	year=parseInt(year);
 	month=parseInt(month);
-	if(isNaN(year)){year=curY;if(isNaN(month))month=curM;}
-	else if(isNaN(month))month=0;
-	dispDate.setFullYear(year);
-	dispDate.setMonth(month);
+	dispDate.setTime(getCurTime());
+	if(!isNaN(year))dispDate.setFullYear(year);
+	if(!isNaN(month))dispDate.setMonth(month);
 	dispDate.setDate(1);
-	dispDate.setHours(6);
-	dispDate.setMinutes(0);
-	dispDate.setSeconds(0);
-	dispDate.setMilliseconds(0);
 	createCal();
 }
-HijriDate.prototype.getMonthName=function(lang){
-	if(typeof lang=='undefined'||lang=='en')return HijriDate.monthNames[this.getMonth()];
-	for(var li in Calendar.strData){if(li==lang)return Calendar.strData[li]['hMonthNames'][this.getMonth()];}
-	return null;
+HijriDate.prototype.language='en';
+HijriDate.prototype.getMonthName=function(month){
+	if(isNaN(month))month=this.getMonth();
+	month%=12;
+	if(this.language=='en')return HijriDate.monthNames[month].replace('-','&#8209;');
+	return Calendar.strData[this.language]['hMonthNames'][month];
 };
-HijriDate.prototype.getShortMonthName=function(lang){
-	if(typeof lang=='undefined'||lang=='en')return HijriDate.shortMonthNames[this.getMonth()];
-	for(var li in Calendar.strData){if(li==lang)return Calendar.strData[li]['hShortMonthNames'][this.getMonth()];}
-	return null;
+HijriDate.prototype.getMonthShortName=function(month){
+	if(isNaN(month))month=this.getMonth();
+	month%=12;
+	if(this.language=='en')return HijriDate.monthShortNames[month];
+	return Calendar.strData[this.language]['hMonthShortNames'][month];
 };
 HijriDate.prototype.getOppositeDate=function(){return this.getGregorianDate();};
-Date.prototype.getMonthName=function(lang){
-	for(var li in Calendar.strData){if(li==lang)return Calendar.strData[li]['monthNames'][this.getMonth()];}
-	return null;
+HijriDate.prototype.todayString=function(){
+	var tmp=this.getTime();
+	this.setTime(Date.now());
+	var tds=',&nbsp;'+this.getDate()+'&nbsp;'+this.getMonthName()+'&nbsp'+this.getFullYear()+'H';
+	tds=this.language=='en'?HijriDate.weekdayNames[this.getDay()]+tds:Calendar.strData[this.language]['weekdayNames'][this.getDay()]+tds;
+	this.setTime(tmp);
+	return tds;
 };
-Date.prototype.getShortMonthName=function(lang){
-	for(var li in Calendar.strData){if(li==lang)return Calendar.strData[li]['shortMonthNames'][this.getMonth()];}
-	return null;
+HijriDate.prototype.todayShortString=function(){
+	var tmp=this.getTime();
+	this.setTime(Date.now());
+	var tds=',&nbsp;'+this.getDate()+'&nbsp;'+this.getMonthShortName()+'&nbsp'+this.getFullYear()+'H';
+	tds=this.language=='en'?HijriDate.weekdayShortNames[this.getDay()]+tds:Calendar.strData[this.language]['weekdayShortNames'][this.getDay()]+tds;
+	this.setTime(tmp);
+	return tds;
+};
+Date.prototype.language='en';
+Date.prototype.getMonthName=function(month){
+	if(isNaN(month))month=this.getMonth();return Calendar.strData[this.language]['monthNames'][month%12];
+};
+Date.prototype.getMonthShortName=function(month){
+	if(isNaN(month))month=this.getMonth();return Calendar.strData[this.language]['monthShortNames'][month%12];
 };
 Date.prototype.getOppositeDate=function(){return this.hijriDate;};
+Date.prototype.todayString=function(){
+	var tmp=this.getTime();
+	this.setTime(Date.now());
+	var tds=Calendar.strData[this.language]['weekdayNames'][this.getDay()]+',&nbsp;';
+	tds+=this.getDate()+'&nbsp;'+this.getMonthName()+'&nbsp'+this.getFullYear();
+	this.setTime(tmp);
+	return tds;
+};
+Date.prototype.todayShortString=function(){
+	var tmp=this.getTime();
+	this.setTime(Date.now());
+	var tds=Calendar.strData[this.language]['weekdayShortNames'][this.getDay()]+',&nbsp;';
+	tds+=this.getDate()+'&nbsp;'+this.getMonthShortName()+'&nbsp'+this.getFullYear();
+	this.setTime(tmp);
+	return tds;
+};
 Calendar.themes=['amber','aqua','cyan','grey','khaki','light-blue','light-green','lime','orange','pale-blue','pale-green','pale-red','pale-yellow','sand','yellow','black','blue','blue-grey','brown','dark-grey','deep-orange','deep-purple','green','indigo','pink','purple','red','teal'];
 Calendar.strData={
 	"en":{
@@ -424,9 +471,9 @@ Calendar.strData={
 		"menuItem5":"Cancel",
 		"eraSuffix":["H","BH","AD","BC"],
 		"monthNames":["January","February","March","April","May","June","July","August","September","October","November","December"],
-		"shortMonthNames":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+		"monthShortNames":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
 		"weekdayNames":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
-		"shortWeekdayNames":["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
+		"weekdayShortNames":["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
 	},
 	"id":{
 		"menuItem0":["Kalender&nbspHijriyah","Kalender&nbsp;Masehi"],
@@ -437,10 +484,10 @@ Calendar.strData={
 		"menuItem5":"Batal",
 		"eraSuffix":["H","SH","M","SM"],
 		"monthNames":["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
-		"shortMonthNames":["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"],
+		"monthShortNames":["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"],
 		"weekdayNames":["Minggu","Senin","Selasa","Rabu","Kamis","Jum'at","Sabtu"],
-		"shortWeekdayNames":["Min","Sen","Sel","Rab","Kam","Jum","Sab"],
-		"hMonthNames":["Muharam","Safar","Rabi'ul-Awal","Rabi'ul-Akhir","Jumadil-Awal","Jumadil-Akhir","Rajab","Sya'ban","Ramadhan","Syawwal","Zulqa'idah","Zulhijjah"],
-		"hShortMonthNames":["Muh","Saf","Raw","Rak","Jaw","Jak","Raj","Sya","Ram","Syw","Zuq","Zuh"]
+		"weekdayShortNames":["Min","Sen","Sel","Rab","Kam","Jum","Sab"],
+		"hMonthNames":["Muharam","Safar","Rabi'ul&#8209;Awal","Rabi'ul&#8209;Akhir","Jumadil&#8209;Awal","Jumadil&#8209;Akhir","Rajab","Sya'ban","Ramadhan","Syawwal","Zulqa'idah","Zulhijjah"],
+		"hMonthShortNames":["Muh","Saf","Raw","Rak","Jaw","Jak","Raj","Sya","Ram","Syw","Zuq","Zuh"]
 	}
 };
