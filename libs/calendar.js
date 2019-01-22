@@ -353,11 +353,11 @@ function Calendar(isHijr,firstDay,year,month){
 	};
 	this.attachTo=function(elm){if(elm.appendChild&&!isAttached){elm.appendChild(calElm);onRszWdw();isAttached=true;return true;}return false;};
 	this.fireResize=function(){onRszWdw()};
-	this.setDate=function(year,month){
+	this.getElement=function(){return calElm;};
+	this.resetDate=function(year,month){
 		var oldTm=dispDate.getTime();
-		year=parseInt(year);month=parseInt(month);
-		if(!isNaN(year))dispDate.setFullYear(year);
-		if(!isNaN(month))dispDate.setMonth(month);
+		dispDate.setFullYear(Calendar.parseInt(year,dispDate.getFullYear()));
+		dispDate.setMonth(Calendar.parseInt(month,dispDate.getMonth()));
 		if(dispDate.getTime()!=oldTm){gridAni='zoom';updCal();return true;}
 		return false;
 	};
@@ -365,7 +365,7 @@ function Calendar(isHijr,firstDay,year,month){
 		if((fdow==0||fdow==1)&&fdow!=firstDay){firstDay=fdow;recreateWdayTitle();gridAni='bottom';recreateDates();return true;}
 		return false;
 	};
-	this.setFullYear=function(year){return this.setDate(year);};
+	this.setFullYear=function(year){return this.resetDate(year);};
 	this.setHijriMode=function(hm){
 		if((hm==true||hm==false)&&isHijr!=hm){
 			isHijr=hm;dispDate.syncDates();dispDate=dispDate.getOppositeDate();updCalModMenuLbl();updTodayLbl();
@@ -392,18 +392,16 @@ function Calendar(isHijr,firstDay,year,month){
 			}
 		}return false;
 	};
-	this.setMonth=function(month){return this.setDate(null,month);};
+	this.setMonth=function(month){return this.resetDate(null,month);};
 	this.setTheme=function(theme){return newTheme(theme);};
 	this.setTodayTimeout=function(tmo){if(!isNaN(tmo)&&tmo>=10){actTmo=tmo;applyTodayTmout();return true;}return false;};
 	this.today=function(){dispDate.setTime(getCurTime());dispDate.setDate(1);gridAni='bottom';updCal();};
 	gDate.hijriDate=hDate;
 	beginNewDate();
-	year=parseInt(year);
-	month=parseInt(month);
 	dispDate.setTime(getCurTime());
-	if(!isNaN(year))dispDate.setFullYear(year);
-	if(!isNaN(month))dispDate.setMonth(month);
 	dispDate.setDate(1);
+	dispDate.setFullYear(Calendar.parseInt(year,dispDate.getFullYear()));
+	dispDate.setMonth(Calendar.parseInt(month,dispDate.getMonth()));
 	createCal();
 }
 HijriDate.prototype.language='en';
@@ -460,6 +458,7 @@ Date.prototype.todayShortString=function(){
 	this.setTime(tmp);
 	return tds;
 };
+Calendar.parseInt=function(num,def){num=parseInt(num);def=parseInt(def);if(isNaN(def))def=0;return isNaN(num)?def:num;};
 Calendar.themes=['amber','aqua','cyan','grey','khaki','light-blue','light-green','lime','orange','pale-blue','pale-green','pale-red','pale-yellow','sand','yellow','black','blue','blue-grey','brown','dark-grey','deep-orange','deep-purple','green','indigo','pink','purple','red','teal'];
 Calendar.strData={
 	"en":{

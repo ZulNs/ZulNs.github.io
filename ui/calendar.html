@@ -31,7 +31,7 @@
 	var isMobile=false;
 	var isSmallScreen=(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth)>=691;
 	var calContainer=document.getElementById('calendar');
-	var cal=new Calendar();
+	var cal=new Calendar(false,1,0);
 	resize();
 	if(window.addEventListener)
 		window.addEventListener('resize',resize);

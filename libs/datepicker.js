@@ -540,12 +540,14 @@ Datepicker.strData={
 	"en":{
 		"eraSuffix":["H","BH","AD","BC"],
 		"monthNames":["January","February","March","April","May","June","July","August","September","October","November","December"],
-		"shortWeekdayNames":["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
+		"weekdayNames":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+		"weekdayShortNames":["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
 	},
 	"id":{
 		"eraSuffix":["H","SH","M","SM"],
 		"monthNames":["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
-		"shortWeekdayNames":["Min","Sen","Sel","Rab","Kam","Jum","Sab"],
+		"weekdayNames":["Minggu","Senin","Selasa","Rabu","Kamis","Jum'at","Sabtu"],
+		"weekdayShortNames":["Min","Sen","Sel","Rab","Kam","Jum","Sab"],
 		"hMonthNames":["Muharam","Safar","Rabi'ul-Awal","Rabi'ul-Akhir","Jumadil-Awal","Jumadil-Akhir","Rajab","Sya'ban","Ramadhan","Syawwal","Zulqa'idah","Zulhijjah"],
 	}
 };
