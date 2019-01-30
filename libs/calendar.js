@@ -440,7 +440,7 @@ Date.prototype.todayShortString=function(){
 	var tmp=this.getTime();
 	this.setTime(Date.now());
 	var tds=Calendar.strData[this.language].weekdayShortNames[this.getDay()]+',&nbsp;';
-	tds+=this.getDate()+'&nbsp;'+this.getMonthShortName()+'&nbsp'+this.getFullYear();
+	tds+=this.getDate()+'&nbsp;'+this.getMonthShortName()+'&nbsp;'+this.getFullYear();
 	this.setTime(tmp);
 	return tds
 };
@@ -448,7 +448,7 @@ Date.prototype.todayString=function(){
 	var tmp=this.getTime();
 	this.setTime(Date.now());
 	var tds=Calendar.strData[this.language].weekdayNames[this.getDay()]+',&nbsp;';
-	tds+=this.getDate()+'&nbsp;'+this.getMonthName()+'&nbsp'+this.getFullYear();
+	tds+=this.getDate()+'&nbsp;'+this.getMonthName()+'&nbsp;'+this.getFullYear();
 	this.setTime(tmp);
 	return tds
 };
@@ -468,7 +468,7 @@ HijriDate.prototype.getOppositeDate=function(){return this.gregorianDate};
 HijriDate.prototype.todayShortString=function(){
 	var tmp=this.getTime();
 	this.setTime(Date.now());
-	var tds=',&nbsp;'+this.getDate()+'&nbsp;'+this.getMonthShortName()+'&nbsp'+this.getFullYear()+'H';
+	var tds=',&nbsp;'+this.getDate()+'&nbsp;'+this.getMonthShortName()+'&nbsp;'+this.getFullYear()+'H';
 	tds=this.language=='en'?HijriDate.weekdayShortNames[this.getDay()]+tds:Calendar.strData[this.language].weekdayShortNames[this.getDay()]+tds;
 	this.setTime(tmp);
 	return tds
@@ -476,7 +476,7 @@ HijriDate.prototype.todayShortString=function(){
 HijriDate.prototype.todayString=function(){
 	var tmp=this.getTime();
 	this.setTime(Date.now());
-	var tds=',&nbsp;'+this.getDate()+'&nbsp;'+this.getMonthName()+'&nbsp'+this.getFullYear()+'H';
+	var tds=',&nbsp;'+this.getDate()+'&nbsp;'+this.getMonthName()+'&nbsp;'+this.getFullYear()+'H';
 	tds=this.language=='en'?HijriDate.weekdayNames[this.getDay()]+tds:Calendar.strData[this.language].weekdayNames[this.getDay()]+tds;
 	this.setTime(tmp);
 	return tds

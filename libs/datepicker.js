@@ -19,6 +19,7 @@ function Datepicker(isHijr,year,month,firstDay,lang,theme,width){
 	tzOffset=dispDate.getTimezoneOffset()*6e4,
 	isAttached=false,
 	isAutoNewTheme,
+	oldTheme='black',
 	gridAni='zoom',
 	aboutElm,
 	aboutTitleElm,
@@ -193,7 +194,7 @@ function Datepicker(isHijr,year,month,firstDay,lang,theme,width){
 			scrollY=rect.bottom-rect.top>vh?rect.top:rect.bottom>vh-hsSpc?rect.bottom-vh+hsSpc:0;
 		window.scrollBy(scrollX,scrollY)
 	},
-	updPicker=function(){updHeader();if(getShowing){deleteDates();createDates()}},
+	updPicker=function(){updHeader();if(getShowing()){deleteDates();createDates()}},
 	onHideMe=function(){hideMe()},
 	onDecYear=function(){dispDate.setFullYear(dispDate.getFullYear()-1);gridAni='right';updPicker()},
 	onIncYear=function(){dispDate.setFullYear(dispDate.getFullYear()+1);gridAni='left';updPicker()},
@@ -219,8 +220,16 @@ function Datepicker(isHijr,year,month,firstDay,lang,theme,width){
 	getShowing=function(){return dpickElm.className.indexOf('w3-hide')==-1},
 	getFixTime=function(time){time-=tzOffset;return time-time%864e5+36e5+tzOffset},
 	getCurTime=function(){return getFixTime(Date.now())},
-	newTheme=function(){var dt=Datepicker.themes,i;do i=Math.floor(Math.random()*dt.length);while(dt[i]==theme);theme=dt[i]},
-	applyTheme=function(){headerElm.className=headerElm.className.substring(0,headerElm.className.lastIndexOf('w3-'))+'w3-'+theme};
+	newTheme=function(){
+		var dt=Datepicker.themes,i;oldTheme=theme;do i=Math.floor(Math.random()*dt.length);while(dt[i]==theme);theme=dt[i]
+	},
+	applyTheme=function(){
+		headerElm.className=headerElm.className.substring(0,headerElm.className.lastIndexOf('w3-'))+'w3-'+theme;
+		if(getShowing()){
+			var el=gridsElm.querySelector('.w3-'+oldTheme);
+			if(el)el.className=el.className.replace('w3-'+oldTheme,'w3-'+theme)
+		}
+	};
 	this.attachTo=function(el){if(el.appendChild&&!isAttached){el.appendChild(dpickElm);isAttached=true;return true}return false};
 	this.getElement=function(){return dpickElm};
 	this.getPickedDate=function(){return pickDate};
@@ -320,8 +329,8 @@ function Datepicker(isHijr,year,month,firstDay,lang,theme,width){
 }
 Date.prototype.language='en';
 Date.prototype.getDateString=function(){
-	var tds=Datepicker.strData[this.language].weekdayNames[this.getDay()]+',&nbsp;';
-	tds+=this.getDate()+'&nbsp;'+this.getMonthName()+'&nbsp'+this.getFullYear();
+	var tds=Datepicker.strData[this.language].weekdayNames[this.getDay()]+', ';
+	tds+=this.getDate()+' '+this.getMonthName()+' '+this.getFullYear();
 	return tds
 };
 Date.prototype.getMonthName=function(month){
@@ -331,7 +340,7 @@ Date.prototype.getMonthName=function(month){
 Date.prototype.getOppositeDate=function(){return this.hijriDate};
 HijriDate.prototype.language='en';
 HijriDate.prototype.getDateString=function(){
-	var tds=',&nbsp;'+this.getDate()+'&nbsp;'+this.getMonthName()+'&nbsp'+this.getFullYear()+'H';
+	var tds=', '+this.getDate()+' '+this.getMonthName()+' '+this.getFullYear()+'H';
 	tds=this.language=='en'?HijriDate.weekdayNames[this.getDay()]+tds:Datepicker.strData[this.language].weekdayNames[this.getDay()]+tds;
 	return tds
 };
