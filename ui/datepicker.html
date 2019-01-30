@@ -30,6 +30,16 @@
 				<label for="langId">Indonesian</label>
 			</div>
 		</div>
+  <button class="w3-bar-item w3-button w3-ripple w3-white" onclick="dropdown(this)">First Day<span class="w3-right">&#9662;</span></button>
+		<div class="w3-hide w3-bar-block w3-light-grey">
+			<button class="w3-bar-item w3-button w3-ripple" onclick="setFirstDay(0)">Sunday</button>
+			<button class="w3-bar-item w3-button w3-ripple" onclick="setFirstDay(1)">Monday</button>
+			<button class="w3-bar-item w3-button w3-ripple" onclick="setFirstDay(2)">Tuesday</button>
+			<button class="w3-bar-item w3-button w3-ripple" onclick="setFirstDay(3)">Wednesday</button>
+			<button class="w3-bar-item w3-button w3-ripple" onclick="setFirstDay(4)">Thursday</button>
+			<button class="w3-bar-item w3-button w3-ripple" onclick="setFirstDay(5)">Friday</button>
+			<button class="w3-bar-item w3-button w3-ripple" onclick="setFirstDay(6)">Saturday</button>
+		</div>
   <button class="w3-bar-item w3-button w3-ripple w3-white" onclick="dropdown(this)">Set Full Year<span class="w3-right">&#9662;</span></button>
 		<div class="w3-hide w3-bar-block w3-light-grey">
 			<div class="w3-bar-item">
@@ -124,6 +134,10 @@ function selectLang(id){
 	var el=document.getElementById(id);
 	el.checked=true;
 	picker.setLanguage(el.value)
+}
+
+function setFirstDay(fd){
+	picker.setFirstDayOfWeek(fd)
 }
 
 function setYear(){
