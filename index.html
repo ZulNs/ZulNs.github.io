@@ -17,69 +17,102 @@
 <link rel="stylesheet" href="libs/w3css/w3.css" />
 <script type="text/javascript" src="libs/hijri-date.js"></script>
 <script type="text/javascript" src="libs/calendar.js"></script>
-<h1 class="w3-center">Hijri/Gregorian Calendar</h1>
-<div class="w3-border">
-	<div class="w3-bar w3-large w3-red">
-		<div id="en" class="w3-bar-item w3-button w3-dark-grey w3-hover-dark-grey" onclick="changeLang(this);" style="cursor:default;">English</div>
-		<div id="id" class="w3-bar-item w3-button" onclick="changeLang(this);">Indonesian</div>
-		<div id="mobile" class="w3-bar-item w3-button" onclick="changeSize();">Mobile</div>
-	</div>
-	<div id="calendar" class="w3-container w3-padding w3-padding-16"></div>
+
+<div class="w3-sidebar w3-bar-block w3-collapse w3-card w3-animate-left" style="width:200px;z-index:2" id="mySidebar">
+  <button class="w3-bar-item w3-button w3-ripple w3-white w3-large w3-hide-large" onclick="closeSidebar()">Close<span class="w3-right">&times;<span></button>
+  <button class="w3-bar-item w3-button w3-ripple w3-white" onclick="dropdown(this)">Set Language<span class="w3-right">&#9662;</span></button>
+		<div class="w3-hide w3-bar-block w3-light-grey">
+			<div class="w3-bar-item w3-button" onclick="selectLang('langEn')">
+				<input id="langEn" class="w3-radio" type="radio" name="lang" value="en" checked>
+				<label for="langEn">English</label>
+			</div>
+			<div class="w3-bar-item w3-button" onclick="selectLang('langId')">
+				<input id="langId" class="w3-radio" type="radio" name="lang" value="id">
+				<label for="langId">Indonesian</label>
+			</div>
+		</div>
+  <button class="w3-bar-item w3-button w3-ripple w3-white" onclick="dropdown(this)">Set Full Year<span class="w3-right">&#9662;</span></button>
+		<div class="w3-hide w3-bar-block w3-light-grey">
+			<div class="w3-bar-item">
+				<input id="valYear" class="w3-input w3-border" type="text" placeholder="full year value...">
+			</div>
+			<button class="w3-bar-item w3-button w3-ripple" onclick="setYear()">Apply</button>
+		</div>
+  <button class="w3-bar-item w3-button w3-ripple w3-white" onclick="dropdown(this)">Set Month<span class="w3-right">&#9662;</span></button>
+		<div class="w3-hide w3-bar-block w3-light-grey">
+			<div class="w3-bar-item">
+				<input id="valMonth" class="w3-input w3-border" type="text" placeholder="month value...">
+			</div>
+			<button class="w3-bar-item w3-button w3-ripple" onclick="setMonth()">Apply</button>
+		</div>
+  <button class="w3-bar-item w3-button w3-ripple w3-white" onclick="dropdown(this)">Set Today Timeout<span class="w3-right">&#9662;</span></button>
+		<div class="w3-hide w3-bar-block w3-light-grey">
+			<div class="w3-bar-item">
+				<input id="valTimeout" class="w3-input w3-border" type="text" placeholder="timeout value...">
+			</div>
+			<button class="w3-bar-item w3-button w3-ripple" onclick="setTodayTimeout()">Apply</button>
+		</div>
 </div>
+
+<div class="w3-main" style="margin-left:200px">
+	<div class="w3-teal">
+		<button class="w3-button w3-ripple w3-teal w3-xlarge w3-hide-large" onclick="openSidebar()">&#9776;</button>
+		<div class="w3-container">
+			<h2>Hijri/Gregorian Dual Calendar Demo</h2>
+		</div>
+	</div>
+
+	<div id="calendar" class="w3-container w3-margin-top"></div>
+</div>
+
 <script type="text/javascript">
-	var curLang='en';
-	var isMobile=false;
-	var isSmallScreen=(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth)>=691;
-	var calContainer=document.getElementById('calendar');
-	var cal=new Calendar();
-	resize();
-	if(window.addEventListener)
-		window.addEventListener('resize',resize);
-	else if(window.attachEvent)
-		window.attachEvent('onresize',resize);
-	else
-		window.onresize=resize;
-	cal.attachTo(calContainer);
-	cal.setTodayTimeout(30);
-	
-	function resize(){
-		var btn=document.getElementById('mobile');
-		var premise=(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth)<691;
-		if(isSmallScreen&&!premise){
-			btn.className=btn.className.replace(' w3-hide','');
-			isSmallScreen=false;
-		}else if(!isSmallScreen&&premise){
-			btn.className+=' w3-hide';
-			isSmallScreen=true;
-		}
+var cal=new Calendar();
+var calElm=cal.getElement();
+cal.attachTo(document.getElementById('calendar'));
+
+function openSidebar(){
+	document.getElementById("mySidebar").style.display = "block"
+}
+
+function closeSidebar(){
+	document.getElementById("mySidebar").style.display = "none"
+}
+
+function dropdown(el){
+	var ht=el.innerHTML.toString();
+	var ne=el.nextElementSibling;
+	ht=ht.substr(0,ht.indexOf('>'));
+	if(ne.className.indexOf('w3-show')==-1){
+		ne.className+=' w3-show';
+		el.className+=' w3-dark-grey';
+		el.innerHTML=ht+'>&#9652;</span>'
+	}else{
+		ne.className=ne.className.replace(' w3-show','');
+		el.className=el.className.replace(' w3-dark-grey','')
+		el.innerHTML=ht+'>&#9662;</span>'
 	}
-	
-	function changeLang(btn){
-		if(btn.id==curLang)return;
-		var btn2=document.getElementById(curLang);
-		btn.className+=' w3-dark-grey w3-hover-dark-grey';
-		btn.style.cursor='default';
-		btn2.className=btn2.className.substring(0,btn2.className.lastIndexOf(' w3-dark'));
-		btn2.style.cursor=null;
-		curLang=btn.id;
-		cal.setLanguage(curLang);
-		cal.setTheme();
-	}
-	
-	function changeSize(){
-		var btn=document.getElementById('mobile');
-		isMobile=!isMobile;
-		if(isMobile){
-			btn.className+=' w3-dark-grey';
-			calContainer.className=calContainer.className.replace('w3-container','w3-card');
-			calContainer.style.cssText='max-width:400px;';
-		}else{
-			btn.className=btn.className.replace(' w3-dark-grey','');
-			calContainer.className=calContainer.className.replace('w3-card','w3-container');
-			calContainer.style.cssText=null;
-		}
-		cal.fireResize();
-	}
+}
+
+function selectLang(id){
+	var el=document.getElementById(id);
+	el.checked=true;
+	cal.setLanguage(el.value)
+}
+
+function setYear(){
+	var el=document.getElementById('valYear');
+	cal.setFullYear(el.value)
+}
+
+function setMonth(){
+	var el=document.getElementById('valMonth');
+	cal.setMonth(el.value)
+}
+
+function setTodayTimeout(){
+	var el=document.getElementById('valTimeout');
+	cal.setTodayTimeout(el.value)
+}
 </script>
 </body>
 </html>
