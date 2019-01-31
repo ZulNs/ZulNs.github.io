@@ -66,6 +66,7 @@
 		</div>
   <button class="w3-bar-item w3-button w3-ripple w3-white" onclick="gotoToday()">Go to Today</button>
   <button class="w3-bar-item w3-button w3-ripple w3-white" onclick="newTheme()">New Theme</button>
+  <a class="w3-bar-item w3-button w3-ripple w3-white" href="calendar.html">See My Calendar</a>
 </div>
 
 <div class="w3-main" style="margin-left:200px">
@@ -91,7 +92,11 @@
 <script type="text/javascript">
 var picker=new Datepicker();
 var pickElm=picker.getElement();
+var pLeft=200;
+var pWidth=300;
 pickElm.style.position='absolute';
+pickElm.style.left=pLeft+'px';
+pickElm.style.top='172px';
 picker.attachTo(document.body);
 
 picker.onPicked=function(){
@@ -151,15 +156,19 @@ function setMonth(){
 }
 
 function updateWidth(el){
-	document.getElementById('valWidth').value=el.value;
-	picker.setWidth(el.value)
+	pWidth=parseInt(el.value);
+	if(!fixWidth()){
+		document.getElementById('valWidth').value=pWidth;
+		picker.setWidth(pWidth)
+	}
 }
 
 function pickDate(el){
 	var ev=window.event;
-	picker.setHijriMode(el.id=='hijrDate');
-	pickElm.style.left=ev.pageX+'px';
+	pLeft=ev.pageX;
+	fixWidth();
 	pickElm.style.top=ev.pageY+'px';
+	picker.setHijriMode(el.id=='hijrDate');
 	picker.show()
 }
 
@@ -169,6 +178,23 @@ function gotoToday(){
 
 function newTheme(){
 	picker.setTheme()
+}
+
+function fixWidth(){
+	var docWidth=document.body.offsetWidth;
+	var isFixed=false;
+	if(pLeft+pWidth>docWidth)pLeft=docWidth-pWidth;
+	if(docWidth>=992&&pLeft<200)pLeft=200;
+	else if(docWidth<992&&pLeft<0)pLeft=0;
+	if(pLeft+pWidth>docWidth){
+		pWidth=docWidth-pLeft;
+		picker.setWidth(pWidth);
+		document.getElementById('valWidth').value=pWidth;
+		document.getElementById('sliderWidth').value=pWidth;
+		isFixed=true
+	}
+	pickElm.style.left=pLeft+'px';
+	return isFixed
 }
 </script>
 </body>
