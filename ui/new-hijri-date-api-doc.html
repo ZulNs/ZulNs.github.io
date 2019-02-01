@@ -102,12 +102,13 @@ picker.attachTo(document.body);
 picker.onPicked=function(){
 	var elgd=document.getElementById('gregDate');
 	var elhd=document.getElementById('hijrDate');
-	if(picker.getPickedDate() instanceof Date){
-		elgd.value=picker.getPickedDate().getDateString();
-		elhd.value=picker.getOppositePickedDate().getDateString()
+	var date=picker.getPickedDate();
+	if(date instanceof Date){
+		elgd.value=date.getDateString();
+		elhd.value=date.getOppositeDate().getDateString()
 	}else{
-		elhd.value=picker.getPickedDate().getDateString();
-		elgd.value=picker.getOppositePickedDate().getDateString()
+		elhd.value=date.getDateString();
+		elgd.value=date.getOppositeDate().getDateString()
 	}
 };
 

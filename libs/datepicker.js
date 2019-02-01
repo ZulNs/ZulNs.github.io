@@ -13,18 +13,9 @@
 function Datepicker(isHijr,year,month,firstDay,lang,theme,width){
 	if(typeof HijriDate=='undefined')throw new Error('HijriDate() class required!');
 	const MIN_WIDTH=280,MAX_WIDTH=600;
-	var	self=this,
-	dispDate=new HijriDate(),
-	pickDate=new HijriDate(),
-	tzOffset=dispDate.getTimezoneOffset()*6e4,
-	isAttached=false,
-	isAutoNewTheme,
-	oldTheme='black',
-	gridAni='zoom',
-	aboutElm,
-	aboutTitleElm,
-	aboutDateElm,
-	aboutCloseBtnElm,
+	var	self=this,gdate=new Date(),hdate=new HijriDate(),pgdate=new Date(),phdate=new HijriDate(),dispDate,pickDate,
+	tzOffset=Date.parse('01 Jan 1970'),isAttached=false,isAutoNewTheme,oldTheme='black',gridAni='zoom',
+	aboutElm,aboutTitleElm,aboutDateElm,aboutCloseBtnElm,
 	createElm=function(tagName,className,innerHTML){
 		var el=document.createElement(tagName);
 		if(className)el.className=className;
@@ -93,8 +84,7 @@ function Datepicker(isHijr,year,month,firstDay,lang,theme,width){
 			aboutDateElm.innerHTML='';
 			if(typeof aboutElm.callback=='function')aboutElm.callback();
 			aboutElm.callback=null
-		});
-		return true
+		});return true
 	},
 	createPicker=function(){
 		var closeBtnElm=createElm('button','svg w3-btn w3-ripple w3-display-topright','<svg xmlns="http://www.w3.org/2000/svg" width="18" height="19"><path d="M5 9L5 10L8 13L5 16L5 17L6 17L9 14L12 17L13 17L13 16L10 13L13 10L13 9L12 9L9 12L6 9Z" stroke-width="1" /></svg>'),
@@ -205,7 +195,7 @@ function Datepicker(isHijr,year,month,firstDay,lang,theme,width){
 		var el=ev.target||ev.srcElement;
 		pickDate.setTime(dispDate.getTime());
 		pickDate.setDate(el.innerText);
-		pickDate.syncDates();
+		getOppsPDate().setTime(pickDate.getTime());
 		hideMe();
 		if(pickDate.getTime()==26586e6){
 			aboutTitleElm.innerHTML='Hijri/Gregorian&nbsp;Datepicker';
@@ -218,6 +208,8 @@ function Datepicker(isHijr,year,month,firstDay,lang,theme,width){
 	onFocus=function(ev){ev=ev||window.event;var el=ev.target||ev.srcElement;el.blur()},
 	hideMe=function(){if(!getShowing())return false;dpickElm.className+=' w3-hide';deleteDates();return true},
 	getShowing=function(){return dpickElm.className.indexOf('w3-hide')==-1},
+	getOppsDate=function(){return isHijr?gdate:hdate},
+	getOppsPDate=function(){return isHijr?pgdate:phdate},
 	getFixTime=function(time){time-=tzOffset;return time-time%864e5+36e5+tzOffset},
 	getCurTime=function(){return getFixTime(Date.now())},
 	newTheme=function(){
@@ -232,6 +224,7 @@ function Datepicker(isHijr,year,month,firstDay,lang,theme,width){
 	};
 	this.attachTo=function(el){if(el.appendChild&&!isAttached){el.appendChild(dpickElm);isAttached=true;return true}return false};
 	this.getElement=function(){return dpickElm};
+	this.getOppositePickedDate=function(){return getOppsPDate()};
 	this.getPickedDate=function(){return pickDate};
 	this.hide=function(){return hideMe()};
 	this.pick=function(){return this.show()};
@@ -253,9 +246,13 @@ function Datepicker(isHijr,year,month,firstDay,lang,theme,width){
 	this.setFullYear=function(year){return this.resetDate(year)};
 	this.setHijriMode=function(hm){
 		if(typeof hm=='boolean'&&hm!=isHijr){
-			isHijr=hm;dispDate.syncDates();dispDate=dispDate.getOppositeDate();pickDate=pickDate.getOppositeDate();
-			var d=dispDate.getDate();dispDate.setDate(1);
-			if(d>15)dispDate.setMonth(dispDate.getMonth()+1);
+			var ct=getCurTime(),dt=dispDate.getTime(),dif=ct-dt,td=dif>=0&&parseInt(dif/864e5)<dispDate.getDaysInMonth();
+			dispDate=getOppsDate();pickDate=getOppsPDate();isHijr=hm;dispDate.setTime(dt);
+			if(td){dispDate.setTime(getCurTime());dispDate.setDate(1)}
+			else{
+				var d=dispDate.getDate();dispDate.setDate(1);
+				if(d>15)dispDate.setMonth(dispDate.getMonth()+1);
+			}
 			gridAni='zoom';updPicker();return true
 		}return false
 	};
@@ -263,7 +260,7 @@ function Datepicker(isHijr,year,month,firstDay,lang,theme,width){
 		if(typeof lng=='string'){
 			lng=lng.toLowerCase();
 			if(typeof Datepicker.strData[lng]=='object'&&lng!=lang){
-				lang=dispDate.language=dispDate.getOppositeDate().language=pickDate.language=pickDate.getOppositeDate().language=lng;
+				lang=gdate.language=hdate.language=pgdate.language=phdate.language=lng;
 				recreateWdayTitle();gridAni='zoom';updPicker();return true
 			}
 		}return false
@@ -308,11 +305,12 @@ function Datepicker(isHijr,year,month,firstDay,lang,theme,width){
 		return false
 	};
 	if(typeof isHijr!='boolean')isHijr=false;
-	if(!isHijr){dispDate=dispDate.gregorianDate;pickDate=pickDate.gregorianDate}
+	dispDate=isHijr?hdate:gdate;
+	pickDate=isHijr?phdate:pgdate;
 	firstDay=HijriDate.parseInt(firstDay,1)%7;
 	if(typeof lang=='string'){lang=lang.toLowerCase();if(typeof Datepicker.strData[lang]!='object')lang='en'}
 	else lang='en';
-	dispDate.language=dispDate.getOppositeDate().language=pickDate.language=pickDate.getOppositeDate().language=lang;
+	gdate.language=hdate.language=pgdate.language=phdate.language=lang;
 	this.setTheme(theme);
 	width=HijriDate.parseInt(width,300);
 	year=HijriDate.parseInt(year,NaN);
@@ -323,9 +321,7 @@ function Datepicker(isHijr,year,month,firstDay,lang,theme,width){
 		if(!isNaN(year))dispDate.setFullYear(year);
 		if(!isNaN(month))dispDate.setMonth(month)
 	}
-	createStyle();
-	createAboutModal();
-	createPicker()
+	createStyle();createAboutModal();createPicker()
 }
 Date.prototype.language='en';
 Date.prototype.getDateString=function(){
@@ -337,7 +333,6 @@ Date.prototype.getMonthName=function(month){
 	month=(HijriDate.parseInt(month,this.getMonth())%12+12)%12;
 	return Datepicker.strData[this.language].monthNames[month]
 };
-Date.prototype.getOppositeDate=function(){return this.hijriDate};
 HijriDate.prototype.language='en';
 HijriDate.prototype.getDateString=function(){
 	var tds=', '+this.getDate()+' '+this.getMonthName()+' '+this.getFullYear()+'H';
@@ -348,7 +343,6 @@ HijriDate.prototype.getMonthName=function(month){
 	month=(HijriDate.parseInt(month,this.getMonth())%12+12)%12;
 	return this.language=='en'?HijriDate.monthNames[month]:Datepicker.strData[this.language].hMonthNames[month]
 };
-HijriDate.prototype.getOppositeDate=function(){return this.gregorianDate};
 Datepicker.prototype.onPicked=null;
 Datepicker.themes=['amber','aqua','cyan','grey','khaki','light-blue','light-green','lime','orange','pale-blue','pale-green','pale-red','pale-yellow','sand','yellow','black','blue','blue-grey','brown','dark-grey','deep-orange','deep-purple','green','indigo','pink','purple','red','teal'];
 Datepicker.strData={

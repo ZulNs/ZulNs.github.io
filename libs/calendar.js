@@ -6,19 +6,9 @@
  */
 function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	if(typeof HijriDate=='undefined')throw new Error('HijriDate() class required!');
-	var self=this,
-	dispDate=new HijriDate(),
-	tzOffset=dispDate.getTimezoneOffset()*6e4,
-	gridAni='zoom',
-	actTmoId,
-	isDispToday=false,
-	isAttached=false,
-	isAccOpened=false,
-	isAutoNewTheme,
-	aboutElm,
-	aboutTitleElm,
-	aboutDateElm,
-	aboutCloseBtnElm,
+	var self=this,gdate=new Date(),hdate=new HijriDate(),dispDate,tzOffset=Date.parse('01 Jan 1970'),
+	gridAni='zoom',actTmoId,isDispToday=false,isAttached=false,isAccOpened=false,isAutoNewTheme,
+	aboutElm,aboutTitleElm,aboutDateElm,aboutCloseBtnElm,
 	isSmallScreen=(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth)<640,
 	createElm=function(tagName,className,innerHTML){
 		var el=document.createElement(tagName);
@@ -97,8 +87,7 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 			aboutDateElm.innerHTML='';
 			if(typeof aboutElm.callback=='function')aboutElm.callback();
 			aboutElm.callback=null
-		});
-		return true
+		});return true
 	},
 	createCal=function(){
 		var rootMenuElm=createElm('div','w3-dropdown-click w3-display-topleft'),
@@ -162,11 +151,7 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 			accFirstDayElm.appendChild(el)
 		}
 		addEvt(window,'resize',onRszWdw);
-		updMenuLbl();
-		updCalModMenuLbl();
-		updHeader();
-		createWdayTitle();
-		createDates()
+		updMenuLbl();updCalModMenuLbl();updHeader();createWdayTitle();createDates()
 	},
 	updMenuLbl=function(){
 		var cs=Calendar.strData[lang],wd=accFirstDayElm.children;
@@ -209,16 +194,16 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 		if(ppdr<0)ppdr+=7;
 		var pcdr=dispDate.getDaysInMonth(),pndr=(7-(ppdr+pcdr)%7)%7;
 		dispDate.setDate(1-ppdr);
-		dispDate.syncDates();
+		syncDates();
 		var pdate=dispDate.getDate(),
-			sdate=dispDate.getOppositeDate().getDate(),
+			sdate=getOppsDate().getDate(),
 			pdim=dispDate.getDaysInMonth(),
-			sdim=dispDate.getOppositeDate().getDaysInMonth(),
-			smsn=dispDate.getOppositeDate().getMonthShortName(),
+			sdim=getOppsDate().getDaysInMonth(),
+			smsn=getOppsDate().getMonthShortName(),
 			isFri=(13-firstDay)%7,isSun=(8-firstDay)%7,
 			gridCtr=0,ttc,isToday;
 		dispDate.setDate(1);
-		dispDate.getOppositeDate().setDate(1);
+		getOppsDate().setDate(1);
 		if(isDispToday){
 			isDispToday=false;
 			replaceClass(menuTodayElm,'w3-disabled w3-transparent','w3-button w3-ripple');
@@ -252,8 +237,8 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 			if(pdate>pdim){pdate=1;dispDate.setMonth(dispDate.getMonth()+1);pdim=dispDate.getDaysInMonth()}
 			sdate++;
 			if(sdate>sdim){
-				sdate=1;dispDate.getOppositeDate().setMonth(dispDate.getOppositeDate().getMonth()+1);
-				sdim=dispDate.getOppositeDate().getDaysInMonth();smsn=dispDate.getOppositeDate().getMonthShortName()
+				sdate=1;getOppsDate().setMonth(getOppsDate().getMonth()+1);
+				sdim=getOppsDate().getDaysInMonth();smsn=getOppsDate().getMonthShortName()
 			}gridCtr=++gridCtr%7
 		}
 		var spacer=createElm('div','w3-cell-row');spacer.style.height='8px';gridsElm.appendChild(spacer);dispDate.setTime(dispTm)
@@ -323,6 +308,8 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 			isSmallScreen=!isSmallScreen;updTodayLbl();recreateWdayTitle()
 		}
 	},
+	syncDates=function(){getOppsDate().setTime(dispDate.getTime())},
+	getOppsDate=function(){return isHijr?gdate:hdate},
 	getFixTime=function(time){time-=tzOffset;return time-time%864e5+36e5+tzOffset},
 	getCurTime=function(){return getFixTime(Date.now())},
 	beginNewDate=function(){
@@ -368,11 +355,12 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	this.setFullYear=function(year){return this.resetDate(year)};
 	this.setHijriMode=function(hm){
 		if(typeof hm=='boolean'&&hm!=isHijr){
-			isHijr=hm;dispDate.syncDates();dispDate=dispDate.getOppositeDate();updCalModMenuLbl();updTodayLbl();
+			syncDates();dispDate=getOppsDate();isHijr=hm;updCalModMenuLbl();updTodayLbl();
 			if(isDispToday){isDispToday=false;dispDate.setDate(1);this.today()}
 			else{
-				if(dispDate.getDate()>15)dispDate.setMonth(dispDate.getMonth()+1);
-				dispDate.setDate(1);gridAni='bottom';updCal()
+				var d=dispDate.getDate();dispDate.setDate(1);
+				if(d>15)dispDate.setMonth(dispDate.getMonth()+1);
+				gridAni='bottom';updCal()
 			}return true
 		}return false
 	};
@@ -380,7 +368,7 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 		if(typeof lng=='string'){
 			lng=lng.toLowerCase();
 			if(typeof Calendar.strData[lng]=='object'&&lng!=lang){
-				lang=dispDate.language=dispDate.getOppositeDate().language=lng;
+				lang=gdate.language=hdate.language=lng;
 				gridAni='zoom';updMenuLbl();updCalModMenuLbl();updTodayLbl();updHeader();recreateWdayTitle();recreateDates();return true
 			}
 		}return false
@@ -408,11 +396,11 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	this.setTodayTimeout=function(tmo){tmo=HijriDate.parseInt(tmo,tmout);if(!isNaN(tmo)&&tmo>=10){tmout=tmo;applyTodayTmout();return true}return false};
 	this.today=function(){if(!isDispToday){dispDate.setTime(getCurTime());dispDate.setDate(1);gridAni='bottom';updCal();return true}return false};
 	if(typeof isHijr!='boolean')isHijr=false;
-	if(!isHijr)dispDate=dispDate.gregorianDate;
+	dispDate=isHijr?hdate:gdate;
 	firstDay=HijriDate.parseInt(firstDay,1)%7;
 	if(typeof lang=='string'){lang=lang.toLowerCase();if(typeof Calendar.strData[lang]!='object')lang='en'}
 	else lang='en';
-	dispDate.language=dispDate.getOppositeDate().language=lang;
+	gdate.language=hdate.language=lang;
 	this.setTheme(theme);
 	tmout=HijriDate.parseInt(tmout,120);
 	beginNewDate();
@@ -435,7 +423,6 @@ Date.prototype.getMonthShortName=function(month){
 	month=(HijriDate.parseInt(month,this.getMonth())%12+12)%12;
 	return Calendar.strData[this.language].monthShortNames[month]
 };
-Date.prototype.getOppositeDate=function(){return this.hijriDate};
 Date.prototype.todayShortString=function(){
 	var tmp=this.getTime();
 	this.setTime(Date.now());
@@ -464,7 +451,6 @@ HijriDate.prototype.getMonthShortName=function(month){
 	if(this.language=='en')return HijriDate.monthShortNames[month];
 	return Calendar.strData[this.language].hMonthShortNames[month]
 };
-HijriDate.prototype.getOppositeDate=function(){return this.gregorianDate};
 HijriDate.prototype.todayShortString=function(){
 	var tmp=this.getTime();
 	this.setTime(Date.now());
