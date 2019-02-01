@@ -26,11 +26,11 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	todayElm=createElm('div','w3-display-topright w3-xlarge'),
 	yearValElm=createElm('div','w3-display-middle w3-xxxlarge'),
 	monthValElm=createElm('div','w3-display-bottommiddle w3-xxlarge'),
-	menuBtnElm=createElm('button','svg w3-button w3-ripple','<svg xmlns="http://www.w3.org/2000/svg" width="18" height="23"><path d="M0 6L18 6L18 8L0 8Z M0 13L18 13L18 15L0 15Z M0 20L18 20L18 22L0 22Z" stroke-width="1"/></svg>'),
+	menuBtnElm=createElm('button','svg w3-button w3-ripple','<svg width="18" height="23"><path d="M0 6L18 6L18 8L0 8Z M0 13L18 13L18 15L0 15Z M0 20L18 20L18 22L0 22Z" stroke-width="1"/></svg>'),
 	menuWrapElm=createElm('div','w3-dropdown-content w3-bar-block w3-border w3-light-grey'),
 	accFirstDayElm=createElm('div','w3-hide w3-border-bottom'),
 	menuCalModElm=createElm('button','w3-leftbar w3-border-light-grey w3-bar-item w3-button w3-ripple'),
-	menuFirstDayElm=createElm('button','w3-leftbar w3-border-light-grey w3-bar-item w3-button w3-ripple'),
+	menuFirstDayElm=createElm('button','w3-leftbar w3-border-light-grey w3-bar-item w3-button w3-ripple','<span></span><span class="svg w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z" stroke-width="1"/></svg></span><span class="svg w3-right w3-hide"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z" stroke-width="1"/></svg></span>'),
 	menuTodayElm=createElm('button','w3-leftbar w3-border-light-grey w3-bar-item w3-button w3-ripple'),
 	menuNewThemeElm=createElm('button','w3-leftbar w3-border-light-grey w3-bar-item w3-button w3-ripple'),
 	menuAboutElm=createElm('button','w3-leftbar w3-border-light-grey w3-bar-item w3-button w3-ripple'),
@@ -40,8 +40,9 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	createStyle=function(){
 		var stl=document.getElementById('ZulNsCalendarStyle'),ct=Calendar.themes,ctl=ct.length;
 		if(stl)return false;
-		var str='.svg{stroke:#000;fill:#000;background-color:transparent!important}';
-		for(var i=15;i<ctl;i++){str+='.w3-'+ct[i]+' .svg';if(i<ctl-1)str+=','}str+='{stroke:#fff;fill:#fff}';
+		var str='.w3-bar-item .svg,.svg{stroke:#000;fill:#000;background-color:transparent!important}';
+		for(var i=15;i<ctl;i++){str+='.w3-'+ct[i]+' .svg,'}str+='.w3-bar-item.w3-dark-grey .svg{stroke:#fff;fill:#fff}';
+		str+='.w3-bar-item .svg{stroke:#000;fill:#000;}';
 		str+='.svg:hover,.svg:focus,.svg.focus{stroke:#000;fill:#000;background-color:#ccc!important}';
 		str+='.zulns-calendar .w3-button:focus{border-color:#000!important}';
 		str+='.zulns-calendar .w3-button:focus:not(.w3-border-dark-grey){background-color:#ccc!important}';
@@ -64,7 +65,7 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 		var cont=createElm('div','w3-modal-content w3-card-4 w3-border w3-display w3-black w3-animate-zoom'),
 			info=createElm('div','w3-display-middle w3-bar w3-center'),
 			zulns=createElm('p',null,'<span class="w3-tag w3-jumbo w3-red">Z</span>&nbsp;<span class="w3-tag w3-jumbo w3-yellow">u</span>&nbsp;<span class="w3-tag w3-jumbo w3-blue">l</span>&nbsp;<span class="w3-tag w3-jumbo w3-green">N</span>&nbsp;<span class="w3-tag w3-jumbo w3-purple">s</span>');
-		aboutCloseBtnElm=createElm('button','svg w3-button w3-ripple w3-display-topright','<svg xmlns="http://www.w3.org/2000/svg" width="18" height="19"><path d="M5 9L5 10L8 13L5 16L5 17L6 17L9 14L12 17L13 17L13 16L10 13L13 10L13 9L12 9L9 12L6 9Z" stroke-width="1"/></svg>');
+		aboutCloseBtnElm=createElm('button','svg w3-button w3-ripple w3-display-topright','<svg width="18" height="19"><path d="M5 9L5 10L8 13L5 16L5 17L6 17L9 14L12 17L13 17L13 16L10 13L13 10L13 9L12 9L9 12L6 9Z" stroke-width="1"/></svg>');
 		aboutTitleElm=createElm('p','w3-xlarge');
 		aboutDateElm=createElm('p','w3-large');
 		aboutElm.id='ZulNsAbout';
@@ -91,10 +92,10 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	},
 	createCal=function(){
 		var rootMenuElm=createElm('div','w3-dropdown-click w3-display-topleft'),
-			prevYearBtnElm=createElm('button','svg w3-button w3-ripple w3-display-left','<svg xmlns="http://www.w3.org/2000/svg" width="18" height="23"><path d="M7 7L2 15L7 23L9 23L4 15L9 7Z M14 7L9 15L14 23L16 23L11 15L16 7Z" stroke-width="1"/></svg>'),
-			nextYearBtnElm=createElm('button','svg w3-button w3-ripple w3-display-right','<svg xmlns="http://www.w3.org/2000/svg" width="18" height="23"><path d="M11 7L16 15L11 23L9 23L14 15L9 7Z M4 7L9 15L4 23L2 23L7 15L2 7Z" stroke-width="1"/></svg>'),
-			prevMonthBtnElm=createElm('button','svg w3-button w3-ripple w3-display-bottomleft','<svg xmlns="http://www.w3.org/2000/svg" width="18" height="23"><path d="M10 7L5 15L10 23L12 23L7 15L12 7Z" stroke-width="1"/></svg>'),
-			nextMonthBtnElm=createElm('button','svg w3-button w3-ripple w3-display-bottomright','<svg xmlns="http://www.w3.org/2000/svg" width="18" height="23"><path d="M8 7L13 15L8 23L6 23L11 15L6 7Z" stroke-width="1"/></svg>');
+			prevYearBtnElm=createElm('button','svg w3-button w3-ripple w3-display-left','<svg width="18" height="23"><path d="M7 7L2 15L7 23L9 23L4 15L9 7Z M14 7L9 15L14 23L16 23L11 15L16 7Z" stroke-width="1"/></svg>'),
+			nextYearBtnElm=createElm('button','svg w3-button w3-ripple w3-display-right','<svg width="18" height="23"><path d="M11 7L16 15L11 23L9 23L14 15L9 7Z M4 7L9 15L4 23L2 23L7 15L2 7Z" stroke-width="1"/></svg>'),
+			prevMonthBtnElm=createElm('button','svg w3-button w3-ripple w3-display-bottomleft','<svg width="18" height="23"><path d="M10 7L5 15L10 23L12 23L7 15L12 7Z" stroke-width="1"/></svg>'),
+			nextMonthBtnElm=createElm('button','svg w3-button w3-ripple w3-display-bottomright','<svg width="18" height="23"><path d="M8 7L13 15L8 23L6 23L11 15L6 7Z" stroke-width="1"/></svg>');
 		headerElm.style.height='180px';
 		todayElm.style.cssText='margin:16px 28px 0px 0px;cursor:default';
 		yearValElm.style.cursor=gridsElm.style.cursor='default';
@@ -155,7 +156,7 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	},
 	updMenuLbl=function(){
 		var cs=Calendar.strData[lang],wd=accFirstDayElm.children;
-		menuFirstDayElm.innerHTML=cs.menuItem1+'<span class="w3-right">&#96'+(isAccOpened?'52':'62')+';</span>';
+		menuFirstDayElm.children[0].innerHTML=cs.menuItem1;
 		menuTodayElm.innerHTML=cs.menuItem2;
 		menuNewThemeElm.innerHTML=cs.menuItem3;
 		menuAboutElm.innerHTML=cs.menuItem4;
@@ -268,15 +269,16 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	},
 	onChgCalMod=function(){self.setHijriMode(!isHijr);applyTodayTmout()},
 	onFirstDay=function(){
-		var st=Calendar.strData[lang].menuItem1+'<span class="w3-right">&#96';
 		if (accFirstDayElm.className.indexOf('w3-show')==-1){
-			menuFirstDayElm.innerHTML=st+'52;</span>';
+			menuFirstDayElm.children[1].className+=' w3-hide';
+			replaceClass(menuFirstDayElm.children[2],' w3-hide','');
 			replaceClass(menuFirstDayElm,'w3-border-light-grey','w3-border-dark-grey');
 			menuFirstDayElm.className+=' w3-dark-grey';
 			accFirstDayElm.className+=' w3-show';
 			isAccOpened=true
 		}else{ 
-			menuFirstDayElm.innerHTML=st+'62;</span>';
+			menuFirstDayElm.children[2].className+=' w3-hide';
+			replaceClass(menuFirstDayElm.children[1],' w3-hide','');
 			replaceClass(menuFirstDayElm,' w3-dark-grey','');
 			replaceClass(menuFirstDayElm,'w3-border-dark-grey','w3-border-light-grey');
 			replaceClass(accFirstDayElm,' w3-show','');
