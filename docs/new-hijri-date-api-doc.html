@@ -1,0 +1,160 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>HijriDate API Documentation</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="ZulNs">
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="robots" content="all">
+<meta name="copyright" content="ZulNs">
+<!--link rel="icon" href="favicon.ico" type="image/x-icon" /-->
+<!--link rel="icon" href="favicon.png" type="image/png" /-->
+</head>
+<body>
+<link rel="stylesheet" href="../libs/w3css/w3.css"/>
+<script type="text/javascript" src="../libs/hijri-date.js"></script>
+<script type="text/javascript" src="../libs/datepicker.js"></script>
+<style type="text/css">
+svg,button:hover svg, a:hover svg{stroke:#000;fill:#000}
+.w3-teal svg,.w3-dark-grey svg{stroke:#fff;fill:#fff}
+</style>
+
+<div class="w3-sidebar w3-bar-block w3-collapse w3-card w3-animate-left" style="width:280px;z-index:2" id="mySidebar">
+  <button class="w3-bar-item w3-button w3-ripple w3-large w3-hide-large w3-leftbar w3-white w3-border-white w3-hover-border-blue" onclick="closeSidebar()">Close<span class="w3-right">&times;</span></button>
+  <a class="w3-bar-item w3-button w3-ripple w3-leftbar w3-border-white w3-hover-border-blue" href="#">Constructor</a>
+  <a class="w3-bar-item w3-button w3-ripple w3-xlarge w3-white w3-leftbar w3-border-white w3-hover-border-blue" href="#" onclick="dropdown(this)">
+		<span>Methods</span>
+		<span class="w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z" stroke-width="1"/></svg></span>
+		<span class="w3-right w3-hide"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z" stroke-width="1"/></svg></span>
+	</a>
+		<div class="w3-hide w3-bar-block w3-light-grey">
+			<a class="w3-bar-item w3-button w3-ripple w3-large w3-white w3-leftbar w3-border-white w3-hover-border-blue" href="#" onclick="dropdown(this)">
+				<span>Getter</span>
+				<span class="w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z" stroke-width="1"/></svg></span>
+				<span class="w3-right w3-hide"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z" stroke-width="1"/></svg></span>
+			</a>
+				<div class="w3-hide w3-bar-block w3-light-grey w3-code w3-border-teal">
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getDate()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getDay()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getFullYear()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getHours()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getMilliseconds()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getMinutes()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getMonth()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getSeconds()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getTime()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getTimezoneOffset()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getUTCDate()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getUTCDay()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getUTCFullYear()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getUTCHours()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getUTCMilliseconds()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getUTCMinutes()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getUTCMonth()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getUTCSeconds()</a>
+				</div>
+			<a class="w3-bar-item w3-button w3-ripple w3-large w3-white w3-leftbar w3-border-white w3-hover-border-blue" href="#" onclick="dropdown(this)">
+				<span>Setter</span>
+				<span class="w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z" stroke-width="1"/></svg></span>
+				<span class="w3-right w3-hide"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z" stroke-width="1"/></svg></span>
+			</a>
+				<div class="w3-hide w3-bar-block w3-light-grey w3-code w3-border-red">
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.setDate()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.setFullYear()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.setHours()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.setMilliseconds()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.setMinutes()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.setMonth()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.setSeconds()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.setTime()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.setUTCDate()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.setUTCFullYear()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.setUTCHours()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.setUTCMilliseconds()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.setUTCMinutes()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.setUTCMonth()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.setUTCSeconds()</a>
+				</div>
+			<a class="w3-bar-item w3-button w3-ripple w3-large w3-white w3-leftbar w3-border-white w3-hover-border-blue" href="#" onclick="dropdown(this)">
+				<span>Conversion getter</span>
+				<span class="w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z" stroke-width="1"/></svg></span>
+				<span class="w3-right w3-hide"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z" stroke-width="1"/></svg></span>
+			</a>
+				<div class="w3-hide w3-bar-block w3-light-grey w3-code w3-border-indigo">
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.toDateString()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.toISOString()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.toJSON()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.toString()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.toTimeString()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.toUTCString()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.valueOf()</a>
+				</div>
+			<a class="w3-bar-item w3-button w3-ripple w3-large w3-white w3-leftbar w3-border-white w3-hover-border-blue" href="#" onclick="dropdown(this)">
+				<span>Extended getter</span>
+				<span class="w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z" stroke-width="1"/></svg></span>
+				<span class="w3-right w3-hide"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z" stroke-width="1"/></svg></span>
+			</a>
+				<div class="w3-hide w3-bar-block w3-light-grey w3-code w3-border-amber">
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getDaysInMonth()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getUTCDaysInMonth()</a>
+				</div>
+		</div>
+</div>
+
+<div class="w3-main" style="margin-left:280px">
+	<div class="w3-teal">
+		<button class="w3-button w3-ripple w3-teal w3-xlarge w3-hide-large" onclick="openSidebar()">
+			<svg width="18" height="23"><path d="M0 6L18 6L18 8L0 8Z M0 13L18 13L18 15L0 15Z M0 20L18 20L18 22L0 22Z" stroke-width="1"/></svg>
+		</button>
+		<div class="w3-container">
+			<h2>HijriDate API Documentation</h2>
+		</div>
+	</div>
+
+	<div class="w3-container w3-margin-top">
+		<div class="w3-container w3-margin-top">
+			<label for="gregDate">Gregorian Date</label>
+			<input id="gregDate" onclick="pickDate(this)" class="w3-input w3-border" type="text" placeholder="Click to pick a date...">
+		</div>
+		<div class="w3-container w3-margin-top">
+			<label for="hijrDate">Hijri Date</label>
+			<input id="hijrDate" onclick="pickDate(this)" class="w3-input w3-border" type="text" placeholder="Click to pick a date...">
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+function openSidebar(){
+	document.getElementById("mySidebar").style.display = "block"
+}
+
+function closeSidebar(){
+	document.getElementById("mySidebar").style.display = "none"
+}
+
+function dropdown(el){
+	var ne=el.nextElementSibling;
+	var ec=el.children;
+	if(ne.className.indexOf('w3-show')==-1){
+		ne.className+=' w3-show';
+		replaceClassItem(el,'w3-white','w3-dark-grey');
+		replaceClassItem(el,'w3-border-white','w3-border-dark-grey');
+		ec[1].className+=' w3-hide';
+		replaceClassItem(ec[2],' w3-hide','')
+	}else{
+		replaceClassItem(ne,' w3-show','');
+		replaceClassItem(el,'w3-dark-grey','w3-white');
+		replaceClassItem(el,'w3-border-dark-grey','w3-border-white');
+		ec[2].className+=' w3-hide';
+		replaceClassItem(ec[1],' w3-hide','')
+	}
+}
+
+function replaceClassItem(elm,dst,src){
+	elm.className=elm.className.replace(dst,src);
+}
+</script>
+</body>
+</html>

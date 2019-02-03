@@ -17,15 +17,17 @@
 <script type="text/javascript" src="../libs/hijri-date.js"></script>
 <script type="text/javascript" src="../libs/datepicker.js"></script>
 <style type="text/css">
-.w3-bar-item.w3-white:hover .svg{stroke:#000;fill:#000}
+.w3-bar-item{border-left:6px solid transparent!important}
+.w3-bar-item:not(:disabled):hover{border-color:#f44336!important}
+.w3-bar-item:focus{border-color:#2196F3!important}
 </style>
 
-<div class="w3-sidebar w3-bar-block w3-collapse w3-card w3-animate-left" style="width:200px;z-index:2" id="mySidebar">
-  <button class="w3-bar-item w3-button w3-ripple w3-white w3-large w3-hide-large" onclick="closeSidebar()">Close<span class="w3-right">&times;</span></button>
-  <button class="w3-bar-item w3-button w3-ripple w3-white" onclick="dropdown(this)">
+<div class="w3-sidebar w3-bar-block w3-collapse w3-card w3-animate-left" style="width:220px;z-index:2" id="mySidebar">
+  <button class="w3-bar-item w3-button w3-ripple w3-large w3-hide-large" onclick="closeSidebar()">Close<span class="w3-right">&times;</span></button>
+  <button class="w3-bar-item w3-button w3-ripple" onclick="dropdown(this)">
 		<span>Set Language</span>
-		<span class="svg w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z" stroke-width="1"/></svg></span>
-		<span class="svg w3-right w3-hide"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z" stroke-width="1"/></svg></span>
+		<span class="svg w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z"/></svg></span>
+		<span class="svg w3-right w3-hide"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z"/></svg></span>
 	</button>
 		<div class="w3-hide w3-bar-block w3-light-grey">
 			<div class="w3-bar-item w3-button" onclick="selectLang('langEn')">
@@ -37,10 +39,10 @@
 				<label for="langId">Indonesian</label>
 			</div>
 		</div>
-  <button class="w3-bar-item w3-button w3-ripple w3-white" onclick="dropdown(this)">
+  <button class="w3-bar-item w3-button w3-ripple" onclick="dropdown(this)">
 		<span>Set Firstday</span>
-		<span class="svg w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z" stroke-width="1"/></svg></span>
-		<span class="svg w3-right w3-hide"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z" stroke-width="1"/></svg></span>
+		<span class="svg w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z"/></svg></span>
+		<span class="svg w3-right w3-hide"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z"/></svg></span>
 	</button>
 		<div class="w3-hide w3-bar-block w3-light-grey">
 			<button class="w3-bar-item w3-button w3-ripple" onclick="setFirstDay(0)">Sunday</button>
@@ -51,10 +53,10 @@
 			<button class="w3-bar-item w3-button w3-ripple" onclick="setFirstDay(5)">Friday</button>
 			<button class="w3-bar-item w3-button w3-ripple" onclick="setFirstDay(6)">Saturday</button>
 		</div>
-  <button class="w3-bar-item w3-button w3-ripple w3-white" onclick="dropdown(this)">
+  <button class="w3-bar-item w3-button w3-ripple" onclick="dropdown(this)">
 		<span>Set Full Year</span>
-		<span class="svg w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z" stroke-width="1"/></svg></span>
-		<span class="svg w3-right w3-hide"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z" stroke-width="1"/></svg></span>
+		<span class="svg w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z"/></svg></span>
+		<span class="svg w3-right w3-hide"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z"/></svg></span>
 	</button>
 		<div class="w3-hide w3-bar-block w3-light-grey">
 			<div class="w3-bar-item">
@@ -62,10 +64,10 @@
 			</div>
 			<button class="w3-bar-item w3-button w3-ripple" onclick="setYear()">Apply</button>
 		</div>
-  <button class="w3-bar-item w3-button w3-ripple w3-white" onclick="dropdown(this)">
+  <button class="w3-bar-item w3-button w3-ripple" onclick="dropdown(this)">
 		<span>Set Month</span>
-		<span class="svg w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z" stroke-width="1"/></svg></span>
-		<span class="svg w3-right w3-hide"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z" stroke-width="1"/></svg></span>
+		<span class="svg w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z"/></svg></span>
+		<span class="svg w3-right w3-hide"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z"/></svg></span>
 	</button>
 		<div class="w3-hide w3-bar-block w3-light-grey">
 			<div class="w3-bar-item">
@@ -73,10 +75,10 @@
 			</div>
 			<button class="w3-bar-item w3-button w3-ripple" onclick="setMonth()">Apply</button>
 		</div>
-  <button class="w3-bar-item w3-button w3-ripple w3-white" onclick="dropdown(this)">
+  <button class="w3-bar-item w3-button w3-ripple" onclick="dropdown(this)">
 		<span>Set Width</span>
-		<span class="svg w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z" stroke-width="1"/></svg></span>
-		<span class="svg w3-right w3-hide"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z" stroke-width="1"/></svg></span>
+		<span class="svg w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z"/></svg></span>
+		<span class="svg w3-right w3-hide"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z"/></svg></span>
 	</button>
 		<div class="w3-hide w3-bar-block w3-light-grey">
 			<div class="w3-bar-item">
@@ -87,15 +89,26 @@
 				<input id="sliderWidth" type="range" onchange="updateWidth(this)" style="width:170px" min="280" max="600" value="300" step="1">
 			</div>
 		</div>
-  <button class="w3-bar-item w3-button w3-ripple w3-white" onclick="gotoToday()">Go to Today</button>
-  <button class="w3-bar-item w3-button w3-ripple w3-white" onclick="newTheme()">New Theme</button>
-  <a class="w3-bar-item w3-button w3-ripple w3-white" href="calendar.html">See My Calendar</a>
+  <button class="w3-bar-item w3-button w3-ripple" onclick="gotoToday()">Go to Today</button>
+  <button class="w3-bar-item w3-button w3-ripple" onclick="dropdown(this)">
+		<span>Set Theme</span>
+		<span class="svg w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z"/></svg></span>
+		<span class="svg w3-right w3-hide"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z"/></svg></span>
+	</button>
+		<div class="w3-hide w3-bar-block w3-light-grey">
+			<div class="w3-bar-item">
+				<input id="txtTheme" class="w3-input w3-border" type="text" placeholder="theme-color or index">
+			</div>
+			<button class="w3-bar-item w3-button w3-ripple" onclick="setTheme()">Apply</button>
+			<button class="w3-bar-item w3-button w3-ripple" onclick="newTheme()">New Theme</button>
+		</div>
+  <a class="w3-bar-item w3-button w3-ripple" href="calendar.html">See My Calendar</a>
 </div>
 
-<div class="w3-main" style="margin-left:200px">
+<div class="w3-main" style="margin-left:220px">
 	<div class="w3-teal">
-		<button class="svg w3-button w3-ripple w3-teal w3-xlarge w3-hide-large" onclick="openSidebar()">
-			<svg width="18" height="23"><path d="M0 6L18 6L18 8L0 8Z M0 13L18 13L18 15L0 15Z M0 20L18 20L18 22L0 22Z" stroke-width="1"/></svg>
+		<button class="svg w3-button w3-ripple w3-xlarge w3-hide-large" onclick="openSidebar()">
+			<svg width="18" height="23"><path d="M0 6L18 6L18 8L0 8Z M0 13L18 13L18 15L0 15Z M0 20L18 20L18 22L0 22Z"/></svg>
 		</button>
 		<div class="w3-container">
 			<h2>Hijri/Gregorian Datepicker Demo</h2>
@@ -154,7 +167,7 @@ function dropdown(el){
 		ec[2].className=ec[2].className.replace(' w3-hide','')
 	}else{
 		ne.className=ne.className.replace(' w3-show','');
-		el.className=el.className.replace(' w3-dark-grey','')
+		el.className=el.className.replace(' w3-dark-grey','');
 		ec[2].className+=' w3-hide';
 		ec[1].className=ec[1].className.replace(' w3-hide','')
 	}
@@ -199,6 +212,13 @@ function pickDate(el){
 
 function gotoToday(){
 	picker.today()
+}
+
+function setTheme(){
+	var el=document.getElementById('txtTheme');
+	var n=parseInt(el.value);
+	if(!isNaN(n))picker.setTheme(n);
+	else picker.setTheme(el.value)
 }
 
 function newTheme(){
