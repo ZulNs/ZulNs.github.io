@@ -23,9 +23,9 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	monthValElm=createElm('div','w3-display-bottommiddle w3-xxlarge'),
 	menuBtnElm=createElm('button','w3-button w3-ripple','<svg width="18" height="23"><path d="M0 6L18 6L18 8L0 8Z M0 13L18 13L18 15L0 15Z M0 20L18 20L18 22L0 22Z"/></svg>'),
 	menuWrapElm=createElm('div','w3-dropdown-content w3-bar-block w3-border w3-light-grey'),
-	accFirstDayElm=createElm('div','w3-hide w3-white w3-border-bottom'),
+	accFirstDayElm=createElm('div','w3-white w3-border-bottom'),
 	menuCalModElm=createElm('button','w3-bar-item w3-button w3-ripple'),
-	menuFirstDayElm=createElm('button','w3-bar-item w3-button w3-ripple','<span></span><span class="w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z"/></svg></span><span class="w3-right w3-hide"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z"/></svg></span>'),
+	menuFirstDayElm=createElm('button','w3-bar-item w3-button w3-ripple collapsed','<span></span><span class="w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z"/></svg></span><span class="w3-right"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z"/></svg></span>'),
 	menuTodayElm=createElm('button','w3-bar-item w3-button w3-ripple'),
 	menuNewThemeElm=createElm('button','w3-bar-item w3-button w3-ripple'),
 	menuAboutElm=createElm('button','w3-bar-item w3-button w3-ripple'),
@@ -39,7 +39,9 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 			'.w3-button{background-color:transparent}'+
 			'.w3-bar-item{border-left:6px solid transparent!important}'+
 			'.w3-bar-item:not(:disabled):hover{border-color:#f44336!important}'+
-			'.w3-bar-item:focus{border-color:#2196F3!important}';
+			'.w3-bar-item:focus{border-color:#2196F3!important}'+
+			'.w3-bar-item.expanded{color:#fff;background-color:#616161}'+
+			'button.collapsed + div,button.collapsed>:nth-child(3),button.expanded>:nth-child(2){display:none!important}';
 		stl=createElm('style',null,str);stl.id='ZulNsCalendarStyle';stl.type='text/css';document.body.appendChild(stl);return true
 	},
 	createAboutModal=function(){
@@ -192,19 +194,8 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	},
 	onChgCalMod=function(){self.setHijriMode(!isHijr);applyTodayTmout()},
 	onFirstDay=function(){
-		if (accFirstDayElm.className.indexOf('w3-show')==-1){
-			menuFirstDayElm.children[1].className+=' w3-hide';
-			replaceClass(menuFirstDayElm.children[2],' w3-hide','');
-			menuFirstDayElm.className+=' w3-dark-grey';
-			accFirstDayElm.className+=' w3-show';
-			isAccOpened=true
-		}else{ 
-			menuFirstDayElm.children[2].className+=' w3-hide';
-			replaceClass(menuFirstDayElm.children[1],' w3-hide','');
-			replaceClass(menuFirstDayElm,' w3-dark-grey','');
-			replaceClass(accFirstDayElm,' w3-show','');
-			isAccOpened=false
-		}
+		if (menuFirstDayElm.className.indexOf('expanded')==-1){replaceClass(menuFirstDayElm,'collapsed','expanded');isAccOpened=true}
+		else{replaceClass(menuFirstDayElm,'expanded','collapsed');isAccOpened=false}
 	},
 	onSelFirstDay=function(ev){
 		ev=ev||window.event;var el=ev.target||ev.srcElement;self.setFirstDayOfWeek(el.getAttribute('firstday'));applyTodayTmout();
