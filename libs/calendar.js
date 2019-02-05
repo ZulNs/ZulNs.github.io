@@ -7,7 +7,7 @@
 function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	if(typeof HijriDate=='undefined')throw new Error('HijriDate() class required!');
 	var self=this,gdate=new Date(),hdate=new HijriDate(),dispDate,tzOffset=Date.parse('01 Jan 1970'),
-	gridAni='zoom',actTmoId,isDispToday=false,isAttached=false,isAccOpened=false,isAutoNewTheme,
+	gridAni='zoom',actTmoId,isDispToday=false,isAttached=false,isAccOpened=false,isAutoNewTheme,isRTL=false,
 	aboutElm,aboutTitleElm,aboutDateElm,aboutCloseBtnElm,
 	isSmallScreen=(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth)<640,
 	createElm=function(tagName,className,innerHTML){
@@ -41,7 +41,8 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 			'.w3-bar-item:not(:disabled):hover{border-color:#f44336!important}'+
 			'.w3-bar-item:focus{border-color:#2196F3!important}'+
 			'.w3-bar-item.expanded{color:#fff;background-color:#616161}'+
-			'button.collapsed + div,button.collapsed>:nth-child(3),button.expanded>:nth-child(2){display:none!important}';
+			'button.collapsed + div,button.collapsed>:nth-child(3),button.expanded>:nth-child(2){display:none!important}'+
+			'.right-to-left .w3-cell{float:right!important}';
 		stl=createElm('style',null,str);stl.id='ZulNsCalendarStyle';stl.type='text/css';document.body.appendChild(stl);return true
 	},
 	createAboutModal=function(){
@@ -101,32 +102,33 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 			el.setAttribute('firstday',i);
 			addEvt(el,'click',onSelFirstDay);
 			accFirstDayElm.appendChild(el)
-		}updMenuLbl();updCalModMenuLbl();updHeader();createWdayTitle();createDates()
+		}updMenuLbl();updCalModMenuLbl();updFirstDayMenuLbl();updHeader();createWdayTitle();createDates()
 	},
 	updMenuLbl=function(){
-		var cs=Calendar.strData[lang],wd=accFirstDayElm.children;
+		var cs=Calendar.language[lang];
 		menuFirstDayElm.children[0].innerHTML=cs.menuItem1;
 		menuTodayElm.innerHTML=cs.menuItem2;
 		menuNewThemeElm.innerHTML=cs.menuItem3;
 		menuAboutElm.innerHTML=cs.menuItem4;
 		menuCloseElm.innerHTML=cs.menuItem5+'<span class="w3-right">&times;</span>';
-		for(var i=0;i<7;i++)wd[i].innerHTML='&#9679;&nbsp;'+cs.weekdayNames[i]
 	},
 	updCalModMenuLbl=function(){
-		menuCalModElm.innerHTML=Calendar.strData[lang].menuItem0[isHijr?1:0];
+		menuCalModElm.innerHTML=Calendar.language[lang].menuItem0[isHijr?1:0];
+	},
+	updFirstDayMenuLbl=function(){
+		for(var i=0;i<7;i++)accFirstDayElm.children[i].innerHTML='&#9679;&nbsp;'+dispDate.getWeekdayName(i)
 	},
 	updTodayLbl=function(){todayElm.innerHTML=isSmallScreen?dispDate.todayShortString():dispDate.todayString()},
 	updHeader=function(){
-		var year=dispDate.getFullYear(),idx=isHijr?0:2;
-		if(year<1){idx++;year=-year+1}
-		yearValElm.innerHTML=year+'&nbsp;'+Calendar.strData[lang].eraSuffix[idx];
-		monthValElm.innerHTML=dispDate.getMonthName()
+		var y=dispDate.getFullYear(),i=isHijr?0:2,yv,es=Calendar.language[lang].eraSuffix;
+		if(y<1){i++;y=1-y}yv=Calendar.getDigit(lang,y);
+		if(es)yv+=' '+es[i];yearValElm.innerHTML=yv;monthValElm.innerHTML=dispDate.getMonthName()
 	},
 	createWdayTitle=function(){
-		var lt=isSmallScreen?'weekdayShortNames':'weekdayNames',el=accFirstDayElm.children[firstDay];
+		var el=accFirstDayElm.children[firstDay];
 		replaceClass(el,'w3-button w3-ripple','w3-transparent');el.disabled=true;
 		for(var i=firstDay;i<7+firstDay;i++){
-			var day=createElm('div','w3-cell',Calendar.strData[lang][lt][i%7]);
+			var day=createElm('div','w3-cell',isSmallScreen?dispDate.getWeekdayShortName(i):dispDate.getWeekdayName(i));
 			if(i%7==5)day.className+=' w3-text-teal';
 			if(i%7==0)day.className+=' w3-text-red';
 			day.style.width='14.2857%';wdayTitleElm.appendChild(day)
@@ -168,7 +170,7 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 			if(26586e6==ttc){
 				grid.className+=' w3-btn w3-ripple w3-round-large w3-black';grid.style.cursor='pointer';addEvt(grid,'click',onAbout)
 			}
-			pde.innerHTML=pdate;sde.innerHTML=sdate+'&nbsp;'+smsn;pdate++;
+			pde.innerHTML=Calendar.getDigit(lang,pdate);sde.innerHTML=Calendar.getDigit(lang,sdate)+' '+smsn;pdate++;
 			if(pdate>pdim){pdate=1;dispDate.setMonth(dispDate.getMonth()+1);pdim=dispDate.getDaysInMonth()}
 			sdate++;
 			if(sdate>sdim){
@@ -182,11 +184,10 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 		while(gridsElm.children[1])gridsElm.removeChild(gridsElm.children[1]);createDates()
 	},
 	updCal=function(){updHeader();recreateDates()},
-	onDecMonth=function(){dispDate.setMonth(dispDate.getMonth()-1);gridAni='right';updCal();applyTodayTmout()},
-	onIncMonth=function(){dispDate.setMonth(dispDate.getMonth()+1);gridAni='left';updCal();applyTodayTmout()},
-	onDecYear=function(){dispDate.setFullYear(dispDate.getFullYear()-1);gridAni='right';updCal();applyTodayTmout()},
-	onIncYear=function(){dispDate.setFullYear(dispDate.getFullYear()+1);gridAni='left';updCal();applyTodayTmout()},
-	hideMenu=function(){if(isAccOpened)onFirstDay();replaceClass(menuWrapElm,' w3-show','');replaceClass(menuBtnElm,' w3-light-grey','')},
+	onDecMonth=function(){gridAni='right';return isRTL?incMonth():decMonth()},
+	onIncMonth=function(){gridAni='left';return isRTL?decMonth():incMonth()},
+	onDecYear=function(){gridAni='right';return isRTL?incYear():decYear()},
+	onIncYear=function(){gridAni='left';return isRTL?decYear():incYear()},
 	onClickMenu=function(){
 		if(menuWrapElm.className.indexOf('w3-show')==-1){
 			menuBtnElm.className+=' w3-light-grey';menuWrapElm.className+=' w3-show'
@@ -219,6 +220,11 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 			isSmallScreen=!isSmallScreen;updTodayLbl();recreateWdayTitle()
 		}
 	},
+	hideMenu=function(){if(isAccOpened)onFirstDay();replaceClass(menuWrapElm,' w3-show','');replaceClass(menuBtnElm,' w3-light-grey','')},
+	decMonth=function(){dispDate.setMonth(dispDate.getMonth()-1);updCal();applyTodayTmout()},
+	incMonth=function(){dispDate.setMonth(dispDate.getMonth()+1);updCal();applyTodayTmout()},
+	decYear=function(){dispDate.setFullYear(dispDate.getFullYear()-1);updCal();applyTodayTmout()},
+	incYear=function(){dispDate.setFullYear(dispDate.getFullYear()+1);updCal();applyTodayTmout()},
 	syncDates=function(){getOppsDate().setTime(dispDate.getTime())},
 	getOppsDate=function(){return isHijr?gdate:hdate},
 	getFixTime=function(time){time-=tzOffset;return time-time%864e5+36e5+tzOffset},
@@ -259,7 +265,7 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	this.setFullYear=function(year){return this.resetDate(year)};
 	this.setHijriMode=function(hm){
 		if(typeof hm=='boolean'&&hm!=isHijr){
-			syncDates();dispDate=getOppsDate();isHijr=hm;updCalModMenuLbl();updTodayLbl();
+			syncDates();dispDate=getOppsDate();isHijr=hm;updCalModMenuLbl();updFirstDayMenuLbl();updTodayLbl();recreateWdayTitle();
 			if(isDispToday){isDispToday=false;dispDate.setDate(1);this.today()}
 			else{
 				var d=dispDate.getDate();dispDate.setDate(1);
@@ -271,15 +277,18 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	this.setLanguage=function(lng){
 		if(typeof lng=='string'){
 			lng=lng.toLowerCase();
-			if(typeof Calendar.strData[lng]=='object'&&lng!=lang){
+			if(typeof Calendar.language[lng]=='object'&&lng!=lang){
 				lang=gdate.language=hdate.language=lng;
-				gridAni='zoom';updMenuLbl();updCalModMenuLbl();updTodayLbl();updHeader();recreateWdayTitle();recreateDates();return true
+				replaceClass(gridsElm,' right-to-left','');
+				isRTL=Calendar.language[lng].isRightToLeft;if(isRTL)gridsElm.className+=' right-to-left';
+				gridAni='zoom';updMenuLbl();updCalModMenuLbl();updFirstDayMenuLbl();updTodayLbl();updHeader();
+				recreateWdayTitle();recreateDates();return true
 			}
 		}return false
 	};
 	this.setMonth=function(month){return this.resetDate(null,month)};
 	this.setTheme=function(thm){
-		var ct=Calendar.themes,ctl=ct.length,i=0;console.log(thm);
+		var ct=Calendar.themes,ctl=ct.length,i=0;
 		if(typeof thm=='number'){
 			if(0<=thm&&thm<ctl){isAutoNewTheme=false;theme=ct[thm]}
 			else{isAutoNewTheme=true;newTheme()}
@@ -302,7 +311,7 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	if(typeof isHijr!='boolean')isHijr=false;
 	dispDate=isHijr?hdate:gdate;
 	firstDay=HijriDate.parseInt(firstDay,1)%7;
-	if(typeof lang=='string'){lang=lang.toLowerCase();if(typeof Calendar.strData[lang]!='object')lang='en'}
+	if(typeof lang=='string'){lang=lang.toLowerCase();if(typeof Calendar.language[lang]!='object')lang='en'}
 	else lang='en';
 	gdate.language=hdate.language=lang;
 	this.setTheme(theme);
@@ -318,77 +327,112 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	createStyle();createAboutModal();createCal();applyTodayTmout()
 }
 Date.prototype.language='en';
-Date.prototype.getMonthName=function(month){
-	month=(HijriDate.parseInt(month,this.getMonth())%12+12)%12;
-	return Calendar.strData[this.language].monthNames[month]
+Date.prototype.getMonthName=function(m){
+	m=(HijriDate.parseInt(m,this.getMonth())%12+12)%12;
+	return Calendar.language[this.language].monthNames[m]
 };
-Date.prototype.getMonthShortName=function(month){
-	month=(HijriDate.parseInt(month,this.getMonth())%12+12)%12;
-	return Calendar.strData[this.language].monthShortNames[month]
+Date.prototype.getMonthShortName=function(m){
+	m=(HijriDate.parseInt(m,this.getMonth())%12+12)%12;
+	var c=Calendar.language[this.language],s=c.monthShortNames;
+	return s?s[m]:c.monthNames[m]
+};
+Date.prototype.getWeekdayName=function(d){
+	d=(HijriDate.parseInt(d,this.getDay())%7+7)%7;
+	return Calendar.language[this.language].weekdayNames[d]
+};
+Date.prototype.getWeekdayShortName=function(d){
+	d=(HijriDate.parseInt(d,this.getDay())%7+7)%7;
+	var c=Calendar.language[this.language],s=c.weekdayShortNames;
+	return s?s[d]:c.weekdayNames[d]
 };
 Date.prototype.todayShortString=function(){
 	var tmp=this.getTime();this.setTime(Date.now());
-	var tds=Calendar.strData[this.language].weekdayShortNames[this.getDay()]+',&nbsp;';
-	tds+=this.getDate()+'&nbsp;'+this.getMonthShortName()+'&nbsp;'+this.getFullYear();
-	this.setTime(tmp);return tds
+	var tds=this.getWeekdayShortName()+', '+this.getDate()+' '+this.getMonthShortName()+' '+this.getFullYear();
+	this.setTime(tmp);return Calendar.getDigit(this.language,tds)
 };
 Date.prototype.todayString=function(){
 	var tmp=this.getTime();this.setTime(Date.now());
-	var tds=Calendar.strData[this.language].weekdayNames[this.getDay()]+',&nbsp;';
-	tds+=this.getDate()+'&nbsp;'+this.getMonthName()+'&nbsp;'+this.getFullYear();
-	this.setTime(tmp);return tds
+	var	tds=this.getWeekdayName()+', '+this.getDate()+' '+this.getMonthName()+' '+this.getFullYear();
+	this.setTime(tmp);return Calendar.getDigit(this.language,tds)
 };
 HijriDate.prototype.language='en';
-HijriDate.prototype.getMonthName=function(month){
-	month=(HijriDate.parseInt(month,this.getMonth())%12+12)%12;
-	month=this.language=='en'?HijriDate.monthNames[month]:Calendar.strData[this.language].hMonthNames[month];
-	return month.replace('-','&#8209;')
+HijriDate.prototype.getMonthName=function(m){
+	m=(HijriDate.parseInt(m,this.getMonth())%12+12)%12;
+	return this.language=='en'?HijriDate.monthNames[m]:Calendar.language[this.language].hMonthNames[m]
 };
-HijriDate.prototype.getMonthShortName=function(month){
-	if(isNaN(month))month=this.getMonth();month%=12;
-	if(this.language=='en')return HijriDate.monthShortNames[month];
-	return Calendar.strData[this.language].hMonthShortNames[month]
+HijriDate.prototype.getMonthShortName=function(m){
+	m=(HijriDate.parseInt(m,this.getMonth())%12+12)%12;
+	if(this.language=='en')return HijriDate.monthShortNames[m];
+	var c=Calendar.language[this.language],s=c.hMonthShortNames;
+	return s?s[m]:c.hMonthNames[m]
+};
+HijriDate.prototype.getWeekdayName=function(d){
+	d=(HijriDate.parseInt(d,this.getDay())%7+7)%7;
+	if(this.language=='en')return HijriDate.weekdayNames[d]
+	return Calendar.language[this.language].weekdayNames[d]
+};
+HijriDate.prototype.getWeekdayShortName=function(d){
+	d=(HijriDate.parseInt(d,this.getDay())%7+7)%7;
+	if(this.language=='en')return HijriDate.weekdayShortNames[d]
+	var c=Calendar.language[this.language],s=c.weekdayShortNames;
+	return s?s[d]:c.weekdayNames[d]
 };
 HijriDate.prototype.todayShortString=function(){
 	var tmp=this.getTime();this.setTime(Date.now());
-	var tds=',&nbsp;'+this.getDate()+'&nbsp;'+this.getMonthShortName()+'&nbsp;'+this.getFullYear()+'H';
-	tds=this.language=='en'?HijriDate.weekdayShortNames[this.getDay()]+tds:Calendar.strData[this.language].weekdayShortNames[this.getDay()]+tds;
-	this.setTime(tmp);return tds
+	var	tds=this.getWeekdayShortName()+', '+this.getDate()+' '+this.getMonthShortName()+' '+this.getFullYear();
+	this.setTime(tmp);return Calendar.getDigit(this.language,tds)
 };
 HijriDate.prototype.todayString=function(){
 	var tmp=this.getTime();this.setTime(Date.now());
-	var tds=',&nbsp;'+this.getDate()+'&nbsp;'+this.getMonthName()+'&nbsp;'+this.getFullYear()+'H';
-	tds=this.language=='en'?HijriDate.weekdayNames[this.getDay()]+tds:Calendar.strData[this.language].weekdayNames[this.getDay()]+tds;
-	this.setTime(tmp);return tds
+	var	tds=this.getWeekdayName()+', '+this.getDate()+' '+this.getMonthName()+' '+this.getFullYear();
+	this.setTime(tmp);return Calendar.getDigit(this.language,tds)
+};
+Calendar.getDigit=function(l,d){
+	if(Calendar.language[l].digit)
+		return d.toString().replace(/\d(?=[^<>]*(<|$))/g,function($0){return Calendar.language[l].digit[$0]});
+	return d
 };
 Calendar.themes=['amber','aqua','black','blue','blue-grey','brown','cyan','dark-grey','deep-orange','deep-purple','green','grey','indigo','khaki','light-blue','light-green','lime','orange','pale-blue','pale-green','pale-red','pale-yellow','pink','purple','red','sand','teal','yellow'];
-Calendar.strData={
-	en:{
-		menuItem0:["Hijri&nbsp;calendar","Gregorian&nbsp;calendar"],
-		menuItem1:"Firstday",
-		menuItem2:"Today",
-		menuItem3:"New&nbsp;theme",
-		menuItem4:"About",
-		menuItem5:"Close",
-		eraSuffix:["H","BH","AD","BC"],
-		monthNames:["January","February","March","April","May","June","July","August","September","October","November","December"],
-		monthShortNames:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
-		weekdayNames:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
-		weekdayShortNames:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
-	},
-	id:{
-		menuItem0:["Kalender&nbspHijriyah","Kalender&nbsp;Masehi"],
-		menuItem1:"Mulai&nbsp;hari",
-		menuItem2:"Hari&nbsp;ini",
-		menuItem3:"Tema&nbsp;baru",
-		menuItem4:"Tentang",
-		menuItem5:"Tutup",
-		eraSuffix:["H","SH","M","SM"],
-		monthNames:["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
-		monthShortNames:["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"],
-		weekdayNames:["Minggu","Senin","Selasa","Rabu","Kamis","Jum'at","Sabtu"],
-		weekdayShortNames:["Min","Sen","Sel","Rab","Kam","Jum","Sab"],
-		hMonthNames:["Muharam","Safar","Rabi'ul-Awal","Rabi'ul-Akhir","Jumadil-Awal","Jumadil-Akhir","Rajab","Sya'ban","Ramadhan","Syawwal","Zulqa'idah","Zulhijjah"],
-		hMonthShortNames:["Muh","Saf","Raw","Rak","Jaw","Jak","Raj","Sya","Ram","Syw","Zuq","Zuh"]
-	}
+Calendar.language={en:{
+	isRightToLeft:false,
+	menuItem0:["Hijri calendar","Gregorian calendar"],
+	menuItem1:"Firstday",
+	menuItem2:"Today",
+	menuItem3:"New theme",
+	menuItem4:"About",
+	menuItem5:"Close",
+	eraSuffix:["H","BH","AD","BC"],
+	monthNames:["January","February","March","April","May","June","July","August","September","October","November","December"],
+	monthShortNames:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+	weekdayNames:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+	weekdayShortNames:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
+}};
+Calendar.language['id']={
+	isRightToLeft:false,
+	menuItem0:["Kalender Hijriyah","Kalender Masehi"],
+	menuItem1:"Mulai hari",
+	menuItem2:"Hari ini",
+	menuItem3:"Tema baru",
+	menuItem4:"Tentang",
+	menuItem5:"Tutup",
+	eraSuffix:["H","SH","M","SM"],
+	monthNames:["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
+	monthShortNames:["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"],
+	weekdayNames:["Minggu","Senin","Selasa","Rabu","Kamis","Jum'at","Sabtu"],
+	weekdayShortNames:["Min","Sen","Sel","Rab","Kam","Jum","Sab"],
+	hMonthNames:["Muharam","Safar","Rabi'ul-Awal","Rabi'ul-Akhir","Jumadil-Awal","Jumadil-Akhir","Rajab","Sya'ban","Ramadhan","Syawwal","Zulqa'idah","Zulhijjah"],
+	hMonthShortNames:["Muh","Saf","Raw","Rak","Jaw","Jak","Raj","Sya","Ram","Syw","Zuq","Zuh"]
 };
+Calendar.language['ar']={
+	isRightToLeft:true,
+	digit:["٠","١","٢","٣","٤", "٥","٦","٧","٨","٩"],
+	menuItem0:["التقويم الهجري","التقويم الغريغوري"],
+	menuItem1:"اليوم الأول",
+	menuItem2:"اليوم",
+	menuItem3:"لون جديد",
+	menuItem4:"حول",
+	menuItem5:"أغلق",
+	monthNames:["يَنايِر","فِبرايِر","مارِس","أبريل","مايو","يونيو","يوليو","أغُسطُس","سِبْتَمْبِر","أکْتببِر","نوفَمْبِر","ديسَمْبِر"],
+	weekdayNames:["الأحَد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"],
+	hMonthNames:["المُحَرَّم","صَفَر ","رَبيع الاوَّل","رَبيع الآخِر","جُمادى الأولى","جُمادى الآخِرة","رَجَب","شَعبان","رَمَضان","شَوّال","ذو القَعدة","ذو الحِجّة"],
+}
