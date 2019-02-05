@@ -26,15 +26,15 @@
 		<span class="w3-right"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z"/></svg></span>
 	</button>
 		<div class="w3-bar-block w3-light-grey">
-			<div class="w3-bar-item w3-button" onclick="selectLang('langEn')">
+			<div class="w3-bar-item w3-button" onclick="selectLang(this)">
 				<input id="langEn" class="w3-radio" type="radio" name="lang" value="en" checked>
 				<label for="langEn">English</label>
 			</div>
-			<div class="w3-bar-item w3-button" onclick="selectLang('langAr')">
+			<div class="w3-bar-item w3-button" onclick="selectLang(this)">
 				<input id="langAr" class="w3-radio" type="radio" name="lang" value="ar">
 				<label for="langAr">Arabic</label>
 			</div>
-			<div class="w3-bar-item w3-button" onclick="selectLang('langId')">
+			<div class="w3-bar-item w3-button" onclick="selectLang(this)">
 				<input id="langId" class="w3-radio" type="radio" name="lang" value="id">
 				<label for="langId">Indonesian</label>
 			</div>
@@ -119,10 +119,9 @@ function dropdown(el){
 	}
 }
 
-function selectLang(id){
-	var el=document.getElementById(id);
-	el.checked=true;
-	cal.setLanguage(el.value)
+function selectLang(el){
+	el.children[0].checked=true;
+	cal.setLanguage(el.children[0].value)
 }
 
 function setYear(){
