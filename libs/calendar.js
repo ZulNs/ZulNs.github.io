@@ -18,9 +18,9 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	},
 	calElm=createElm('div','zulns-calendar w3-card-4'),
 	headerElm=createElm('div','w3-display-container w3-theme'),
-	todayElm=createElm('div','w3-display-topright w3-xlarge'),
-	yearValElm=createElm('div','w3-display-middle w3-xxxlarge'),
-	monthValElm=createElm('div','w3-display-bottommiddle w3-xxlarge'),
+	todayElm=createElm('div','w3-display-topright w3-xlarge unbreakable'),
+	yearValElm=createElm('div','w3-display-middle w3-xxxlarge unbreakable'),
+	monthValElm=createElm('div','w3-display-bottommiddle w3-xxlarge unbreakable'),
 	menuBtnElm=createElm('button','w3-button w3-ripple','<svg width="18" height="23"><path d="M0 6L18 6L18 8L0 8Z M0 13L18 13L18 15L0 15Z M0 20L18 20L18 22L0 22Z"/></svg>'),
 	menuWrapElm=createElm('div','w3-dropdown-content w3-bar-block w3-border w3-light-grey'),
 	accFirstDayElm=createElm('div','w3-white w3-border-bottom'),
@@ -42,7 +42,8 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 			'.w3-bar-item:focus{border-color:#2196F3!important}'+
 			'.w3-bar-item.expanded{color:#fff;background-color:#616161}'+
 			'button.collapsed + div,button.collapsed>:nth-child(3),button.expanded>:nth-child(2){display:none!important}'+
-			'.right-to-left .w3-cell{float:right!important}';
+			'.right-to-left .w3-cell{float:right!important}'+
+			'.unbreakable{overflow:hidden;white-space:nowrap}';
 		stl=createElm('style',null,str);stl.id='ZulNsCalendarStyle';stl.type='text/css';document.body.appendChild(stl);return true
 	},
 	createAboutModal=function(){
@@ -128,7 +129,7 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 		var el=accFirstDayElm.children[firstDay];
 		replaceClass(el,'w3-button w3-ripple','w3-transparent');el.disabled=true;
 		for(var i=firstDay;i<7+firstDay;i++){
-			var day=createElm('div','w3-cell',isSmallScreen?dispDate.getWeekdayShortName(i):dispDate.getWeekdayName(i));
+			var day=createElm('div','w3-cell unbreakable',isSmallScreen?dispDate.getWeekdayShortName(i):dispDate.getWeekdayName(i));
 			if(i%7==5)day.className+=' w3-text-teal';
 			if(i%7==0)day.className+=' w3-text-red';
 			day.style.width='14.2857%';wdayTitleElm.appendChild(day)
@@ -150,7 +151,8 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 		}
 		for(var i=1;i<=ppdr+pcdr+pndr;i++){
 			if(gridCtr==0){var row=createElm('div','w3-cell-row w3-center');gridsElm.appendChild(row)}
-			var grid=createElm('div','w3-cell w3-animate-'+gridAni),pde=createElm('div','w3-xlarge'),sde=createElm('div','w3-small');
+			var grid=createElm('div','w3-cell w3-animate-'+gridAni),
+				pde=createElm('div','w3-xlarge'),sde=createElm('div','w3-small unbreakable');
 			ttc=dispDate.getTime()+(pdate-1)*864e5;
 			grid.style.cssText='width:14.2857%;padding:6px 0px';
 			grid.appendChild(pde);grid.appendChild(sde);row.appendChild(grid);
