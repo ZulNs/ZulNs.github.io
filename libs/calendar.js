@@ -229,11 +229,11 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	incYear=function(){dispDate.setFullYear(dispDate.getFullYear()+1);updCal();applyTodayTmout()},
 	syncDates=function(){getOppsDate().setTime(dispDate.getTime())},
 	getOppsDate=function(){return isHijr?gdate:hdate},
-	getFixTime=function(time){time-=tzOffset;return time-time%864e5+36e5+tzOffset},
+	getFixTime=function(t){t-=tzOffset;return t-t%864e5+36e5+tzOffset},
 	getCurTime=function(){return getFixTime(Date.now())},
 	beginNewDate=function(){
-		var now=Date.now()-tzOffset,to=864e5-now%864e5;
-		window.setTimeout(beginNewDate,to);updTodayLbl();
+		var n=Date.now()-tzOffset,t=864e5-n%864e5;
+		window.setTimeout(beginNewDate,t);updTodayLbl();
 		if(isAutoNewTheme){newTheme();applyTheme()}
 		if(isDispToday){isDispToday=false;self.today()}
 	},
@@ -249,25 +249,25 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	this.attachTo=function(el){if(el.appendChild&&!isAttached){el.appendChild(calElm);onRszWdw();isAttached=true;return true}return false};
 	this.fireResize=function(){onRszWdw()};
 	this.getElement=function(){return calElm};
-	this.resetDate=function(year,month){
+	this.resetDate=function(y,m){
 		var oldTm=dispDate.getTime();
-		dispDate.setFullYear(HijriDate.parseInt(year,dispDate.getFullYear()));
-		dispDate.setMonth(HijriDate.parseInt(month,dispDate.getMonth()));
+		dispDate.setFullYear(HijriDate.parseInt(y,dispDate.getFullYear()));
+		dispDate.setMonth(HijriDate.parseInt(m,dispDate.getMonth()));
 		if(dispDate.getTime()!=oldTm){gridAni='zoom';updCal();return true}
 		return false
 	};
-	this.setFirstDayOfWeek=function(fdow){
-		fdow=HijriDate.parseInt(fdow,firstDay)%7;
-		if(fdow!=firstDay){
+	this.setFirstDayOfWeek=function(f){
+		f=HijriDate.parseInt(f,firstDay)%7;
+		if(f!=firstDay){
 			var el=accFirstDayElm.children[firstDay];
 			replaceClass(el,'w3-transparent','w3-button w3-ripple');
-			el.disabled=false;firstDay=fdow;recreateWdayTitle();gridAni='bottom';recreateDates();return true
+			el.disabled=false;firstDay=f;recreateWdayTitle();gridAni='bottom';recreateDates();return true
 		}return false
 	};
-	this.setFullYear=function(year){return this.resetDate(year)};
-	this.setHijriMode=function(hm){
-		if(typeof hm=='boolean'&&hm!=isHijr){
-			syncDates();dispDate=getOppsDate();isHijr=hm;updCalModMenuLbl();updFirstDayMenuLbl();updTodayLbl();recreateWdayTitle();
+	this.setFullYear=function(y){return this.resetDate(y)};
+	this.setHijriMode=function(h){
+		if(typeof h=='boolean'&&h!=isHijr){
+			syncDates();dispDate=getOppsDate();isHijr=h;updCalModMenuLbl();updFirstDayMenuLbl();updTodayLbl();recreateWdayTitle();
 			if(isDispToday){isDispToday=false;dispDate.setDate(1);this.today()}
 			else{
 				var d=dispDate.getDate();dispDate.setDate(1);
@@ -276,40 +276,42 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 			}return true
 		}return false
 	};
-	this.setLanguage=function(lng){
-		if(typeof lng=='string'){
-			lng=lng.toLowerCase();
-			if(typeof Calendar.language[lng]=='object'&&lng!=lang){
-				lang=gdate.language=hdate.language=lng;
+	this.setLanguage=function(l){
+		if(typeof l=='string'){
+			l=l.toLowerCase();
+			if(typeof Calendar.language[l]=='object'&&l!=lang){
+				lang=gdate.language=hdate.language=l;
 				replaceClass(gridsElm,' right-to-left','');
-				isRTL=Calendar.language[lng].isRightToLeft;if(isRTL)gridsElm.className+=' right-to-left';
+				isRTL=Calendar.language[l].isRightToLeft;if(isRTL)gridsElm.className+=' right-to-left';
 				gridAni='zoom';updMenuLbl();updCalModMenuLbl();updFirstDayMenuLbl();updTodayLbl();updHeader();
 				recreateWdayTitle();recreateDates();return true
 			}
 		}return false
 	};
-	this.setMonth=function(month){return this.resetDate(null,month)};
-	this.setTheme=function(thm){
+	this.setMonth=function(m){return this.resetDate(null,m)};
+	this.setTheme=function(t){
 		var ct=Calendar.themes,ctl=ct.length,i=0;
-		if(typeof thm=='number'){
-			if(0<=thm&&thm<ctl){isAutoNewTheme=false;theme=ct[thm]}
+		if(typeof t=='number'){
+			if(0<=t&&t<ctl){isAutoNewTheme=false;theme=ct[t]}
 			else{isAutoNewTheme=true;newTheme()}
-		}else if(typeof thm=='string'){
-			thm=thm.toLowerCase();
-			for(;i<ctl;i++)if(ct[i]==thm)break;
+		}else if(typeof t=='string'){
+			t=t.toLowerCase();
+			for(;i<ctl;i++)if(ct[i]==t)break;
 			if(i<ctl){isAutoNewTheme=false;theme=ct[i]}
 			else{isAutoNewTheme=true;newTheme()}
 		}else{isAutoNewTheme=true;newTheme()}
 		applyTheme();return isAutoNewTheme
 	};
-	this.setTime=function(tm){
-		var oldTm=dispDate.getTime();
-		dispDate.setTime(getFixTime(HijriDate.parseInt(time,getCurTime())));dispDate.setDate(1);
-		if(dispDate.getTime()!=oldTm){gridAni='zoom';updCal();return true}
+	this.setTime=function(t){
+		var ot=dispDate.getTime();
+		dispDate.setTime(getFixTime(HijriDate.parseInt(t,getCurTime())));dispDate.setDate(1);
+		if(dispDate.getTime()!=ot){gridAni='zoom';updCal();return true}
 		return false
 	};
-	this.setTodayTimeout=function(tmo){tmo=HijriDate.parseInt(tmo,tmout);if(!isNaN(tmo)&&tmo>=10){tmout=tmo;applyTodayTmout();return true}return false};
-	this.today=function(){if(!isDispToday){dispDate.setTime(getCurTime());dispDate.setDate(1);gridAni='bottom';updCal();return true}return false};
+	this.setTodayTimeout=function(t){t=HijriDate.parseInt(t,tmout);if(t>=10){tmout=t;applyTodayTmout();return true}return false};
+	this.today=function(){
+		if(!isDispToday){dispDate.setTime(getCurTime());dispDate.setDate(1);gridAni='bottom';updCal();return true}return false
+	};
 	if(typeof isHijr!='boolean')isHijr=false;
 	dispDate=isHijr?hdate:gdate;
 	firstDay=HijriDate.parseInt(firstDay,1)%7;
@@ -434,6 +436,7 @@ Calendar.language['ar']={
 	menuItem3:"لون جديد",
 	menuItem4:"حول",
 	menuItem5:"أغلق",
+	eraSuffix:["هجرة","قبل الهجرة","ميلادي","قبل الميلاد"],
 	monthNames:["يَنايِر","فِبرايِر","مارِس","أبريل","مايو","يونيو","يوليو","أغُسطُس","سِبْتَمْبِر","أکْتببِر","نوفَمْبِر","ديسَمْبِر"],
 	weekdayNames:["الأحَد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"],
 	hMonthNames:["المُحَرَّم","صَفَر ","رَبيع الاوَّل","رَبيع الآخِر","جُمادى الأولى","جُمادى الآخِرة","رَجَب","شَعبان","رَمَضان","شَوّال","ذو القَعدة","ذو الحِجّة"],
