@@ -121,9 +121,7 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	},
 	updTodayLbl=function(){todayElm.innerHTML=isSmallScreen?dispDate.todayShortString():dispDate.todayString()},
 	updHeader=function(){
-		var y=dispDate.getFullYear(),i=isHijr?0:2,yv,es=Calendar.language[lang].eraSuffix;
-		if(y<1){i++;y=1-y}yv=Calendar.getDigit(lang,y);
-		if(es)yv+=' '+es[i];yearValElm.innerHTML=yv;monthValElm.innerHTML=dispDate.getMonthName()
+		yearValElm.innerHTML=Calendar.getDigit(lang,dispDate.getYearString());monthValElm.innerHTML=dispDate.getMonthName()
 	},
 	createWdayTitle=function(){
 		var el=accFirstDayElm.children[firstDay];
@@ -282,7 +280,7 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 			if(typeof Calendar.language[l]=='object'&&l!=lang){
 				lang=gdate.language=hdate.language=l;
 				replaceClass(gridsElm,' right-to-left','');
-				isRTL=Calendar.language[l].isRightToLeft;if(isRTL)gridsElm.className+=' right-to-left';
+				isRTL=Calendar.language[l].isRTL;if(isRTL)gridsElm.className+=' right-to-left';
 				gridAni='zoom';updMenuLbl();updCalModMenuLbl();updFirstDayMenuLbl();updTodayLbl();updHeader();
 				recreateWdayTitle();recreateDates();return true
 			}
@@ -349,15 +347,20 @@ Date.prototype.getWeekdayShortName=function(d){
 	var c=Calendar.language[this.language],s=c.weekdayShortNames;
 	return s?s[d]:c.weekdayNames[d]
 };
+Date.prototype.getYearString=function(y){
+	y=HijriDate.parseInt(y,this.getFullYear());
+	var c=Calendar.language[this.language],e=c.eraSuffix,i=0;
+	if(e){if(y<1){i++;y=1-y}y=y+' '+e[i]}else y=y.toString();return y
+};
 Date.prototype.todayShortString=function(){
-	var tmp=this.getTime();this.setTime(Date.now());
-	var tds=this.getWeekdayShortName()+', '+this.getDate()+' '+this.getMonthShortName()+' '+this.getFullYear();
-	this.setTime(tmp);return Calendar.getDigit(this.language,tds)
+	var t=this.getTime();this.setTime(Date.now());
+	var s=this.getWeekdayShortName()+', '+this.getDate()+' '+this.getMonthShortName()+' '+this.getFullYear();
+	this.setTime(t);return Calendar.getDigit(this.language,s)
 };
 Date.prototype.todayString=function(){
-	var tmp=this.getTime();this.setTime(Date.now());
-	var	tds=this.getWeekdayName()+', '+this.getDate()+' '+this.getMonthName()+' '+this.getFullYear();
-	this.setTime(tmp);return Calendar.getDigit(this.language,tds)
+	var t=this.getTime();this.setTime(Date.now());
+	var	s=this.getWeekdayName()+', '+this.getDate()+' '+this.getMonthName()+' '+this.getFullYear();
+	this.setTime(t);return Calendar.getDigit(this.language,s)
 };
 HijriDate.prototype.language='en';
 HijriDate.prototype.getMonthName=function(m){
@@ -381,15 +384,20 @@ HijriDate.prototype.getWeekdayShortName=function(d){
 	var c=Calendar.language[this.language],s=c.weekdayShortNames;
 	return s?s[d]:c.weekdayNames[d]
 };
+HijriDate.prototype.getYearString=function(y){
+	y=HijriDate.parseInt(y,this.getFullYear());
+	var c=Calendar.language[this.language],e=c.hEraSuffix,i=0;
+	if(e){if(y<1){i++;y=1-y}y=y+' '+e[i]}else y=y.toString();return y
+};
 HijriDate.prototype.todayShortString=function(){
-	var tmp=this.getTime();this.setTime(Date.now());
-	var	tds=this.getWeekdayShortName()+', '+this.getDate()+' '+this.getMonthShortName()+' '+this.getFullYear();
-	this.setTime(tmp);return Calendar.getDigit(this.language,tds)
+	var t=this.getTime();this.setTime(Date.now());
+	var	s=this.getWeekdayShortName()+', '+this.getDate()+' '+this.getMonthShortName()+' '+this.getFullYear();
+	this.setTime(t);return Calendar.getDigit(this.language,s)
 };
 HijriDate.prototype.todayString=function(){
-	var tmp=this.getTime();this.setTime(Date.now());
-	var	tds=this.getWeekdayName()+', '+this.getDate()+' '+this.getMonthName()+' '+this.getFullYear();
-	this.setTime(tmp);return Calendar.getDigit(this.language,tds)
+	var t=this.getTime();this.setTime(Date.now());
+	var	s=this.getWeekdayName()+', '+this.getDate()+' '+this.getMonthName()+' '+this.getFullYear();
+	this.setTime(t);return Calendar.getDigit(this.language,s)
 };
 Calendar.getDigit=function(l,d){
 	if(Calendar.language[l].digit)
@@ -398,28 +406,30 @@ Calendar.getDigit=function(l,d){
 };
 Calendar.themes=['amber','aqua','black','blue','blue-grey','brown','cyan','dark-grey','deep-orange','deep-purple','green','grey','indigo','khaki','light-blue','light-green','lime','orange','pale-blue','pale-green','pale-red','pale-yellow','pink','purple','red','sand','teal','yellow'];
 Calendar.language={en:{
-	isRightToLeft:false,
+	isRTL:false,
 	menuItem0:["Hijri calendar","Gregorian calendar"],
 	menuItem1:"Firstday",
 	menuItem2:"Today",
 	menuItem3:"New theme",
 	menuItem4:"About",
 	menuItem5:"Close",
-	eraSuffix:["H","BH","AD","BC"],
+	eraSuffix:["AD","BC"],
+	hEraSuffix:["H","BH"],
 	monthNames:["January","February","March","April","May","June","July","August","September","October","November","December"],
 	monthShortNames:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
 	weekdayNames:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
 	weekdayShortNames:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
 }};
 Calendar.language['id']={
-	isRightToLeft:false,
+	isRTL:false,
 	menuItem0:["Kalender Hijriyah","Kalender Masehi"],
 	menuItem1:"Mulai hari",
 	menuItem2:"Hari ini",
 	menuItem3:"Tema baru",
 	menuItem4:"Tentang",
 	menuItem5:"Tutup",
-	eraSuffix:["H","SH","M","SM"],
+	eraSuffix:["M","SM"],
+	hEraSuffix:["H","SH"],
 	monthNames:["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
 	monthShortNames:["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"],
 	weekdayNames:["Minggu","Senin","Selasa","Rabu","Kamis","Jum'at","Sabtu"],
@@ -428,7 +438,7 @@ Calendar.language['id']={
 	hMonthShortNames:["Muh","Saf","Raw","Rak","Jaw","Jak","Raj","Sya","Ram","Syw","Zuq","Zuh"]
 };
 Calendar.language['ar']={
-	isRightToLeft:true,
+	isRTL:true,
 	digit:["٠","١","٢","٣","٤", "٥","٦","٧","٨","٩"],
 	menuItem0:["التقويم الهجري","التقويم الغريغوري"],
 	menuItem1:"اليوم الأول",
@@ -436,7 +446,8 @@ Calendar.language['ar']={
 	menuItem3:"لون جديد",
 	menuItem4:"حول",
 	menuItem5:"أغلق",
-	eraSuffix:["هجرة","قبل الهجرة","ميلادي","قبل الميلاد"],
+	eraSuffix:["ميلادي","قبل الميلاد"],
+	hEraSuffix:["هجرة","قبل الهجرة"],
 	monthNames:["يَنايِر","فِبرايِر","مارِس","أبريل","مايو","يونيو","يوليو","أغُسطُس","سِبْتَمْبِر","أکْتببِر","نوفَمْبِر","ديسَمْبِر"],
 	weekdayNames:["الأحَد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"],
 	hMonthNames:["المُحَرَّم","صَفَر ","رَبيع الاوَّل","رَبيع الآخِر","جُمادى الأولى","جُمادى الآخِرة","رَجَب","شَعبان","رَمَضان","شَوّال","ذو القَعدة","ذو الحِجّة"],

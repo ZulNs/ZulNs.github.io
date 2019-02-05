@@ -269,25 +269,48 @@ function Datepicker(isHijr,year,month,firstDay,lang,theme,width){
 }
 Date.prototype.language='en';
 Date.prototype.getDateString=function(){
-	var tds=Datepicker.language[this.language].weekdayNames[this.getDay()]+', ';
-	tds+=this.getDate()+' '+this.getMonthName()+' '+this.getFullYear();
-	return tds
+	return Datepicker.getDigit(this.language,this.getWeekdayName()+', '+this.getDate()+' '+this.getMonthName()+' '+this.getFullYear())
 };
-Date.prototype.getMonthName=function(month){
-	month=(HijriDate.parseInt(month,this.getMonth())%12+12)%12;
-	return Datepicker.language[this.language].monthNames[month]
+Date.prototype.getMonthName=function(m){
+	m=(HijriDate.parseInt(m,this.getMonth())%12+12)%12;
+	return Datepicker.language[this.language].monthNames[m]
+};
+Date.prototype.getWeekdayName=function(d){
+	d=(HijriDate.parseInt(d,this.getDay())%7+7)%7;
+	return Datepicker.language[this.language].weekdayNames[d]
+};
+Date.prototype.getWeekdayShortName=function(d){
+	d=(HijriDate.parseInt(d,this.getDay())%7+7)%7;
+	var p=Datepicker.language[this.language],s=p.weekdayShortNames;
+	return s?s[d]:p.weekdayNames[d]
 };
 HijriDate.prototype.language='en';
 HijriDate.prototype.getDateString=function(){
-	var tds=', '+this.getDate()+' '+this.getMonthName()+' '+this.getFullYear()+'H';
+	var s=this.getWeekdayName()', '+this.getDate()+' '+this.getMonthName()+' '+this.getFullYear();
 	tds=this.language=='en'?HijriDate.weekdayNames[this.getDay()]+tds:Datepicker.language[this.language].weekdayNames[this.getDay()]+tds;
 	return tds
 };
-HijriDate.prototype.getMonthName=function(month){
-	month=(HijriDate.parseInt(month,this.getMonth())%12+12)%12;
-	return this.language=='en'?HijriDate.monthNames[month]:Datepicker.language[this.language].hMonthNames[month]
+HijriDate.prototype.getMonthName=function(m){
+	m=(HijriDate.parseInt(m,this.getMonth())%12+12)%12;
+	return this.language=='en'?HijriDate.monthNames[m]:Datepicker.language[this.language].hMonthNames[m]
+};
+HijriDate.prototype.getWeekdayName=function(d){
+	d=(HijriDate.parseInt(d,this.getDay())%7+7)%7;
+	if(this.language=='en')return HijriDate.weekdayNames[d]
+	return Datepicker.language[this.language].weekdayNames[d]
+};
+HijriDate.prototype.getWeekdayShortName=function(d){
+	d=(HijriDate.parseInt(d,this.getDay())%7+7)%7;
+	if(this.language=='en')return HijriDate.weekdayShortNames[d]
+	var p=Datepicker.language[this.language],s=p.weekdayShortNames;
+	return s?s[d]:p.weekdayNames[d]
 };
 Datepicker.prototype.onPicked=null;
+Datepicker.getDigit=function(l,d){
+	if(Datepicker.language[l].digit)
+		return d.toString().replace(/\d(?=[^<>]*(<|$))/g,function($0){return Datepicker.language[l].digit[$0]});
+	return d
+};
 Datepicker.themes=['amber','aqua','black','blue','blue-grey','brown','cyan','dark-grey','deep-orange','deep-purple','green','grey','indigo','khaki','light-blue','light-green','lime','orange','pale-blue','pale-green','pale-red','pale-yellow','pink','purple','red','sand','teal','yellow'];
 Datepicker.language={
 	en:{
