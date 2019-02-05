@@ -121,7 +121,8 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	},
 	updTodayLbl=function(){todayElm.innerHTML=isSmallScreen?dispDate.todayShortString():dispDate.todayString()},
 	updHeader=function(){
-		yearValElm.innerHTML=Calendar.getDigit(lang,dispDate.getYearString());monthValElm.innerHTML=dispDate.getMonthName()
+		yearValElm.innerHTML=Calendar.getDigit(lang,dispDate.getYearString());
+		monthValElm.innerHTML=dispDate.getMonthName()
 	},
 	createWdayTitle=function(){
 		var el=accFirstDayElm.children[firstDay];
@@ -248,10 +249,10 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	this.fireResize=function(){onRszWdw()};
 	this.getElement=function(){return calElm};
 	this.resetDate=function(y,m){
-		var oldTm=dispDate.getTime();
+		var t=dispDate.getTime();
 		dispDate.setFullYear(HijriDate.parseInt(y,dispDate.getFullYear()));
 		dispDate.setMonth(HijriDate.parseInt(m,dispDate.getMonth()));
-		if(dispDate.getTime()!=oldTm){gridAni='zoom';updCal();return true}
+		if(dispDate.getTime()!=t){gridAni='zoom';updCal();return true}
 		return false
 	};
 	this.setFirstDayOfWeek=function(f){
@@ -301,9 +302,9 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 		applyTheme();return isAutoNewTheme
 	};
 	this.setTime=function(t){
-		var ot=dispDate.getTime();
+		var o=dispDate.getTime();
 		dispDate.setTime(getFixTime(HijriDate.parseInt(t,getCurTime())));dispDate.setDate(1);
-		if(dispDate.getTime()!=ot){gridAni='zoom';updCal();return true}
+		if(dispDate.getTime()!=o){gridAni='zoom';updCal();return true}
 		return false
 	};
 	this.setTodayTimeout=function(t){t=HijriDate.parseInt(t,tmout);if(t>=10){tmout=t;applyTodayTmout();return true}return false};
@@ -450,5 +451,5 @@ Calendar.language['ar']={
 	hEraSuffix:["هجرة","قبل الهجرة"],
 	monthNames:["يَنايِر","فِبرايِر","مارِس","أبريل","مايو","يونيو","يوليو","أغُسطُس","سِبْتَمْبِر","أکْتببِر","نوفَمْبِر","ديسَمْبِر"],
 	weekdayNames:["الأحَد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"],
-	hMonthNames:["المُحَرَّم","صَفَر ","رَبيع الاوَّل","رَبيع الآخِر","جُمادى الأولى","جُمادى الآخِرة","رَجَب","شَعبان","رَمَضان","شَوّال","ذو القَعدة","ذو الحِجّة"],
-}
+	hMonthNames:["المُحَرَّم","صَفَر ","رَبيع الاوَّل","رَبيع الآخِر","جُمادى الأولى","جُمادى الآخِرة","رَجَب","شَعبان","رَمَضان","شَوّال","ذو القَعدة","ذو الحِجّة"]
+};
