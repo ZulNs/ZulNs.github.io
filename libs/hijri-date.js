@@ -16,6 +16,7 @@ function HijriDate(){
 	time=HijriDate.UTC(arguments[0],arguments[1],arguments[2],arguments[3],arguments[4],arguments[5],arguments[6]);
 	if(isNaN(time))time=Date.now();
 	else if(arguments.length==1)time=HijriDate.int(arguments[0],Date.now());
+	else time+=tzom;
 	updDate(utc,time);updDate(loc,time-tzom);
 	function getUTCTmStr(){var d=HijriDate.toNDigit;return d(utc.hh,2)+':'+d(utc.mm,2)+':'+d(utc.ss,2)}
 	function getLocTmStr(){var d=HijriDate.toNDigit;return d(loc.hh,2)+':'+d(loc.mm,2)+':'+d(loc.ss,2)}
