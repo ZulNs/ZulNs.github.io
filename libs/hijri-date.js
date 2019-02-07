@@ -104,6 +104,7 @@ Object.defineProperty(HijriDate,'dayCount',{value:function(m){
 	var r=(parseInt(m/360)-1)*360;//30 years cycle
 	return parseInt(r*h)-parseInt((r-m)*h)
 }});
+Object.defineProperty(HijriDate,'now',{value:function(){return Date.now()}});
 Object.defineProperty(HijriDate,'UTC',{value:function(){
 	var h=HijriDate,i=h.int,a=arguments,t;
 	if(isNaN(a[0]))return NaN;

@@ -37,6 +37,15 @@ a.collapsed + div,a.collapsed>:nth-child(3),a.expanded>:nth-child(2){display:non
 	</a>
 		<div class="w3-bar-block w3-light-grey">
 			<a class="w3-bar-item w3-button w3-ripple w3-large collapsed" href="#" onclick="dropdown(this)">
+				<span>Static</span>
+				<span class="w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z"/></svg></span>
+				<span class="w3-right"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z"/></svg></span>
+			</a>
+				<div class="w3-bar-block w3-light-grey w3-code w3-border-deep-purple">
+					<a class="w3-bar-item w3-button w3-ripple" href="#">HijriDate.now()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">HijriDate.UTC()</a>
+				</div>
+			<a class="w3-bar-item w3-button w3-ripple w3-large collapsed" href="#" onclick="dropdown(this)">
 				<span>Getter</span>
 				<span class="w3-right"><svg width="10" height="10"><path d="M1 3L5 7L9 3Z"/></svg></span>
 				<span class="w3-right"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z"/></svg></span>
@@ -103,8 +112,8 @@ a.collapsed + div,a.collapsed>:nth-child(3),a.expanded>:nth-child(2){display:non
 				<span class="w3-right"><svg width="10" height="10"><path d="M1 7L5 3L9 7Z"/></svg></span>
 			</a>
 				<div class="w3-bar-block w3-light-grey w3-code w3-border-amber">
-					<a class="w3-bar-item w3-button w3-ripple" href="#">.getDaysInMonth()</a>
-					<a class="w3-bar-item w3-button w3-ripple" href="#">.getUTCDaysInMonth()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getDayCountInMonth()</a>
+					<a class="w3-bar-item w3-button w3-ripple" href="#">.getUTCDayCountInMonth()</a>
 				</div>
 		</div>
 </div>
@@ -122,9 +131,11 @@ a.collapsed + div,a.collapsed>:nth-child(3),a.expanded>:nth-child(2){display:non
 	<div class="w3-container">
 	<h2>Constructor</h2>
 	<p>Creates a JavaScript <code class="w3-codespan"><b>HijriDate</b></code> instance that represents a single moment in time.
-		<code class="w3-codespan">HijriDate</code> objects use a <span class="w3-text-blue">Unix Time Stamp</span>,
-		an integer value that is the number of milliseconds since 22 Syawwal 1389 UTC, it is equivalent to 1 January 1970 UTC.</p>
-	<h3>Syntax</h3>
+		<code class="w3-codespan">HijriDate</code> objects use a
+		<a class="w3-text-blue" href="http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap04.html#tag_04_16">Unix&nbsp;Time&nbsp;Stamp</a>,	an
+		integer value that is the number of milliseconds since 1&nbsp;January&nbsp;1970&nbsp;UTC which is equivalent to 22&nbsp;Syawwal&nbsp;1389&nbsp;UTC.</p>
+	<hr class="w3-border w3-border-teal"/>
+	<h2>Syntax</h2>
 <pre class="w3-code w3-panel w3-pale-green w3-leftbar w3-border-green">
 new HijriDate();
 new HijriDate(<i>value</i>);
@@ -136,7 +147,7 @@ new HijriDate(<i>fullYear</i>, <i>monthIndex</i>[, <i>day</i>[, <i>hours</i>[, <
 		operator) will return a string rather than a <code class="w3-codespan">HijriDate</code> object; unlike other JavaScript object types, JavaScript
 		<code class="w3-codespan">HijriDate</code> objects have no literal syntax.
 	</div>
-	<h4 class="w3-tag w3-dark-grey">Parameters</h4>
+	<h3 class="w3-tag w3-dark-grey"><span class="w3-margin-left">Parameters</span></h3>
 	<div class="w3-panel w3-pale-yellow w3-leftbar w3-border-yellow w3-padding">
 		<b>Note:</b> The argument <code class="w3-codespan">monthIndex</code> is 0-based.	This means that
 		<code class="w3-codespan">January = 0</code> and <code class="w3-codespan">December = 11</code>.
@@ -156,11 +167,13 @@ new HijriDate(<i>fullYear</i>, <i>monthIndex</i>[, <i>day</i>[, <i>hours</i>[, <
 	</div>
 	<div class="w3-margin-bottom">
 		<code class="w3-codespan">value</code>
-			<div class="w3-margin-left">A <span class="w3-text-blue">Unix Time Stamp</span> which is an integer value representing the number of milliseconds since 22 Syawwal 1389, 00:00:00.000 UTC.</div>
+			<div class="w3-margin-left">A <a class="w3-text-blue" href="http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap04.html#tag_04_16">Unix&nbsp;Time&nbsp;Stamp</a>
+			which is an integer value representing the number of milliseconds since 22&nbsp;Syawwal&nbsp;1389, 00:00:00.000&nbsp;UTC.</div>
 	</div>
 	<div class="w3-margin-bottom">
 		<code class="w3-codespan w3-margin-top">fullYear</code>
-			<div class="w3-margin-left">Integer value representing the full year. Allow value below 1 (0 or negative value) that indicates before Hijra era. Value 0 for 1BH, -1 for 2BH, and so forth.</div>
+			<div class="w3-margin-left">Integer value representing the full year. Allow value below 1 (0 or negative value) that indicates before Hijra era.
+			Value 0 for 1&nbsp;BH, -1 for 2&nbsp;BH, and so forth.</div>
 	</div>
 	<div class="w3-margin-bottom">
 		<code class="w3-codespan">monthIndex</code>
@@ -186,21 +199,36 @@ new HijriDate(<i>fullYear</i>, <i>monthIndex</i>[, <i>day</i>[, <i>hours</i>[, <
 		<code class="w3-codespan">milliseconds</code> <span class="w3-tag w3-light-grey w3-leftbar w3-border-dark-grey w3-margin-left">optional</span>
 			<div class="w3-margin-left">Integer value representing the millisecond segment of a time.</div>
 	</div>
-	<h3>Description</h3>
+	<hr class="w3-border w3-border-teal"/>
+	<h2>Description</h2>
 	<ul class="w3-ul">
-		<li>If no arguments are provided, the constructor creates a JavaScript Date object for the current date and time according to system settings for timezone offset.</li>
+		<li>If no arguments are provided, the constructor creates a JavaScript <code class="w3-codespan">HijriDate</code> object for the current date and time according to system settings for timezone offset.</li>
 		<li>If at least two arguments are supplied, missing arguments are either set to 1 (if the day is missing) or 0 for all others.</li>
-		<li>The JavaScript date is based on a time value that is milliseconds since midnight January 1, 1970, UTC. A day holds 86,400,000 milliseconds. The JavaScript Date object range is -100,000,000 days to 100,000,000 days relative to January 1, 1970 UTC.</li>
-		<li>The JavaScript Date object provides uniform behavior across platforms. The time value can be passed between systems to create a date that represents the same moment in time.</li>
-		<li>The JavaScript Date object supports a number of UTC (universal) methods, as well as local time methods. UTC, also known as Greenwich Mean Time (GMT), refers to the time as set by the World Time Standard. The local time is the time known to the computer where JavaScript is executed.</li>
-		<li>Invoking JavaScript Date as a function (i.e., without the new operator) will return a string representing the current date and time.</li>
+		<li>The JavaScript Hijri date is based on a time value that is milliseconds since midnight 22&nbsp;Syawwal&nbsp;1389&nbsp;UTC. A day holds 86,400,000 milliseconds. The JavaScript <code class="w3-codespan">HijriDate</code> object range is -100,000,000 days to 100,000,000 days relative to 22&nbsp;Syawwal&nbsp;1389&nbsp;UTC.</li>
+		<li>The JavaScript <code class="w3-codespan">HijriDate</code> object provides uniform behavior across platforms. The time value can be passed between systems to create a date that represents the same moment in time.</li>
+		<li>The JavaScript <code class="w3-codespan">HijriDate</code> object supports a number of UTC (universal) methods, as well as local time methods. UTC, also known as Greenwich Mean Time (GMT), refers to the time as set by the World Time Standard. The local time is the time known to the computer where JavaScript is executed.</li>
+		<li>Invoking JavaScript <code class="w3-codespan">HijriDate</code> as a function (i.e., without the <code class="w3-codespan">new</code> operator) will return a string representing the specified date and time.</li>
 	</ul>
+	<hr class="w3-border w3-border-teal"/>
 	<h2>Methods</h2>
-	<h3>Getter</h3>
-	<h4><code class="w3-codespan">.getDate()</code></h4>
-	<h3>Setter</h3>
-	<h3>Conversion getter</h3>
-	<h3>Extended getter</h3>
+	<div class="w3-margin-bottom">
+		<code class="w3-codespan">HijriDate.now()</code>
+			<div class="w3-margin-left">Returns the numeric value corresponding to the current time - the number of milliseconds elapsed since 22&nbsp;Syawwal 1389, 00:00:00&nbsp;UTC, with leap seconds ignored.</div>
+	</div>
+	<div class="w3-margin-bottom">
+		<code class="w3-codespan">HijriDate.UTC()</code>
+			<div class="w3-margin-left">Accepts the same parameters as the longest form of the constructor (i.e. 2 to 7) and returns the number of milliseconds since 22&nbsp;Syawwal&nbsp;1389, 00:00:00&nbsp;UTC, with leap seconds ignored.</div>
+	</div>
+	<hr class="w3-border w3-border-teal"/>
+	<h2>JavaScript <code class="w3-codespan">HijriDate</code> instance</h2>
+	<h3 class="w3-tag w3-dark-grey"><span class="w3-margin-left">Getter</span></h3>
+	<div class="w3-margin-bottom">
+		<code class="w3-codespan">.getDate()</code>
+			<div class="w3-margin-left"></div>
+	</div>
+	<h3 class="w3-tag w3-dark-grey"><span class="w3-margin-left">Setter</span></h3>
+	<h3 class="w3-tag w3-dark-grey"><span class="w3-margin-left">Conversion getter</span></h3>
+	<h3 class="w3-tag w3-dark-grey"><span class="w3-margin-left">Extended getter</span></h3>
 	</div>
 </div>
 
