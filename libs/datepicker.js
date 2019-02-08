@@ -114,7 +114,7 @@ function Datepicker(isHijr,year,month,firstDay,lang,theme,width){
 				if(i%7==isFri)grid.className+=' w3-text-teal';
 				else if(i%7==isSun)grid.className+=' w3-text-red'
 			}
-			if(i<=ppdr||ppdr+pcdr<i)grid.disabled=true
+			if(i<=ppdr||ppdr+pcdr<i){grid.disabled=true;grid.style.cursor='default'}
 			else{
 				grid.className+=' w3-ripple date';
 				if(i%7==isFri)grid.className+=' w3-hover-teal';
