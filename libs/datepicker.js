@@ -329,7 +329,7 @@ Object.defineProperty(Datepicker,'getDigit',{value:function(d){
 	var p=Datepicker.getVal('digit');
 	if(p)return d.toString().replace(/\d(?=[^<>]*(<|$))/g,function($0){return p[$0]});return d
 }});
-Object.defineProperty(Datepicker,'themes',{value:['amber','aqua','black','blue','blue-grey','brown','cyan','dark-grey','deep-orange','deep-purple','green','grey','indigo','khaki','light-blue','light-green','lime','orange','pale-blue','pale-green','pale-red','pale-yellow','pink','purple','red','sand','teal','yellow']});
+Object.defineProperty(Datepicker,'themes',{value:['amber','aqua','black','blue','blue-grey','brown','cyan','dark-grey','deep-orange','deep-purple','green','grey','indigo','khaki','light-blue','light-green','lime','orange','pink','purple','red','teal','yellow']});
 Object.defineProperty(Datepicker,'lang',{value:'en',writable:true});
 Object.defineProperty(Datepicker,'getVal',{value:function(key){return Datepicker.language[Datepicker.lang][key]}});
 Datepicker.language={en:{

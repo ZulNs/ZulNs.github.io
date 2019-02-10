@@ -408,7 +408,7 @@ Object.defineProperty(Calendar,'getDigit',{value:function(d){
 	var c=Calendar.getVal('digit');
 	if(c)return d.toString().replace(/\d(?=[^<>]*(<|$))/g,function($0){return c[$0]});return d
 }});
-Object.defineProperty(Calendar,'themes',{value:['amber','aqua','black','blue','blue-grey','brown','cyan','dark-grey','deep-orange','deep-purple','green','grey','indigo','khaki','light-blue','light-green','lime','orange','pale-blue','pale-green','pale-red','pale-yellow','pink','purple','red','sand','teal','yellow']});
+Object.defineProperty(Calendar,'themes',{value:['amber','aqua','black','blue','blue-grey','brown','cyan','dark-grey','deep-orange','deep-purple','green','grey','indigo','khaki','light-blue','light-green','lime','orange','pink','purple','red','teal','yellow']});
 Object.defineProperty(Calendar,'lang',{value:'en',writable:true});
 Object.defineProperty(Calendar,'getVal',{value:function(key){return Calendar.language[Calendar.lang][key]}});
 Calendar.language={en:{
