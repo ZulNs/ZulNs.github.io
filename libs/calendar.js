@@ -331,79 +331,79 @@ function Calendar(isHijr,year,month,firstDay,lang,theme,tmout){
 	}
 	createStyle();createAboutModal();createCal();applyTodayTmout()
 }
-Object.defineProperty(Date.prototype,'getMonthName',{value:function(m){
+Date.prototype.getMonthName=function(m){
 	m=(HijriDate.int(m,this.getMonth())%12+12)%12;
 	return Calendar.getVal('monthNames')[m]
-}});
-Object.defineProperty(Date.prototype,'getMonthShortName',{value:function(m){
+};
+Date.prototype.getMonthShortName=function(m){
 	m=(HijriDate.int(m,this.getMonth())%12+12)%12;
 	var c=Calendar.getVal,s=c('monthShortNames');
 	return s?s[m]:c('monthNames')[m]
-}});
-Object.defineProperty(Date.prototype,'getWeekdayName',{value:function(d){
+};
+Date.prototype.getWeekdayName=function(d){
 	d=(HijriDate.int(d,this.getDay())%7+7)%7;
 	return Calendar.getVal('weekdayNames')[d]
-}});
-Object.defineProperty(Date.prototype,'getWeekdayShortName',{value:function(d){
+};
+Date.prototype.getWeekdayShortName=function(d){
 	d=(HijriDate.int(d,this.getDay())%7+7)%7;
 	var c=Calendar.getVal,s=c('weekdayShortNames');
 	return s?s[d]:c('weekdayNames')[d]
-}});
-Object.defineProperty(Date.prototype,'getYearString',{value:function(y){
+};
+Date.prototype.getYearString=function(y){
 	y=HijriDate.int(y,this.getFullYear());
 	var e=Calendar.getVal('eraSuffix'),i=0;
 	if(e){if(y<1){i++;y=1-y}y=y+' '+e[i]}else y=y.toString();return y
-}});
-Object.defineProperty(Date.prototype,'todayShortString',{value:function(){
+};
+Date.prototype.todayShortString=function(){
 	var t=this.getTime();this.setTime(Date.now());
 	var s=this.getWeekdayShortName()+', '+this.getDate()+' '+this.getMonthShortName()+' '+this.getFullYear();
 	this.setTime(t);return Calendar.getDigit(s)
-}});
-Object.defineProperty(Date.prototype,'todayString',{value:function(){
+};
+Date.prototype.todayString=function(){
 	var t=this.getTime();this.setTime(Date.now());
 	var	s=this.getWeekdayName()+', '+this.getDate()+' '+this.getMonthName()+' '+this.getFullYear();
 	this.setTime(t);return Calendar.getDigit(s)
-}});
-Object.defineProperty(HijriDate.prototype,'getMonthName',{value:function(m){
+};
+HijriDate.prototype.getMonthName=function(m){
 	m=(HijriDate.int(m,this.getMonth())%12+12)%12;
 	var c=Calendar;
 	return c.lang=='en'?HijriDate.monthNames[m]:c.getVal('hMonthNames')[m]
-}});
-Object.defineProperty(HijriDate.prototype,'getMonthShortName',{value:function(m){
+};
+HijriDate.prototype.getMonthShortName=function(m){
 	m=(HijriDate.int(m,this.getMonth())%12+12)%12;
 	var c=Calendar;
 	if(c.lang=='en')return HijriDate.monthShortNames[m];
 	var cg=c.getVal,s=cg('hMonthShortNames');
 	return s?s[m]:cg('hMonthNames')[m]
-}});
-Object.defineProperty(HijriDate.prototype,'getWeekdayName',{value:function(d){
+};
+HijriDate.prototype.getWeekdayName=function(d){
 	d=(HijriDate.int(d,this.getDay())%7+7)%7;
 	var c=Calendar;
 	if(c.lang=='en')return HijriDate.weekdayNames[d]
 	return c.getVal('weekdayNames')[d]
-}});
-Object.defineProperty(HijriDate.prototype,'getWeekdayShortName',{value:function(d){
+};
+HijriDate.prototype.getWeekdayShortName=function(d){
 	d=(HijriDate.int(d,this.getDay())%7+7)%7;
 	var c=Calendar;
 	if(c.lang=='en')return HijriDate.weekdayShortNames[d]
 	var cg=c.getVal,s=cg('weekdayShortNames');
 	return s?s[d]:cg('weekdayNames')[d]
-}});
-Object.defineProperty(HijriDate.prototype,'getYearString',{value:function(y){
+};
+HijriDate.prototype.getYearString=function(y){
 	y=HijriDate.int(y,this.getFullYear());
 	var e=Calendar.getVal('hEraSuffix'),i=0;
 	if(e){if(y<1){i++;y=1-y}y=y+' '+e[i]}else y=y.toString();return y
-}});
-Object.defineProperty(HijriDate.prototype,'todayShortString',{value:function(){
+};
+HijriDate.prototype.todayShortString=function(){
 	var t=this.getTime();this.setTime(Date.now());
 	var	s=this.getWeekdayShortName()+', '+this.getDate()+' '+this.getMonthShortName()+' '+this.getFullYear();
 	this.setTime(t);return Calendar.getDigit(s)
-}});
-Object.defineProperty(HijriDate.prototype,'todayString',{value:function(){
+};
+HijriDate.prototype.todayString=function(){
 	var t=this.getTime();this.setTime(Date.now());
 	var	s=this.getWeekdayName()+', '+this.getDate()+' '+this.getMonthName()+' '+this.getFullYear();
 	this.setTime(t);return Calendar.getDigit(s)
-}});
+};
 Object.defineProperty(Calendar,'getDigit',{value:function(d){
 	var c=Calendar.getVal('digit');
 	if(c)return d.toString().replace(/\d(?=[^<>]*(<|$))/g,function($0){return c[$0]});return d

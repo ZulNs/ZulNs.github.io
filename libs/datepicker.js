@@ -277,53 +277,53 @@ function Datepicker(isHijr,year,month,firstDay,lang,theme,width){
 	}
 	createStyle();createAboutModal();createPicker()
 }
-Object.defineProperty(Date.prototype,'getDateString',{value:function(){
+Date.prototype.getDateString=function(){
 	return Datepicker.getDigit(this.getWeekdayName()+', '+this.getDate()+' '+this.getMonthName()+' '+this.getYearString())
-}});
-Object.defineProperty(Date.prototype,'getMonthName',{value:function(m){
+};
+Date.prototype.getMonthName=function(m){
 	m=(HijriDate.int(m,this.getMonth())%12+12)%12;
 	return Datepicker.getVal('monthNames')[m]
-}});
-Object.defineProperty(Date.prototype,'getWeekdayName',{value:function(d){
+};
+Date.prototype.getWeekdayName=function(d){
 	d=(HijriDate.int(d,this.getDay())%7+7)%7;
 	return Datepicker.getVal('weekdayNames')[d]
-}});
-Object.defineProperty(Date.prototype,'getWeekdayShortName',{value:function(d){
+};
+Date.prototype.getWeekdayShortName=function(d){
 	d=(HijriDate.int(d,this.getDay())%7+7)%7;
 	var p=Datepicker.getVal,s=p('weekdayShortNames');
 	return s?s[d]:p('weekdayNames')[d]
-}});
-Object.defineProperty(Date.prototype,'getYearString',{value:function(y){
+};
+Date.prototype.getYearString=function(y){
 	y=HijriDate.int(y,this.getFullYear());
 	var e=Datepicker.getVal('eraSuffix'),i=0;
 	if(e){if(y<1){i++;y=1-y}y=y+' '+e[i]}else y=y.toString();return y
-}});
-Object.defineProperty(HijriDate.prototype,'getDateString',{value:function(){
+};
+HijriDate.prototype.getDateString=function(){
 	return Datepicker.getDigit(this.getWeekdayName()+', '+this.getDate()+' '+this.getMonthName()+' '+this.getYearString())
-}});
-Object.defineProperty(HijriDate.prototype,'getMonthName',{value:function(m){
+};
+HijriDate.prototype.getMonthName=function(m){
 	m=(HijriDate.int(m,this.getMonth())%12+12)%12;
 	var p=Datepicker;
 	return p.lang=='en'?HijriDate.monthNames[m]:p.getVal('hMonthNames')[m]
-}});
-Object.defineProperty(HijriDate.prototype,'getWeekdayName',{value:function(d){
+};
+HijriDate.prototype.getWeekdayName=function(d){
 	d=(HijriDate.int(d,this.getDay())%7+7)%7;
 	var p=Datepicker;
 	if(p.lang=='en')return HijriDate.weekdayNames[d]
 	return p.getVal('weekdayNames')[d]
-}});
-Object.defineProperty(HijriDate.prototype,'getWeekdayShortName',{value:function(d){
+};
+HijriDate.prototype.getWeekdayShortName=function(d){
 	d=(HijriDate.int(d,this.getDay())%7+7)%7;
 	var p=Datepicker;
 	if(p.lang=='en')return HijriDate.weekdayShortNames[d]
 	var pg=p.getVal,s=pg('weekdayShortNames');
 	return s?s[d]:pg('weekdayNames')[d]
-}});
-Object.defineProperty(HijriDate.prototype,'getYearString',{value:function(y){
+};
+HijriDate.prototype.getYearString=function(y){
 	y=HijriDate.int(y,this.getFullYear());
 	var e=Datepicker.getVal('hEraSuffix'),i=0;
 	if(e){if(y<1){i++;y=1-y}y=y+' '+e[i]}else y=y.toString();return y
-}});
+};
 Object.defineProperty(Datepicker.prototype,'onPicked',{value:null,writable:true});
 Object.defineProperty(Datepicker,'getDigit',{value:function(d){
 	var p=Datepicker.getVal('digit');

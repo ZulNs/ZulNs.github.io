@@ -1,5 +1,4 @@
 /**
- *
  * @description JavaScript Hijri Date Function
  * @version 2.0
  * 
@@ -17,30 +16,13 @@ function HijriDate(){
 	if(isNaN(time))time=Date.now();
 	else if(arguments.length==1)time=HijriDate.int(arguments[0],Date.now());
 	else time+=tzom;
-	updDate(utc,time);updDate(loc,time-tzom);
+	updDt(utc,time);updDt(loc,time-tzom);
 	function getUTCTmStr(){var d=HijriDate.toNDigit;return d(utc.hh,2)+':'+d(utc.mm,2)+':'+d(utc.ss,2)}
 	function getLocTmStr(){var d=HijriDate.toNDigit;return d(loc.hh,2)+':'+d(loc.mm,2)+':'+d(loc.ss,2)}
-	function updUTCTm(){updTime(utc);updDate(utc,time);updDate(loc,time-tzom)}
-	function updLocTm(){updTime(loc);updDate(loc,time);time+=tzom;updDate(utc,time)}
-	function updTime(r){time=HijriDate.UTC(r.yyy,r.mmm,r.ddd,r.hh,r.mm,r.ss,r.ms)}
-	function updDate(r,t){
-		var h=HijriDate,hdc=h.dayCount;
-		t-=h.DIFF;
-		var tp=t%864e5,dc=parseInt(t/864e5),m=parseInt(dc/h.MOON_CYCLE);
-		if(t<0){
-			if(tp<0){dc--;tp+=864e5}
-			if(dc<hdc(m))m--
-		}
-		r.ddd=1+dc-hdc(m);
-		if(r.ddd>h.dayCountInMonth(m))r.ddd-=h.dayCountInMonth(m++);
-		r.yyy=Math.floor(m/12)+1;
-		r.mmm=(m%12+12)%12;
-		r.ms=tp%1e3;tp=parseInt(tp/1e3);
-		r.ss=tp%60;tp=parseInt(tp/60);
-		r.mm=tp%60;tp=parseInt(tp/60);
-		r.hh=tp%24;
-		r.day=((dc+5)%7+7)%7
-	}
+	function updUTCTm(){updTm(utc);updDt(utc,time);updDt(loc,time-tzom)}
+	function updLocTm(){updTm(loc);updDt(loc,time);time+=tzom;updDt(utc,time)}
+	function updTm(r){time=HijriDate.UTC(r.yyy,r.mmm,r.ddd,r.hh,r.mm,r.ss,r.ms)}
+	function updDt(r,t){HijriDate.parseTime(r,t)}
 	hd.getDate=function(){return loc.ddd};
 	hd.getDay=function(){return loc.day};
 	hd.getFullYear=function(){return loc.yyy};
@@ -66,7 +48,7 @@ function HijriDate(){
 	hd.setMinutes=function(min){loc.mm=HijriDate.int(min,loc.mm);updLocTm()};
 	hd.setMonth=function(mon){loc.mmm=HijriDate.int(mon,loc.mmm);updLocTm()};
 	hd.setSeconds=function(sec){loc.ss=HijriDate.int(sec,loc.ss);updLocTm()};
-	hd.setTime=function(tm){time=HijriDate.int(tm,time);updDate(utc,time);updDate(loc,time-tzom)};
+	hd.setTime=function(tm){time=HijriDate.int(tm,time);updDt(utc,time);updDt(loc,time-tzom)};
 	hd.setUTCDate=function(dt){utc.ddd=HijriDate.int(dt,utc.ddd);updUTCTm()};
 	hd.setUTCFullYear=function(yr){utc.yyy=HijriDate.int(yr,utc.yyy);updUTCTm()};
 	hd.setUTCHours=function(hr){utc.hh=HijriDate.int(hr,utc.hh);updUTCTm()};
@@ -103,6 +85,24 @@ Object.defineProperty(HijriDate,'dayCount',{value:function(m){
 Object.defineProperty(HijriDate,'dayCountInMonth',{value:function(m){return HijriDate.dayCount(m+1)-HijriDate.dayCount(m)}});
 Object.defineProperty(HijriDate,'int',{value:function(n,d){n=parseInt(n);return isNaN(n)?d:n}});
 Object.defineProperty(HijriDate,'now',{value:function(){return Date.now()}});
+Object.defineProperty(HijriDate,'parseTime',{value:function(r,t){
+	var h=HijriDate,hdc=h.dayCount;
+	t-=h.DIFF;
+	var tp=t%864e5,dc=parseInt(t/864e5),m=parseInt(dc/h.MOON_CYCLE);
+	if(t<0){
+		if(tp<0){dc--;tp+=864e5}
+		if(dc<hdc(m))m--
+	}
+	r.ddd=1+dc-hdc(m);
+	if(r.ddd>h.dayCountInMonth(m))r.ddd-=h.dayCountInMonth(m++);
+	r.yyy=Math.floor(m/12)+1;
+	r.mmm=(m%12+12)%12;
+	r.ms=tp%1e3;tp=parseInt(tp/1e3);
+	r.ss=tp%60;tp=parseInt(tp/60);
+	r.mm=tp%60;tp=parseInt(tp/60);
+	r.hh=tp%24;
+	r.day=((dc+5)%7+7)%7
+}});
 Object.defineProperty(HijriDate,'toNDigit',{value:function(n,d){
 	var s=Math.abs(n).toString();if(s.length<d)s=('00000000'+s).slice(-d);if(n<0)s='-'+s;return s
 }});
@@ -116,11 +116,11 @@ HijriDate.monthNames=["Muharram","Safar","Rabi'ul-Awwal","Rabi'ul-Akhir","Jumada
 HijriDate.monthShortNames=["Muh","Saf","RAw","RAk","JAw","JAk","Raj","Sha","Ram","Sya","DhQ","DhH"];
 HijriDate.weekdayNames=["Ahad","Ithnin","Thulatha","Arba'a","Khams","Jumu'ah","Sabt"];
 HijriDate.weekdayShortNames=["Ahd","Ith","Thu","Arb","Kha","Jum","Sab"];
-Object.defineProperty(Date.prototype,'getDayCountInMonth',{value:function(){
+Date.prototype.getDayCountInMonth=function(){
 	var y=this.getFullYear(),isLeapYear=(y%100!=0)&&(y%4==0)||(y%400==0),c=[31,isLeapYear?29:28,31,30,31,30,31,31,30,31,30,31];
 	return c[this.getMonth()]
-}});
-Object.defineProperty(Date.prototype,'getUTCDayCountInMonth',{value:function(){
+};
+Date.prototype.getUTCDayCountInMonth=function(){
 	var y=this.getUTCFullYear(),isLeapYear=(y%100!=0)&&(y%4==0)||(y%400==0),c=[31,isLeapYear?29:28,31,30,31,30,31,31,30,31,30,31];
 	return c[this.getUTCMonth()]
-}});
+};
