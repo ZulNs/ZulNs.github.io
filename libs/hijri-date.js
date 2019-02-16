@@ -9,7 +9,7 @@
  */
 'use strict';
 function HijriDate(){
-	var hd=typeof this=='object'?this:window,time,tzom=Date.parse('01 Jan 1970'),tzo=parseInt(parseInt(tzom/1000)/60),tzs=Date(1970,0,1),
+	let hd=typeof this=='object'?this:window,time,tzom=Date.parse('01 Jan 1970'),tzo=parseInt(parseInt(tzom/1000)/60),tzs=Date(1970,0,1),
 		utc={yyy:0,mmm:0,ddd:0,day:0,hh:0,mm:0,ss:0,ms:0},loc={yyy:0,mmm:0,ddd:0,day:0,hh:0,mm:0,ss:0,ms:0};
 	tzs=tzs.substring(tzs.lastIndexOf('GMT'));
 	time=HijriDate.UTC(arguments[0],arguments[1],arguments[2],arguments[3],arguments[4],arguments[5],arguments[6]);
@@ -17,8 +17,8 @@ function HijriDate(){
 	else if(arguments.length==1)time=HijriDate.int(arguments[0],Date.now());
 	else time+=tzom;
 	updDt(utc,time);updDt(loc,time-tzom);
-	function getUTCTmStr(){var d=HijriDate.toNDigit;return d(utc.hh,2)+':'+d(utc.mm,2)+':'+d(utc.ss,2)}
-	function getLocTmStr(){var d=HijriDate.toNDigit;return d(loc.hh,2)+':'+d(loc.mm,2)+':'+d(loc.ss,2)}
+	function getUTCTmStr(){let d=HijriDate.toNDigit;return d(utc.hh,2)+':'+d(utc.mm,2)+':'+d(utc.ss,2)}
+	function getLocTmStr(){let d=HijriDate.toNDigit;return d(loc.hh,2)+':'+d(loc.mm,2)+':'+d(loc.ss,2)}
 	function updUTCTm(){updTm(utc);updDt(utc,time);updDt(loc,time-tzom)}
 	function updLocTm(){updTm(loc);updDt(loc,time);time+=tzom;updDt(utc,time)}
 	function updTm(r){time=HijriDate.UTC(r.yyy,r.mmm,r.ddd,r.hh,r.mm,r.ss,r.ms)}
@@ -57,16 +57,16 @@ function HijriDate(){
 	hd.setUTCMonth=function(mon){utc.mmm=HijriDate.int(mon,utc.mmm);updUTCTm()};
 	hd.setUTCSeconds=function(sec){utc.ss=HijriDate.int(sec,utc.ss);updUTCTm()};
 	hd.toDateString=function(){
-		var h=HijriDate,d=h.toNDigit;return h.weekdayShortNames[loc.day]+' '+h.monthShortNames[loc.mmm]+' '+d(loc.ddd,2)+' '+d(loc.yyy,4)
+		let h=HijriDate,d=h.toNDigit;return h.weekdayShortNames[loc.day]+' '+h.monthShortNames[loc.mmm]+' '+d(loc.ddd,2)+' '+d(loc.yyy,4)
 	};
 	hd.toISOString=function(){
-		var d=HijriDate.toNDigit;return d(utc.yyy,utc.yyy<0?6:4)+'-'+d(utc.mmm+1,2)+'-'+d(utc.ddd,2)+'T'+getUTCTmStr()+'.'+d(utc.ms,3)+'Z'
+		let d=HijriDate.toNDigit;return d(utc.yyy,utc.yyy<0?6:4)+'-'+d(utc.mmm+1,2)+'-'+d(utc.ddd,2)+'T'+getUTCTmStr()+'.'+d(utc.ms,3)+'Z'
 	};
 	hd.toJSON=function(){return hd.toISOString()};
 	hd.toString=function(){return hd.toDateString()+' '+hd.toTimeString()};
 	hd.toTimeString=function(){return getLocTmStr()+' '+tzs};
 	hd.toUTCString=function(){
-		var h=HijriDate,d=h.toNDigit;
+		let h=HijriDate,d=h.toNDigit;
 		return h.weekdayShortNames[utc.day]+', '+d(utc.ddd,2)+' '+h.monthShortNames[utc.mmm]+' '+d(utc.yyy,4)+' '+getUTCTmStr()+' GMT'
 	};
 	hd.valueOf=function(){return time};
@@ -77,18 +77,18 @@ function HijriDate(){
 Object.defineProperty(HijriDate,'DIFF',{value:-425215872e5});//Value of time interval in milliseconds from January 1, 1970AD, 00:00:00 AM to July 19, 622AD, 00:00:00 AM
 Object.defineProperty(HijriDate,'MOON_CYCLE',{value:29.5305882});
 Object.defineProperty(HijriDate,'dayCount',{value:function(m){
-	var h=HijriDate.MOON_CYCLE;
+	let h=HijriDate.MOON_CYCLE;
 	if(m>=0) return parseInt(m*h);
-	var r=(parseInt(m/360)-1)*360;//30 years cycle
+	let r=(parseInt(m/360)-1)*360;//30 years cycle
 	return parseInt(r*h)-parseInt((r-m)*h)
 }});
 Object.defineProperty(HijriDate,'dayCountInMonth',{value:function(m){return HijriDate.dayCount(m+1)-HijriDate.dayCount(m)}});
 Object.defineProperty(HijriDate,'int',{value:function(n,d){n=parseInt(n);return isNaN(n)?d:n}});
 Object.defineProperty(HijriDate,'now',{value:function(){return Date.now()}});
 Object.defineProperty(HijriDate,'parseTime',{value:function(r,t){
-	var h=HijriDate,hdc=h.dayCount;
+	let h=HijriDate,hdc=h.dayCount;
 	t-=h.DIFF;
-	var tp=t%864e5,dc=parseInt(t/864e5),m=parseInt(dc/h.MOON_CYCLE);
+	let tp=t%864e5,dc=parseInt(t/864e5),m=parseInt(dc/h.MOON_CYCLE);
 	if(t<0){
 		if(tp<0){dc--;tp+=864e5}
 		if(dc<hdc(m))m--
@@ -104,10 +104,10 @@ Object.defineProperty(HijriDate,'parseTime',{value:function(r,t){
 	r.day=((dc+5)%7+7)%7
 }});
 Object.defineProperty(HijriDate,'toNDigit',{value:function(n,d){
-	var s=Math.abs(n).toString();if(s.length<d)s=('00000000'+s).slice(-d);if(n<0)s='-'+s;return s
+	let s=Math.abs(n).toString();if(s.length<d)s=('00000000'+s).slice(-d);if(n<0)s='-'+s;return s
 }});
 Object.defineProperty(HijriDate,'UTC',{value:function(){
-	var h=HijriDate,i=h.int,a=arguments,t;
+	let h=HijriDate,i=h.int,a=arguments,t;
 	if(isNaN(a[0]))return NaN;
 	a[0]=parseInt(a[0]);a[1]=i(a[1],0);a[2]=i(a[2],1);a[3]=i(a[3],0);a[4]=i(a[4],0);a[5]=i(a[5],0);a[6]=i(a[6],0);
 	t=h.dayCount((a[0]-1)*12+a[1]);t+=a[2]-1;t*=864e5;t+=a[3]*36e5;t+=a[4]*6e4;t+=a[5]*1e3;t+=a[6];t+=h.DIFF;return t
@@ -117,10 +117,10 @@ HijriDate.monthShortNames=["Muh","Saf","RAw","RAk","JAw","JAk","Raj","Sha","Ram"
 HijriDate.weekdayNames=["Ahad","Ithnin","Thulatha","Arba'a","Khams","Jumu'ah","Sabt"];
 HijriDate.weekdayShortNames=["Ahd","Ith","Thu","Arb","Kha","Jum","Sab"];
 Date.prototype.getDayCountInMonth=function(){
-	var y=this.getFullYear(),isLeapYear=(y%100!=0)&&(y%4==0)||(y%400==0),c=[31,isLeapYear?29:28,31,30,31,30,31,31,30,31,30,31];
+	let y=this.getFullYear(),isLeapYear=(y%100!=0)&&(y%4==0)||(y%400==0),c=[31,isLeapYear?29:28,31,30,31,30,31,31,30,31,30,31];
 	return c[this.getMonth()]
 };
 Date.prototype.getUTCDayCountInMonth=function(){
-	var y=this.getUTCFullYear(),isLeapYear=(y%100!=0)&&(y%4==0)||(y%400==0),c=[31,isLeapYear?29:28,31,30,31,30,31,31,30,31,30,31];
+	let y=this.getUTCFullYear(),isLeapYear=(y%100!=0)&&(y%4==0)||(y%400==0),c=[31,isLeapYear?29:28,31,30,31,30,31,31,30,31,30,31];
 	return c[this.getUTCMonth()]
 };

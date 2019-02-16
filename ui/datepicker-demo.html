@@ -108,7 +108,7 @@ button.collapsed + div,button.collapsed>:nth-child(3),button.expanded>:nth-child
 			<button class="w3-bar-item w3-button w3-ripple" onclick="setTheme()">Apply</button>
 			<button class="w3-bar-item w3-button w3-ripple" onclick="newTheme()">New Theme</button>
 		</div>
-  <a class="w3-bar-item w3-button w3-ripple" href="calendar.html">See My Calendar</a>
+  <a class="w3-bar-item w3-button w3-ripple" href="calendar-demo.html">See My Calendar</a>
 </div>
 
 <div class="w3-main" style="margin-left:220px">
@@ -122,28 +122,28 @@ button.collapsed + div,button.collapsed>:nth-child(3),button.expanded>:nth-child
 	<div class="w3-container w3-margin-top">
 		<div class="w3-container w3-margin-top">
 			<label for="gregDate">Gregorian Date</label>
-			<input id="gregDate" onclick="pickDate(this)" class="w3-input w3-border" type="text" placeholder="Click to pick a date...">
+			<input id="gregDate" onclick="pickDate(event)" class="w3-input w3-border" type="text" placeholder="Click to pick a date...">
 		</div>
 		<div class="w3-container w3-margin-top">
 			<label for="hijrDate">Hijri Date</label>
-			<input id="hijrDate" onclick="pickDate(this)" class="w3-input w3-border" type="text" placeholder="Click to pick a date...">
+			<input id="hijrDate" onclick="pickDate(event)" class="w3-input w3-border" type="text" placeholder="Click to pick a date...">
 		</div>
  </div>
 </div>
 
 <script type="text/javascript">
-var picker=new Datepicker();
-var pickElm=picker.getElement();
-var pLeft=200;
-var pWidth=300;
+let picker=new Datepicker();
+let pickElm=picker.getElement();
+let pLeft=200;
+let pWidth=300;
 pickElm.style.position='absolute';
 pickElm.style.left=pLeft+'px';
 pickElm.style.top='172px';
 picker.attachTo(document.body);
 
 picker.onPicked=function(){
-	var elgd=document.getElementById('gregDate');
-	var elhd=document.getElementById('hijrDate');
+	let elgd=document.getElementById('gregDate');
+	let elhd=document.getElementById('hijrDate');
 	if(picker.getPickedDate() instanceof Date){
 		elgd.value=picker.getPickedDate().getDateString();
 		elhd.value=picker.getOppositePickedDate().getDateString()
@@ -179,12 +179,12 @@ function setFirstDay(fd){
 }
 
 function setYear(){
-	var el=document.getElementById('valYear');
+	let el=document.getElementById('valYear');
 	picker.setFullYear(el.value)
 }
 
 function setMonth(){
-	var el=document.getElementById('valMonth');
+	let el=document.getElementById('valMonth');
 	picker.setMonth(el.value)
 }
 
@@ -196,8 +196,9 @@ function updateWidth(el){
 	}
 }
 
-function pickDate(el){
-	var ev=window.event;
+function pickDate(ev){
+	ev=ev||window.event;
+	let el=ev.target||ev.srcElement;
 	pLeft=ev.pageX;
 	fixWidth();
 	pickElm.style.top=ev.pageY+'px';
@@ -210,8 +211,8 @@ function gotoToday(){
 }
 
 function setTheme(){
-	var el=document.getElementById('txtTheme');
-	var n=parseInt(el.value);
+	let el=document.getElementById('txtTheme');
+	let n=parseInt(el.value);
 	if(!isNaN(n))picker.setTheme(n);
 	else picker.setTheme(el.value)
 }
@@ -221,8 +222,8 @@ function newTheme(){
 }
 
 function fixWidth(){
-	var docWidth=document.body.offsetWidth;
-	var isFixed=false;
+	let docWidth=document.body.offsetWidth;
+	let isFixed=false;
 	if(pLeft+pWidth>docWidth)pLeft=docWidth-pWidth;
 	if(docWidth>=992&&pLeft<200)pLeft=200;
 	else if(docWidth<992&&pLeft<0)pLeft=0;
