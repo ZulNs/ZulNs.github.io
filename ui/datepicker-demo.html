@@ -92,7 +92,7 @@ button.collapsed + div,button.collapsed>:nth-child(3),button.expanded>:nth-child
 				<label for="valWidth" class="w3-right-align" style="width:50px">pixels</label>
 			</div>
 			<div class="w3-bar-item">
-				<input id="sliderWidth" type="range" onchange="updateWidth(this)" style="width:170px" min="280" max="600" value="300" step="1">
+				<input id="sliderWidth" type="range" oninput="updateWidth(this)" onchange="updateWidth(this)" style="width:170px" min="280" max="600" value="300" step="1">
 			</div>
 		</div>
   <button class="w3-bar-item w3-button w3-ripple" onclick="gotoToday()">Go to Today</button>
