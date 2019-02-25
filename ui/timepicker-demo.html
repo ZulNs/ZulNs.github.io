@@ -189,7 +189,8 @@ function pickTime(ev){
 	document.getElementById('modeTimepicker').checked=true;
 	document.getElementById('visibilityShow').checked=true;
 	picker.setClockMode(false);
-	picker.show()
+	picker.show();
+	(ev.target||ev.srcElement).blur()
 }
 
 function setClockMode(el){

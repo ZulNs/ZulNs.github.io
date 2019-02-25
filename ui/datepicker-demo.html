@@ -206,7 +206,8 @@ function pickDate(ev){
 	fixWidth();
 	pickElm.style.top=ev.pageY+'px';
 	picker.setHijriMode(el.id=='hijrDate');
-	picker.show()
+	picker.show();
+	el.blur()
 }
 
 function gotoToday(){
