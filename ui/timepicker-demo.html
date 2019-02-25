@@ -154,7 +154,6 @@ button.collapsed + div,button.collapsed>:nth-child(3),button.expanded>:nth-child
 	<div id="timepicker" class="w3-container w3-margin-top w3-padding-16 w3-color">
 		<label for="timeString">Picked time</label>
 		<input id="timeString" onclick="pickTime(event)" class="w3-input w3-border" type="text" placeholder="Click to pick a time...">
-		<!--div class="w3-card-4 w3-color" style="width:272px;padding:16px;margin-top:16px;margin-left:16px"></div-->
 	</div>
 </div>
 
@@ -163,8 +162,6 @@ button.collapsed + div,button.collapsed>:nth-child(3),button.expanded>:nth-child
 const picker=new Timepicker();
 const container=document.getElementById('timepicker');
 const pickerElm=picker.getElement();
-//let mleft=document.body.offsetWidth;
-//if(mleft>992)mleft-=220;
 pickerElm.style.marginLeft='calc(50% - 120px)';
 pickerElm.style.marginTop='12px';
 container.appendChild(pickerElm);
