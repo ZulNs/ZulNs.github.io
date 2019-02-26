@@ -1,9 +1,13 @@
-
-/****************************************************
- * Directly Draggable Analog-Clock Style Timepicker *
- *                                                  *
- * Design by ZulNs @Yogyakarta, February 2016       *
- ****************************************************/
+/*
+ * Directly Draggable Analog Clock Timepicker
+ *
+ * Design by ZulNs @Yogyakarta, February 2016
+ *
+ * Revised on 25 February 2019:
+ *    - Drops timepicker.css
+ *    - Adds/changes clock theme
+ *    - Changes some public methods
+ */
 'use strict';
 function Timepicker(isClk,is24H,isLight,hour,minute){
 	isClk=!!isClk;
